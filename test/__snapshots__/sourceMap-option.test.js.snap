@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when applied with "sourceMap" option matches snapshot for "false" value, using previous sourcemap: entry.547643882ea6ea7bc148.css 1`] = `"body{font-weight:700;color:red}body a{text-align:center}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "false" value, using previous sourcemap: entry2.60984d0692ef03342bf5.css 1`] = `"body{font-weight:700;color:red}body a{text-align:center}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "false" value, without previous sourcemap: entry.933a5a84fbf8d7c62ac4.css 1`] = `"body{font-weight:700;color:red}body a{text-align:center}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "false" value, without previous sourcemap: entry2.540d594073fd3d6b52ae.css 1`] = `"body{font-weight:700;color:red}body a{text-align:center}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "inline" value: entry.547643882ea6ea7bc148.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6L3dvcmsvd2VicGFjay9jc3NuYW5vLXdlYnBhY2stcGx1Z2luL3Rlc3QvZml4dHVyZXMvc291cmNlbWFwL2Jhci5zY3NzIiwiRDovd29yay93ZWJwYWNrL2Nzc25hbm8td2VicGFjay1wbHVnaW4vdGVzdC9maXh0dXJlcy9zb3VyY2VtYXAvZm9vLnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsS0FDRSxlQUFBLENDRUEsU0RGaUIsQ0NDbkIsT0FHSSxpQkFBa0IiLCJmaWxlIjoiZW50cnkuNTQ3NjQzODgyZWE2ZWE3YmMxNDguY3NzIiwic291cmNlc0NvbnRlbnQiOlsiYm9keSB7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufSIsIkBpbXBvcnQgJ2Jhcic7XG5cbmJvZHkge1xuICBjb2xvcjogcmVkO1xuICBhIHtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gIH1cbn0iXX0= */"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "inline" value: entry2.60984d0692ef03342bf5.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIkQ6L3dvcmsvd2VicGFjay9jc3NuYW5vLXdlYnBhY2stcGx1Z2luL3Rlc3QvZml4dHVyZXMvc291cmNlbWFwL2Jhci5zY3NzIiwiRDovd29yay93ZWJwYWNrL2Nzc25hbm8td2VicGFjay1wbHVnaW4vdGVzdC9maXh0dXJlcy9zb3VyY2VtYXAvZm9vLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxLQUNFLGVBQUEsQ0NFQSxTREZpQixDQ0dsQixPQUdDLGlCQUFrQiIsImZpbGUiOiJlbnRyeTIuNjA5ODRkMDY5MmVmMDMzNDJiZjUuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiYm9keSB7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xufSIsIkBpbXBvcnQgJ2Jhcic7XG5cbmJvZHkge1xuICBjb2xvcjogcmVkO1xufVxuXG5ib2R5IGEge1xuICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59Il19 */"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry.547643882ea6ea7bc148.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry.547643882ea6ea7bc148.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry.547643882ea6ea7bc148.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCCnB,OAGI,iBAAkB\\",\\"file\\":\\"entry.547643882ea6ea7bc148.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry2.60984d0692ef03342bf5.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry2.60984d0692ef03342bf5.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry2.60984d0692ef03342bf5.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCGlB,OAGC,iBAAkB\\",\\"file\\":\\"entry2.60984d0692ef03342bf5.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n}\\\\n\\\\nbody a {\\\\n  text-align: center;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry.933a5a84fbf8d7c62ac4.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry.933a5a84fbf8d7c62ac4.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry.933a5a84fbf8d7c62ac4.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry.933a5a84fbf8d7c62ac4.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry2.540d594073fd3d6b52ae.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry2.540d594073fd3d6b52ae.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry2.540d594073fd3d6b52ae.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry2.540d594073fd3d6b52ae.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options): dist/entry.547643882ea6ea7bc148.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=https://example.com/project/sourcemaps/entry.547643882ea6ea7bc148.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options): dist/entry2.60984d0692ef03342bf5.css 1`] = `
+"body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=https://example.com/project/sourcemaps/entry2.60984d0692ef03342bf5.css.map*/"
+`;
+
+exports[`when applied with "sourceMap" option matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options): sourcemaps/entry.547643882ea6ea7bc148.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCCnB,OAGI,iBAAkB\\",\\"file\\":\\"dist/entry.547643882ea6ea7bc148.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`when applied with "sourceMap" option matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options): sourcemaps/entry2.60984d0692ef03342bf5.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCGlB,OAGC,iBAAkB\\",\\"file\\":\\"dist/entry2.60984d0692ef03342bf5.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n}\\\\n\\\\nbody a {\\\\n  text-align: center;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;

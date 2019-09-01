@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "discardComments" option (disable): entry.770ff04de2ba7a6800a7.css 1`] = `
+"body{
+  /* this is a comment */
+  /*! this is a comment with exclamation mark */color:red}"
+`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "discardComments" option (enable [default]): entry.770ff04de2ba7a6800a7.css 1`] = `
+"body{
+  /*! this is a comment with exclamation mark */color:red}"
+`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "discardComments" option (enable, with "removeAll" option): entry.770ff04de2ba7a6800a7.css 1`] = `"body{color:red}"`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "discardEmpty" option (disable): entry.6610bdce0c76f47ccdf2.css 1`] = `"body{color:red}a{}"`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "discardEmpty" option (enable [default]): entry.6610bdce0c76f47ccdf2.css 1`] = `"body{color:red}"`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "mergeRules" option (disable): entry.d33b6e16186204097993.css 1`] = `"body{color:red}body{font-weight:700}"`;
+
+exports[`when applied with "cssnanoOptions" option matches snapshot for "mergeRules" option (enable [default]): entry.d33b6e16186204097993.css 1`] = `"body{color:red;font-weight:700}"`;

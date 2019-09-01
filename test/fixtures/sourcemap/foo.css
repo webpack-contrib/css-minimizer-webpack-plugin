@@ -1,0 +1,9 @@
+@import 'bar';
+
+body {
+  color: red;
+}
+
+body a {
+  text-align: center;
+}

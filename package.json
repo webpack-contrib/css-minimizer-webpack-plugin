@@ -1,0 +1,49 @@
+{
+  "name": "cssnano-webpack-plugin",
+  "version": "1.0.0",
+  "description": "cssnano plugin for Webpack",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lneveu/cssnano-webpack-plugin.git"
+  },
+  "scripts": {
+    "test": "npm run test:coverage",
+    "test:only": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --collectCoverageFrom=\"src/**/*.js\" --coverage"
+  },
+  "author": "Loann Neveu",
+  "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "cssnano",
+    "css",
+    "webpack",
+    "webpack-plugin",
+    "minimize",
+    "minimizer",
+    "minify",
+    "minifier",
+    "optimize",
+    "optimizer"
+  ],
+  "dependencies": {
+    "cssnano": "^4.1.10",
+    "webpack-sources": "^1.4.3"
+  },
+  "peerDependencies": {
+    "webpack": "^4.0.0"
+  },
+  "devDependencies": {
+    "css-loader": "^3.2.0",
+    "jest": "^24.9.0",
+    "memory-fs": "^0.4.1",
+    "mini-css-extract-plugin": "^0.8.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.3.1",
+    "webpack": "^4.39.2"
+  }
+}

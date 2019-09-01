@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CssnanoPlugin should work with assets using querystring: entry.css.map?v=3868ca6c9937500db3d7 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACA,SACA,CACA,EACA,UACA\\",\\"file\\":\\"entry.css?v=3868ca6c9937500db3d7\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`CssnanoPlugin should work with assets using querystring: entry.css?v=3868ca6c9937500db3d7 1`] = `
+"body{color:red}a{color:#00f}
+/*# sourceMappingURL=entry.css.map?v=3868ca6c9937500db3d7*/"
+`;
