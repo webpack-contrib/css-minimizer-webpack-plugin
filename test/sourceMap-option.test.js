@@ -18,7 +18,13 @@ describe('when applied with "sourceMap" option', () => {
           use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
         }
       ]
-    }
+    },
+    plugins: [
+      new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].[name].css'
+      })
+    ]
   };
 
   it('matches snapshot for "false" value, without previous sourcemap', () => {
@@ -129,7 +135,9 @@ describe('when applied with "sourceMap" option', () => {
 
       for (const file in stats.compilation.assets) {
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        const { source, map } = stats.compilation.assets[file].sourceAndMap();
+        expect(map).toBeNull();
+        expect(source).toMatch(/\/\*# sourceMappingURL=data:application\/json;base64,.*\*\//);
       }
     });
   });
@@ -151,8 +159,8 @@ describe('when applied with "sourceMap" option', () => {
       },
       plugins: [
         new MiniCssExtractPlugin({
-          filename: 'dist/[name].[chunkhash].css',
-          chunkFilename: 'dist/[id].[name].[chunkhash].css'
+          filename: 'dist/[name].css',
+          chunkFilename: 'dist/[id].[name].css'
         }),
         new webpack.SourceMapDevToolPlugin({
           filename: 'sourcemaps/[file].map',
