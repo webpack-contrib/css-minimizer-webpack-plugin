@@ -100,9 +100,11 @@ module.exports = {
   optimization: {
     minimizer: [
       new CssnanoPlugin({
-        cssnanoOptions: ['default', {
-          discardComments: { removeAll: true }
-        }]
+        cssnanoOptions: {
+          preset: ['default', {
+            discardComments: { removeAll: true }
+          }]
+        }
       })
     ]
   }
@@ -150,8 +152,10 @@ module.exports = {
   optimization: {
     minimizer: [
       new CssnanoPlugin({
-        cssProcessorPluginOptions: {
-         preset: ['default', { discardComments: { removeAll: true } }]
+        cssnanoOptions: {
+          preset: ['default', {
+            discardComments: { removeAll: true }
+          }]
         }
       })
     ]
