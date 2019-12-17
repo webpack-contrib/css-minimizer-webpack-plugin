@@ -1,6 +1,6 @@
 {
   "name": "cssnano-webpack-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "cssnano plugin for Webpack",
   "main": "src/index.js",
   "repository": {
