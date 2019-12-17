@@ -1,6 +1,6 @@
 # cssnano-webpack-plugin
 
-![npm](https://img.shields.io/npm/v/cssnano-webpack-plugin)
+[![npm](https://img.shields.io/npm/v/cssnano-webpack-plugin)](https://www.npmjs.com/package/cssnano-webpack-plugin)
 [![Build Status](https://travis-ci.org/lneveu/cssnano-webpack-plugin.svg?branch=master)](https://travis-ci.org/lneveu/cssnano-webpack-plugin)
 
 This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
