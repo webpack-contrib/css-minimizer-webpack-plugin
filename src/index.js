@@ -1,9 +1,17 @@
-const cssnano = require('cssnano');
-const { ModuleFilenameHelpers } = require('webpack');
-const { SourceMapSource, RawSource } = require('webpack-sources');
+import cssnano from 'cssnano';
+import { ModuleFilenameHelpers } from 'webpack';
+import { SourceMapSource, RawSource } from 'webpack-sources';
+import validateOptions from 'schema-utils';
+
+import schema from './options.json';
 
 class CssnanoPlugin {
-  constructor(options) {
+  constructor(options = {}) {
+    validateOptions(schema, options, {
+      name: 'Cssnano webpack plugin',
+      baseDataPath: 'options',
+    });
+
     this.options = Object.assign(
       {
         test: /\.css(\?.*)?$/i,

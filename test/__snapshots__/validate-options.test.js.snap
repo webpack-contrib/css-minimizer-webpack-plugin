@@ -1,0 +1,116 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`validation 1`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.test should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.test should be an array:
+      [RegExp | non-empty string, ...]
+    * options.test should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.test should be an instance of RegExp.
+       * options.test should be a non-empty string."
+`;
+
+exports[`validation 2`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.test should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.test[0] should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.test[0] should be an instance of RegExp.
+       * options.test[0] should be a non-empty string."
+`;
+
+exports[`validation 3`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.include should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.include should be an array:
+      [RegExp | non-empty string, ...]
+    * options.include should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.include should be an instance of RegExp.
+       * options.include should be a non-empty string."
+`;
+
+exports[`validation 4`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.include should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.include[0] should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.include[0] should be an instance of RegExp.
+       * options.include[0] should be a non-empty string."
+`;
+
+exports[`validation 5`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.exclude should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.exclude should be an array:
+      [RegExp | non-empty string, ...]
+    * options.exclude should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.exclude should be an instance of RegExp.
+       * options.exclude should be a non-empty string."
+`;
+
+exports[`validation 6`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.exclude should be one of these:
+   [RegExp | non-empty string, ...] | RegExp | non-empty string
+   -> Filtering rules.
+   Details:
+    * options.exclude[0] should be one of these:
+      RegExp | non-empty string
+      -> Filtering rule as regex or string.
+      Details:
+       * options.exclude[0] should be an instance of RegExp.
+       * options.exclude[0] should be a non-empty string."
+`;
+
+exports[`validation 7`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.sourceMap should be one of these:
+   object { … } | boolean
+   -> Enables/Disables generation of source maps.
+   Details:
+    * options.sourceMap should be an object:
+      object { … }
+      -> Options for source map.
+    * options.sourceMap should be a boolean."
+`;
+
+exports[`validation 8`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.cssnanoOptions should be an object:
+   object { … }
+   -> Options for \`cssnanoOptions\`."
+`;
+
+exports[`validation 9`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options has an unknown property 'unknown'. These properties are valid:
+   object { test?, include?, exclude?, sourceMap?, cssnanoOptions? }"
+`;
