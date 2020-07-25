@@ -9,8 +9,8 @@ class CssnanoPlugin {
         test: /\.css(\?.*)?$/i,
         sourceMap: false,
         cssnanoOptions: {
-          preset: 'default'
-        }
+          preset: 'default',
+        },
       },
       options
     );
@@ -22,14 +22,15 @@ class CssnanoPlugin {
 
   apply(compiler) {
     const plugin = { name: this.constructor.name };
-    compiler.hooks.compilation.tap(plugin, compilation => {
-      compilation.hooks.optimizeChunkAssets.tapPromise(plugin, chunks => {
+    compiler.hooks.compilation.tap(plugin, (compilation) => {
+      compilation.hooks.optimizeChunkAssets.tapPromise(plugin, (chunks) => {
         return Promise.all(
           Array.from(chunks)
             .reduce((acc, chunk) => acc.concat(chunk.files || []), [])
             .filter(ModuleFilenameHelpers.matchObject.bind(null, this.options))
-            .map(file => {
-              let input, inputSourceMap;
+            .map((file) => {
+              let input;
+              let inputSourceMap;
               const asset = compilation.assets[file];
               const postcssOpts = { to: file, from: file, map: false };
 
@@ -53,8 +54,9 @@ class CssnanoPlugin {
 
               return cssnano
                 .process(input, postcssOpts, this.options.cssnanoOptions)
-                .then(res => {
+                .then((res) => {
                   if (res.map) {
+                    // eslint-disable-next-line no-param-reassign
                     compilation.assets[file] = new SourceMapSource(
                       res.css,
                       file,
@@ -64,10 +66,11 @@ class CssnanoPlugin {
                       true
                     );
                   } else {
+                    // eslint-disable-next-line no-param-reassign
                     compilation.assets[file] = new RawSource(res.css);
                   }
                 })
-                .catch(error => {
+                .catch((error) => {
                   compilation.errors.push(
                     new Error(
                       `Cssnano error. File: "${file}"\n${

@@ -5,7 +5,7 @@
 
 This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
 
-Fully integrated in Webpack ecosystem: based on compiler hooks, respecting default Webpack output sources and compatible with other plugins like *SourceMapDevToolPlugin* or *webpack-subresource-integrity*.
+Fully integrated in Webpack ecosystem: based on compiler hooks, respecting default Webpack output sources and compatible with other plugins like _SourceMapDevToolPlugin_ or _webpack-subresource-integrity_.
 
 Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string.
 
@@ -31,19 +31,13 @@ module.exports = {
     loaders: [
       {
         test: /.s?css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
-      }
-    ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+      },
+    ],
   },
   optimization: {
-    minimizer: [
-      new CssnanoPlugin()
-    ]
-  }
+    minimizer: [new CssnanoPlugin()],
+  },
 };
 ```
 
@@ -62,10 +56,10 @@ module.exports = {
   optimization: {
     minimizer: [
       new CssnanoPlugin({
-        test: /\.foo\.css$/i
-      })
-    ]
-  }
+        test: /\.foo\.css$/i,
+      }),
+    ],
+  },
 };
 ```
 
@@ -82,10 +76,10 @@ module.exports = {
   optimization: {
     minimizer: [
       new CssnanoPlugin({
-        sourceMap: true
-      })
-    ]
-  }
+        sourceMap: true,
+      }),
+    ],
+  },
 };
 ```
 
@@ -101,13 +95,16 @@ module.exports = {
     minimizer: [
       new CssnanoPlugin({
         cssnanoOptions: {
-          preset: ['default', {
-            discardComments: { removeAll: true }
-          }]
-        }
-      })
-    ]
-  }
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
+      }),
+    ],
+  },
 };
 ```
 
@@ -128,18 +125,18 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } }
-        ]
-      }
-    ]
+          { loader: 'sass-loader', options: { sourceMap: true } },
+        ],
+      },
+    ],
   },
   optimization: {
     minimizer: [
       new CssnanoPlugin({
-        sourceMap: true
-      })
-    ]
-  }
+        sourceMap: true,
+      }),
+    ],
+  },
 };
 ```
 
@@ -153,13 +150,16 @@ module.exports = {
     minimizer: [
       new CssnanoPlugin({
         cssnanoOptions: {
-          preset: ['default', {
-            discardComments: { removeAll: true }
-          }]
-        }
-      })
-    ]
-  }
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true },
+            },
+          ],
+        },
+      }),
+    ],
+  },
 };
 ```
 
