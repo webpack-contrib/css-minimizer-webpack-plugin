@@ -1,43 +1,49 @@
-const CssnanoPlugin = require('../src/index');
-const { createCompiler, compile } = require('./helpers');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require('webpack');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+import webpack from 'webpack';
+
+import CssnanoPlugin from '../src/index';
+
+import { createCompiler, compile } from './compiler';
+
+import { readAsset, normalizedSourceMap } from './helpers';
 
 describe('when applied with "sourceMap" option', () => {
   jest.setTimeout(30000);
   const baseConfig = {
-    devtool: 'sourcemap',
+    devtool: 'source-map',
     entry: {
       entry: `${__dirname}/fixtures/sourcemap/foo.scss`,
-      entry2: `${__dirname}/fixtures/sourcemap/foo.css`
+      entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
     },
     module: {
       rules: [
         {
           test: /.s?css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-        }
-      ]
+          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        },
+      ],
     },
     plugins: [
       new MiniCssExtractPlugin({
         filename: '[name].css',
-        chunkFilename: '[id].[name].css'
-      })
-    ]
+        chunkFilename: '[id].[name].css',
+      }),
+    ],
   };
 
   it('matches snapshot for "false" value, without previous sourcemap', () => {
     const compiler = createCompiler(baseConfig);
     new CssnanoPlugin().apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -45,16 +51,24 @@ describe('when applied with "sourceMap" option', () => {
   it('matches snapshot for "true" value, without previous sourcemap', () => {
     const compiler = createCompiler(baseConfig);
     new CssnanoPlugin({
-      sourceMap: true
+      sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
+      // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
-        if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        if (/\.css$/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
+
+        // eslint-disable-next-line no-continue
+        if (!/\.css.map/.test(file)) continue;
+        expect(
+          normalizedSourceMap(readAsset(file, compiler, stats))
+        ).toMatchSnapshot(file);
       }
     });
   });
@@ -68,25 +82,26 @@ describe('when applied with "sourceMap" option', () => {
             use: [
               MiniCssExtractPlugin.loader,
               { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } }
-            ]
-          }
-        ]
-      }
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
     });
 
     const compiler = createCompiler(config);
     new CssnanoPlugin({
-      sourceMap: false
+      sourceMap: false,
     }).apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -100,25 +115,33 @@ describe('when applied with "sourceMap" option', () => {
             use: [
               MiniCssExtractPlugin.loader,
               { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } }
-            ]
-          }
-        ]
-      }
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
     });
 
     const compiler = createCompiler(config);
     new CssnanoPlugin({
-      sourceMap: true
+      sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
+      // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
-        if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        if (/\.css$/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
+
+        // eslint-disable-next-line no-continue
+        if (!/\.css.map/.test(file)) continue;
+        expect(
+          normalizedSourceMap(readAsset(file, compiler, stats))
+        ).toMatchSnapshot(file);
       }
     });
   });
@@ -126,18 +149,23 @@ describe('when applied with "sourceMap" option', () => {
   it('matches snapshot for "inline" value', () => {
     const compiler = createCompiler(baseConfig);
     new CssnanoPlugin({
-      sourceMap: { inline: true }
+      sourceMap: { inline: true },
     }).apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        const { source, map } = stats.compilation.assets[file].sourceAndMap();
-        expect(map).toBeNull();
-        expect(source).toMatch(/\/\*# sourceMappingURL=data:application\/json;base64,.*\*\//);
+        const map = Object.keys(stats.compilation.assets).filter((i) =>
+          i.includes('css.map')
+        );
+        expect(map.length).toBe(0);
+        expect(readAsset(file, compiler, stats)).toMatch(
+          /\/\*# sourceMappingURL=data:application\/json;base64,.*\*\//
+        );
       }
     });
   });
@@ -152,36 +180,37 @@ describe('when applied with "sourceMap" option', () => {
             use: [
               MiniCssExtractPlugin.loader,
               { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } }
-            ]
-          }
-        ]
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
       },
       plugins: [
         new MiniCssExtractPlugin({
           filename: 'dist/[name].css',
-          chunkFilename: 'dist/[id].[name].css'
+          chunkFilename: 'dist/[id].[name].css',
         }),
         new webpack.SourceMapDevToolPlugin({
           filename: 'sourcemaps/[file].map',
           publicPath: 'https://example.com/project/',
-          fileContext: 'dist'
-        })
-      ]
+          fileContext: 'dist',
+        }),
+      ],
     });
 
     const compiler = createCompiler(config);
     new CssnanoPlugin({
-      sourceMap: true
+      sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then(stats => {
+    return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });

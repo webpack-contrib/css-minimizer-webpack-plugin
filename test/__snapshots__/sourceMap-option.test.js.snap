@@ -13,28 +13,28 @@ exports[`when applied with "sourceMap" option matches snapshot for "true" value,
 /*# sourceMappingURL=entry.css.map*/"
 `;
 
-exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCCnB,OAGI,iBAAkB\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCCnB,OAGI,iBAAkB\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry2.css 1`] = `
 "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/"
 `;
 
-exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry2.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/bar.scss\\",\\"webpack:///./test/fixtures/sourcemap/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCGlB,OAGC,iBAAkB\\",\\"file\\":\\"entry2.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n}\\\\n\\\\nbody a {\\\\n  text-align: center;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, using previous sourcemap: entry2.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SDFiB,CCGlB,OAGC,iBAAkB\\",\\"file\\":\\"entry2.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n}\\\\n\\\\nbody a {\\\\n  text-align: center;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry.css 1`] = `
 "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/"
 `;
 
-exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry2.css 1`] = `
 "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/"
 `;
 
-exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry2.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/fixtures/sourcemap/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry2.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`when applied with "sourceMap" option matches snapshot for "true" value, without previous sourcemap: entry2.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,gBAAsB,SAAtB,CAAgC,OAAO\\",\\"file\\":\\"entry2.css\\",\\"sourcesContent\\":[\\"body{font-weight:bold}body{color:red}body a{text-align:center}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`when applied with "sourceMap" option matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options): dist/entry.css 1`] = `
 "body{font-weight:700;color:red}body a{text-align:center}
