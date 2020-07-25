@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar1.b9ed465d753c3cbb7278.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
 
-exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar2.da2704ddf62617472591.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
 
-exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): foo.96d211ed8ed26e9959f3.css 1`] = `
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): foo.css 1`] = `
 "a {
   text-align: center;
 }
@@ -12,11 +12,11 @@ exports[`when applied with "test" option matches snapshot for a single "test" va
 "
 `;
 
-exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar1.b9ed465d753c3cbb7278.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
 
-exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar2.da2704ddf62617472591.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
 
-exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): foo.96d211ed8ed26e9959f3.css 1`] = `
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): foo.css 1`] = `
 "a {
   text-align: center;
 }
@@ -24,8 +24,8 @@ exports[`when applied with "test" option matches snapshot for multiple "test" va
 "
 `;
 
-exports[`when applied with "test" option matches snapshot with empty value: bar1.b9ed465d753c3cbb7278.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+exports[`when applied with "test" option matches snapshot with empty value: bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
 
-exports[`when applied with "test" option matches snapshot with empty value: bar2.da2704ddf62617472591.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+exports[`when applied with "test" option matches snapshot with empty value: bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
 
-exports[`when applied with "test" option matches snapshot with empty value: foo.96d211ed8ed26e9959f3.css 1`] = `"a{text-align:center}"`;
+exports[`when applied with "test" option matches snapshot with empty value: foo.css 1`] = `"a{text-align:center}"`;

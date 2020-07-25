@@ -24,13 +24,13 @@ module.exports.createCompiler = (options) => {
     output: {
       pathinfo: false,
       path: `${__dirname}/dist`,
-      filename: '[name].[chunkhash].js',
-      chunkFilename: '[id].[name].[chunkhash].js',
+      filename: '[name].js',
+      chunkFilename: '[id].[name].js',
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].[chunkhash].css',
-        chunkFilename: '[id].[name].[chunkhash].css',
+        filename: '[name].css',
+        chunkFilename: '[id].[name].css',
       }),
     ],
     module: {

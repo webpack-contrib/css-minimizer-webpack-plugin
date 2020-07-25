@@ -1,15 +1,17 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-const webpack = require('webpack');
+import webpack from 'webpack';
 
-const CssnanoPlugin = require('../src/index');
+import CssnanoPlugin from '../src/index';
 
-const { createCompiler, compile } = require('./helpers');
+import { createCompiler, compile } from './compiler';
+
+import { readAsset, normalizedSourceMap } from './helpers';
 
 describe('when applied with "sourceMap" option', () => {
   jest.setTimeout(30000);
   const baseConfig = {
-    devtool: 'sourcemap',
+    devtool: 'source-map',
     entry: {
       entry: `${__dirname}/fixtures/sourcemap/foo.scss`,
       entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
@@ -41,7 +43,7 @@ describe('when applied with "sourceMap" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -56,10 +58,17 @@ describe('when applied with "sourceMap" option', () => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
+      // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
+        if (/\.css$/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
+
         // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        if (!/\.css.map/.test(file)) continue;
+        expect(
+          normalizedSourceMap(readAsset(file, compiler, stats))
+        ).toMatchSnapshot(file);
       }
     });
   });
@@ -92,7 +101,7 @@ describe('when applied with "sourceMap" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -122,10 +131,17 @@ describe('when applied with "sourceMap" option', () => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
+      // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
+        if (/\.css$/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
+
         // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        if (!/\.css.map/.test(file)) continue;
+        expect(
+          normalizedSourceMap(readAsset(file, compiler, stats))
+        ).toMatchSnapshot(file);
       }
     });
   });
@@ -143,9 +159,11 @@ describe('when applied with "sourceMap" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        const { source, map } = stats.compilation.assets[file].sourceAndMap();
-        expect(map).toBeNull();
-        expect(source).toMatch(
+        const map = Object.keys(stats.compilation.assets).filter((i) =>
+          i.includes('css.map')
+        );
+        expect(map.length).toBe(0);
+        expect(readAsset(file, compiler, stats)).toMatch(
           /\/\*# sourceMappingURL=data:application\/json;base64,.*\*\//
         );
       }
@@ -192,7 +210,7 @@ describe('when applied with "sourceMap" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });

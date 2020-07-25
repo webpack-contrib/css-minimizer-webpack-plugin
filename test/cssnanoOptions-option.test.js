@@ -1,6 +1,8 @@
-const CssnanoPlugin = require('../src/index');
+import CssnanoPlugin from '../src/index';
 
-const { createCompiler, compile } = require('./helpers');
+import { createCompiler, compile } from './compiler';
+
+import { readAsset } from './helpers';
 
 describe('when applied with "cssnanoOptions" option', () => {
   jest.setTimeout(30000);
@@ -20,7 +22,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -44,7 +46,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -68,7 +70,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -88,7 +90,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -112,7 +114,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -132,7 +134,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
@@ -156,7 +158,7 @@ describe('when applied with "cssnanoOptions" option', () => {
       for (const file in stats.compilation.assets) {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
-        expect(stats.compilation.assets[file].source()).toMatchSnapshot(file);
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
   });
