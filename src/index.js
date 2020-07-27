@@ -1,12 +1,24 @@
-import cssnano from 'cssnano';
+import os from 'os';
+
 import pLimit from 'p-limit';
 import RequestShortener from 'webpack/lib/RequestShortener';
-import { ModuleFilenameHelpers } from 'webpack';
+import cssnanoPackageJson from 'cssnano/package.json';
+import {
+  util,
+  ModuleFilenameHelpers,
+  SourceMapDevToolPlugin,
+  javascript,
+  version as webpackVersion,
+} from 'webpack';
 import { SourceMapSource, RawSource } from 'webpack-sources';
 import { SourceMapConsumer } from 'source-map';
 import validateOptions from 'schema-utils';
+import serialize from 'serialize-javascript';
+import Worker from 'jest-worker';
 
 import schema from './options.json';
+
+import { minify as minifyFn } from './minify';
 
 const warningRegex = /\[.+:([0-9]+),([0-9]+)\]/;
 
@@ -17,16 +29,31 @@ class CssnanoPlugin {
       baseDataPath: 'options',
     });
 
-    this.options = Object.assign(
-      {
-        test: /\.css(\?.*)?$/i,
-        sourceMap: false,
-        cssnanoOptions: {
-          preset: 'default',
-        },
+    const {
+      test = /\.css(\?.*)?$/i,
+      sourceMap = false,
+      cssnanoOptions = {
+        preset: 'default',
       },
-      options
-    );
+      warningsFilter = () => true,
+      cache = true,
+      cacheKeys = (defaultCacheKeys) => defaultCacheKeys,
+      parallel = true,
+      include,
+      exclude,
+    } = options;
+
+    this.options = {
+      test,
+      sourceMap,
+      cssnanoOptions,
+      warningsFilter,
+      cache,
+      cacheKeys,
+      parallel,
+      include,
+      exclude,
+    };
 
     if (this.options.sourceMap === true) {
       this.options.sourceMap = { inline: false };
@@ -51,6 +78,45 @@ class CssnanoPlugin {
     }
 
     return new SourceMapConsumer(inputSourceMap);
+  }
+
+  static buildError(error, file, sourceMap, requestShortener) {
+    if (error.line) {
+      const original =
+        sourceMap &&
+        sourceMap.originalPositionFor({
+          line: error.line,
+          column: error.col,
+        });
+
+      if (original && original.source && requestShortener) {
+        return new Error(
+          `${file} from Cssnano Webpack Plugin\n${
+            error.message
+          } [${requestShortener.shorten(original.source)}:${original.line},${
+            original.column
+          }][${file}:${error.line},${error.col}]${
+            error.stack
+              ? `\n${error.stack.split('\n').slice(1).join('\n')}`
+              : ''
+          }`
+        );
+      }
+
+      return new Error(
+        `${file} from Cssnano Webpack Plugin\n${error.message} [${file}:${
+          error.line
+        },${error.col}]${
+          error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
+        }`
+      );
+    }
+
+    if (error.stack) {
+      return new Error(`${file} from Cssnano Webpack Plugin\n${error.stack}`);
+    }
+
+    return new Error(`${file} from Cssnano Webpack Plugin\n${error.message}`);
   }
 
   static buildWarning(
@@ -98,6 +164,20 @@ class CssnanoPlugin {
     return `Cssnano Webpack Plugin: ${warningMessage}${locationMessage}`;
   }
 
+  static isWebpack4() {
+    return webpackVersion[0] === '4';
+  }
+
+  static getAvailableNumberOfCores(parallel) {
+    // In some cases cpus() returns undefined
+    // https://github.com/nodejs/node/issues/19022
+    const cpus = os.cpus() || { length: 1 };
+
+    return parallel === true
+      ? cpus.length - 1
+      : Math.min(Number(parallel) || 0, cpus.length - 1);
+  }
+
   *taskGenerator(compiler, compilation, file) {
     const assetSource = compilation.assets[file];
 
@@ -126,9 +206,12 @@ class CssnanoPlugin {
       inputSourceMap = null;
     }
 
+    if (Buffer.isBuffer(input)) {
+      input = input.toString();
+    }
+
     const callback = (taskResult) => {
-      const { css: code } = taskResult;
-      const { error, map, warnings } = taskResult;
+      const { css: code, error, map, warnings } = taskResult;
 
       let sourceMap = null;
 
@@ -157,7 +240,7 @@ class CssnanoPlugin {
         outputSource = new SourceMapSource(
           code,
           file,
-          JSON.parse(map),
+          map,
           input,
           inputSourceMap,
           true
@@ -192,7 +275,7 @@ class CssnanoPlugin {
 
     if (inputSourceMap) {
       postcssOptions.map = Object.assign(
-        { prev: inputSourceMap || false },
+        { prev: inputSourceMap },
         this.options.sourceMap
       );
     }
@@ -206,28 +289,105 @@ class CssnanoPlugin {
       callback,
     };
 
+    if (CssnanoPlugin.isWebpack4()) {
+      const {
+        outputOptions: { hashSalt, hashDigest, hashDigestLength, hashFunction },
+      } = compilation;
+      const hash = util.createHash(hashFunction);
+
+      if (hashSalt) {
+        hash.update(hashSalt);
+      }
+
+      hash.update(input);
+
+      const digest = hash.digest(hashDigest);
+
+      if (this.options.cache) {
+        const defaultCacheKeys = {
+          cssnano: cssnanoPackageJson.version,
+          // eslint-disable-next-line global-require
+          'cssnano-webpack-plugin': require('../package.json').version,
+          'cssnano-webpack-plugin-options': this.options,
+          nodeVersion: process.version,
+          filename: file,
+          contentHash: digest.substr(0, hashDigestLength),
+        };
+
+        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, file);
+      }
+    } else {
+      // For webpack@5 cache
+      task.assetSource = assetSource;
+
+      task.cacheKeys = {
+        cssnano: cssnanoPackageJson.version,
+        // eslint-disable-next-line global-require
+        'cssnano-webpack-plugin': require('../package.json').version,
+        'cssnano-webpack-plugin-options': this.options,
+      };
+    }
+
     yield task;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async runTasks(assetNames, getTaskForAsset) {
-    const limit = pLimit(100);
+  async runTasks(assetNames, getTaskForAsset, cache) {
+    const availableNumberOfCores = CssnanoPlugin.getAvailableNumberOfCores(
+      this.options.parallel
+    );
+
+    let concurrency = Infinity;
+    let worker;
+
+    if (availableNumberOfCores > 0) {
+      // Do not create unnecessary workers when the number of files is less than the available cores, it saves memory
+      const numWorkers = Math.min(assetNames.length, availableNumberOfCores);
+
+      concurrency = numWorkers;
+
+      worker = new Worker(require.resolve('./minify'), { numWorkers });
+
+      // https://github.com/facebook/jest/issues/8872#issuecomment-524822081
+      const workerStdout = worker.getStdout();
+
+      if (workerStdout) {
+        workerStdout.on('data', (chunk) => {
+          return process.stdout.write(chunk);
+        });
+      }
+
+      const workerStderr = worker.getStderr();
+
+      if (workerStderr) {
+        workerStderr.on('data', (chunk) => {
+          return process.stderr.write(chunk);
+        });
+      }
+    }
+
+    const limit = pLimit(concurrency);
     const scheduledTasks = [];
 
     for (const assetName of assetNames) {
       const enqueue = async (task) => {
-        const { input, postcssOptions, cssnanoOptions } = task;
-
         let taskResult;
 
         try {
-          taskResult = await cssnano.process(
-            input,
-            postcssOptions,
-            cssnanoOptions
-          );
+          if (worker) {
+            taskResult = await worker.transform(serialize(task));
+          } else {
+            taskResult = minifyFn(task);
+          }
         } catch (error) {
           taskResult = { error };
+        }
+
+        if (cache.isEnabled() && !taskResult.error) {
+          taskResult = await cache.store(task, taskResult).then(
+            () => taskResult,
+            () => taskResult
+          );
         }
 
         task.callback(taskResult);
@@ -244,17 +404,47 @@ class CssnanoPlugin {
             return Promise.resolve();
           }
 
+          if (cache.isEnabled()) {
+            return cache.get(task).then(
+              (taskResult) => task.callback(taskResult),
+              () => enqueue(task)
+            );
+          }
+
           return enqueue(task);
         })
       );
     }
 
     return Promise.all(scheduledTasks).then(() => {
+      if (worker) {
+        return worker.end();
+      }
+
       return Promise.resolve();
     });
   }
 
   apply(compiler) {
+    const { devtool, plugins } = compiler.options;
+
+    this.options.sourceMap =
+      typeof this.options.sourceMap === 'undefined'
+        ? (devtool &&
+            !devtool.includes('eval') &&
+            !devtool.includes('cheap') &&
+            (devtool.includes('source-map') ||
+              // Todo remove when `webpack@4` support will be dropped
+              devtool.includes('sourcemap'))) ||
+          (plugins &&
+            plugins.some(
+              (plugin) =>
+                plugin instanceof SourceMapDevToolPlugin &&
+                plugin.options &&
+                plugin.options.columns
+            ))
+        : this.options.sourceMap;
+
     const matchObject = ModuleFilenameHelpers.matchObject.bind(
       // eslint-disable-next-line no-undefined
       undefined,
@@ -262,15 +452,27 @@ class CssnanoPlugin {
     );
 
     const optimizeFn = async (compilation, chunksOrAssets) => {
-      const assetNames = []
-        .concat(Array.from(compilation.additionalChunkAssets || []))
-        .concat(
-          Array.from(chunksOrAssets).reduce(
-            (acc, chunk) => acc.concat(Array.from(chunk.files || [])),
-            []
+      let assetNames;
+
+      if (CssnanoPlugin.isWebpack4()) {
+        assetNames = []
+          .concat(Array.from(compilation.additionalChunkAssets || []))
+          .concat(
+            Array.from(chunksOrAssets).reduce(
+              (acc, chunk) => acc.concat(Array.from(chunk.files || [])),
+              []
+            )
           )
-        )
-        .filter((file) => matchObject(file));
+          .filter((file) => matchObject(file));
+      } else {
+        assetNames = []
+          .concat(Object.keys(chunksOrAssets))
+          .filter((file) => matchObject(file));
+      }
+
+      if (assetNames.length === 0) {
+        return Promise.resolve();
+      }
 
       const getTaskForAsset = this.taskGenerator.bind(
         this,
@@ -278,17 +480,67 @@ class CssnanoPlugin {
         compilation
       );
 
-      await this.runTasks(assetNames, getTaskForAsset);
+      const CacheEngine = CssnanoPlugin.isWebpack4()
+        ? // eslint-disable-next-line global-require
+          require('./Webpack4Cache').default
+        : // eslint-disable-next-line global-require
+          require('./Webpack5Cache').default;
+      const cache = new CacheEngine(compilation, { cache: this.options.cache });
+
+      await this.runTasks(assetNames, getTaskForAsset, cache);
 
       return Promise.resolve();
     };
 
     const plugin = { name: this.constructor.name };
+
     compiler.hooks.compilation.tap(plugin, (compilation) => {
-      compilation.hooks.optimizeChunkAssets.tapPromise(
-        plugin,
-        optimizeFn.bind(this, compilation)
-      );
+      if (this.options.sourceMap) {
+        compilation.hooks.buildModule.tap(plugin, (moduleArg) => {
+          // to get detailed location info about errors
+          // eslint-disable-next-line no-param-reassign
+          moduleArg.useSourceMap = true;
+        });
+      }
+
+      if (CssnanoPlugin.isWebpack4()) {
+        const { mainTemplate, chunkTemplate } = compilation;
+        const data = serialize({
+          cssnano: cssnanoPackageJson.version,
+          cssnanoOptions: this.options.cssnanoOptions,
+        });
+
+        // Regenerate `contenthash` for minified assets
+        for (const template of [mainTemplate, chunkTemplate]) {
+          template.hooks.hashForChunk.tap(plugin, (hash) => {
+            hash.update('CssnanoPlugin');
+            hash.update(data);
+          });
+        }
+
+        compilation.hooks.optimizeChunkAssets.tapPromise(
+          plugin,
+          optimizeFn.bind(this, compilation)
+        );
+      } else {
+        const hooks = javascript.JavascriptModulesPlugin.getCompilationHooks(
+          compilation
+        );
+        const data = serialize({
+          cssnano: cssnanoPackageJson.version,
+          cssnanoOptions: this.options.cssnanoOptions,
+        });
+
+        hooks.chunkHash.tap(plugin, (chunk, hash) => {
+          hash.update('CssnanoPlugin');
+          hash.update(data);
+        });
+
+        compilation.hooks.optimizeAssets.tapPromise(
+          plugin,
+          optimizeFn.bind(this, compilation)
+        );
+      }
     });
   }
 }

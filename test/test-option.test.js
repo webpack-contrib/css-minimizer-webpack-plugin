@@ -2,13 +2,15 @@ import CssnanoPlugin from '../src/index';
 
 import { createCompiler, compile } from './compiler';
 
-import { readAsset } from './helpers';
+import { readAsset, removeCache } from './helpers';
 
 describe('when applied with "test" option', () => {
   jest.setTimeout(30000);
   let compiler;
 
   beforeEach(() => {
+    Promise.all([removeCache()]);
+
     compiler = createCompiler({
       entry: {
         bar1: `${__dirname}/fixtures/test/bar1.css`,
@@ -17,6 +19,8 @@ describe('when applied with "test" option', () => {
       },
     });
   });
+
+  afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot with empty value', () => {
     new CssnanoPlugin().apply(compiler);

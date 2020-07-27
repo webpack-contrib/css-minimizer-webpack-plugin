@@ -2,10 +2,14 @@ import CssnanoPlugin from '../src/index';
 
 import { createCompiler, compile } from './compiler';
 
-import { readAsset } from './helpers';
+import { readAsset, removeCache } from './helpers';
 
 describe('when applied with "cssnanoOptions" option', () => {
   jest.setTimeout(30000);
+
+  beforeEach(() => Promise.all([removeCache()]));
+
+  afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot for "discardComments" option (enable [default])', () => {
     const compiler = createCompiler({

@@ -6,7 +6,7 @@ import CssnanoPlugin from '../src/index';
 
 import { createCompiler, compile } from './compiler';
 
-import { readAsset, normalizedSourceMap } from './helpers';
+import { readAsset, normalizedSourceMap, removeCache } from './helpers';
 
 describe('when applied with "sourceMap" option', () => {
   jest.setTimeout(30000);
@@ -31,6 +31,10 @@ describe('when applied with "sourceMap" option', () => {
       }),
     ],
   };
+
+  beforeEach(() => Promise.all([removeCache()]));
+
+  afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot for "false" value, without previous sourcemap', () => {
     const compiler = createCompiler(baseConfig);

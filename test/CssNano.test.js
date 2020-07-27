@@ -4,10 +4,14 @@ import CssnanoPlugin from '../src/index';
 
 import { createCompiler, compile } from './compiler';
 
-import { readAsset, normalizedSourceMap } from './helpers';
+import { readAsset, normalizedSourceMap, removeCache } from './helpers';
 
 describe('CssnanoPlugin', () => {
   jest.setTimeout(30000);
+
+  beforeEach(() => Promise.all([removeCache()]));
+
+  afterEach(() => Promise.all([removeCache()]));
 
   it('should work with assets using querystring', () => {
     const config = {
