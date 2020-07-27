@@ -42,7 +42,9 @@
   },
   "dependencies": {
     "cssnano": "^4.1.10",
+    "p-limit": "^3.0.2",
     "schema-utils": "^2.7.0",
+    "source-map": "^0.6.1",
     "webpack-sources": "^1.4.3"
   },
   "devDependencies": {
