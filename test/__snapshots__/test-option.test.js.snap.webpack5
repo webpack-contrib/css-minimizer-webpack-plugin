@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): foo.css 1`] = `
+"a {
+  text-align: center;
+}
+
+"
+`;
+
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): foo.css 1`] = `
+"a {
+  text-align: center;
+}
+
+"
+`;
+
+exports[`when applied with "test" option matches snapshot with empty value: bar1.css 1`] = `"body{color:red;font-size:20px}a{color:#00f}"`;
+
+exports[`when applied with "test" option matches snapshot with empty value: bar2.css 1`] = `"h1{color:green}h2{color:#ff0}"`;
+
+exports[`when applied with "test" option matches snapshot with empty value: foo.css 1`] = `"a{text-align:center}"`;

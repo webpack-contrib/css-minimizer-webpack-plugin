@@ -107,6 +107,10 @@
     "warningsFilter": {
       "description": "Allow to filter `cssnano` warnings.",
       "instanceof": "Function"
+    },
+    "minify": {
+      "description": "Allows you to override default minify function.",
+      "instanceof": "Function"
     }
   },
   "additionalProperties": false

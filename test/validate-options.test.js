@@ -173,6 +173,14 @@ it('validation', () => {
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
+    new CssnanoWebpackPlugin({ minify() {} });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ minify: true });
+  }).toThrowErrorMatchingSnapshot();
+
+  expect(() => {
     new CssnanoWebpackPlugin({ unknown: true });
   }).toThrowErrorMatchingSnapshot();
   /* eslint-enable no-new */

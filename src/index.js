@@ -41,6 +41,7 @@ class CssnanoPlugin {
       parallel = true,
       include,
       exclude,
+      minify,
     } = options;
 
     this.options = {
@@ -53,6 +54,7 @@ class CssnanoPlugin {
       parallel,
       include,
       exclude,
+      minify,
     };
 
     if (this.options.sourceMap === true) {
@@ -86,7 +88,7 @@ class CssnanoPlugin {
         sourceMap &&
         sourceMap.originalPositionFor({
           line: error.line,
-          column: error.col,
+          column: error.column,
         });
 
       if (original && original.source && requestShortener) {
@@ -95,7 +97,7 @@ class CssnanoPlugin {
             error.message
           } [${requestShortener.shorten(original.source)}:${original.line},${
             original.column
-          }][${file}:${error.line},${error.col}]${
+          }][${file}:${error.line},${error.column}]${
             error.stack
               ? `\n${error.stack.split('\n').slice(1).join('\n')}`
               : ''
@@ -106,7 +108,7 @@ class CssnanoPlugin {
       return new Error(
         `${file} from Cssnano Webpack Plugin\n${error.message} [${file}:${
           error.line
-        },${error.col}]${
+        },${error.column}]${
           error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
         }`
       );
@@ -273,19 +275,13 @@ class CssnanoPlugin {
 
     const postcssOptions = { to: file, from: file, map: false };
 
-    if (inputSourceMap) {
-      postcssOptions.map = Object.assign(
-        { prev: inputSourceMap },
-        this.options.sourceMap
-      );
-    }
-
     const task = {
-      file,
       input,
       inputSourceMap,
       postcssOptions,
+      map: this.options.sourceMap,
       cssnanoOptions: this.options.cssnanoOptions,
+      minify: this.options.minify,
       callback,
     };
 
@@ -377,7 +373,7 @@ class CssnanoPlugin {
           if (worker) {
             taskResult = await worker.transform(serialize(task));
           } else {
-            taskResult = minifyFn(task);
+            taskResult = await minifyFn(task);
           }
         } catch (error) {
           taskResult = { error };
@@ -452,23 +448,9 @@ class CssnanoPlugin {
     );
 
     const optimizeFn = async (compilation, chunksOrAssets) => {
-      let assetNames;
-
-      if (CssnanoPlugin.isWebpack4()) {
-        assetNames = []
-          .concat(Array.from(compilation.additionalChunkAssets || []))
-          .concat(
-            Array.from(chunksOrAssets).reduce(
-              (acc, chunk) => acc.concat(Array.from(chunk.files || [])),
-              []
-            )
-          )
-          .filter((file) => matchObject(file));
-      } else {
-        assetNames = []
-          .concat(Object.keys(chunksOrAssets))
-          .filter((file) => matchObject(file));
-      }
+      const assetNames = Object.keys(
+        CssnanoPlugin.isWebpack4() ? compilation.assets : chunksOrAssets
+      ).filter((file) => matchObject(file));
 
       if (assetNames.length === 0) {
         return Promise.resolve();
@@ -545,4 +527,4 @@ class CssnanoPlugin {
   }
 }
 
-module.exports = CssnanoPlugin;
+export default CssnanoPlugin;
