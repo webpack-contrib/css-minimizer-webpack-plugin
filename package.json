@@ -63,7 +63,7 @@
     "commitlint-azure-pipelines-cli": "^1.0.3",
     "copy-webpack-plugin": "^6.0.3",
     "cross-env": "^7.0.2",
-    "css-loader": "^3.6.0",
+    "css-loader": "^4.1.1",
     "del": "^5.1.0",
     "del-cli": "^3.0.1",
     "eslint": "^7.5.0",
