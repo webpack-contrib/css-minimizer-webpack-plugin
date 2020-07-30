@@ -77,6 +77,36 @@
       "description": "Options for `cssnanoOptions`.",
       "additionalProperties": true,
       "type": "object"
+    },
+    "cache": {
+      "description": "Enable file caching. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache.",
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "cacheKeys": {
+      "description": "Allows you to override default cache keys. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache.",
+      "instanceof": "Function"
+    },
+    "parallel": {
+      "description": "Use multi-process parallel running to improve the build speed.",
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "warningsFilter": {
+      "description": "Allow to filter `cssnano` warnings.",
+      "instanceof": "Function"
     }
   },
   "additionalProperties": false

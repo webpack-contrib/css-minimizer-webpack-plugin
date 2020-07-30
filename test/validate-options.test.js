@@ -129,6 +129,50 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
+    new CssnanoWebpackPlugin({ cache: true });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ cache: false });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ cache: 'path/to/cache/directory' });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ cache: {} });
+  }).toThrowErrorMatchingSnapshot();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ cacheKeys() {} });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ cacheKeys: 'test' });
+  }).toThrowErrorMatchingSnapshot();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ parallel: true });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ parallel: false });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ parallel: 2 });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ parallel: '2' });
+  }).toThrowErrorMatchingSnapshot();
+
+  expect(() => {
+    new CssnanoWebpackPlugin({ parallel: {} });
+  }).toThrowErrorMatchingSnapshot();
+
+  expect(() => {
     new CssnanoWebpackPlugin({ unknown: true });
   }).toThrowErrorMatchingSnapshot();
   /* eslint-enable no-new */
