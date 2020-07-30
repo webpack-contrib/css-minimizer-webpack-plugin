@@ -6,6 +6,12 @@ Array [
 ]
 `;
 
+exports[`worker should emit minimizer error: error 1`] = `
+Array [
+  "cssnano error",
+]
+`;
+
 exports[`worker should minify css: css 1`] = `".foo{color:red}.bar{color:coral}"`;
 
 exports[`worker should minify css: map 1`] = `

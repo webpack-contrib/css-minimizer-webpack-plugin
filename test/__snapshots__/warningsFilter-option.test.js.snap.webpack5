@@ -36,7 +36,7 @@ exports[`warningsFilter option should match snapshot for a "function" value: err
 
 exports[`warningsFilter option should match snapshot for a "function" value: warnings 1`] = `
 Array [
-  "Cssnano Webpack Plugin: warning-plugin: Warning from bar1.css",
-  "Cssnano Webpack Plugin: warning-plugin: Warning from bar2.css",
+  "Cssnano Plugin: warning-plugin: Warning from bar1.css ",
+  "Cssnano Plugin: warning-plugin: Warning from bar2.css ",
 ]
 `;

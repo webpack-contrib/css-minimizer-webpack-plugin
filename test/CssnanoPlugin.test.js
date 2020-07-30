@@ -195,21 +195,21 @@ describe('CssnanoPlugin', () => {
 
   it('buildWarning method', () => {
     expect(
-      CssnanoPlugin.buildWarning('Warning [test.css:1,1]')
+      CssnanoPlugin.buildWarning('Warning test.css:1:1')
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning('Warning [test.css:1,1]', 'test.css')
+      CssnanoPlugin.buildWarning('Warning test.css:1:1', 'test.css')
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
         CssnanoPlugin.buildSourceMap(rawSourceMap)
       )
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
         CssnanoPlugin.buildSourceMap(rawSourceMap),
         new RequestShortener('/example.com/www/js/')
@@ -217,7 +217,7 @@ describe('CssnanoPlugin', () => {
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
         CssnanoPlugin.buildSourceMap(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
@@ -226,7 +226,7 @@ describe('CssnanoPlugin', () => {
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
         CssnanoPlugin.buildSourceMap(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
@@ -272,12 +272,19 @@ describe('CssnanoPlugin', () => {
     });
 
     new CssnanoPlugin({
+      sourceMap: true,
       minify: (data) => {
         // eslint-disable-next-line global-require
         const postcss = require('postcss');
 
         const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
+          let rule;
+          css.walkDecls((decl) => {
+            rule = decl;
+          });
+
           result.warn('Warning', {
+            node: rule,
             word: 'warning_word',
             index: 2,
             plugin: 'warning-plugin',

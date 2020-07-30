@@ -102,4 +102,27 @@ describe('worker', () => {
       expect(normalizeErrors(normalizeError.message)).toMatchSnapshot('error');
     }
   });
+
+  it('should emit minimizer error', async () => {
+    const options = {
+      input: false,
+      postcssOptions: {
+        from: 'entry.css',
+        to: 'entry.css',
+      },
+      minify: () => {
+        return { error: new Error('cssnano error') };
+      },
+    };
+
+    try {
+      await transform(serialize(options));
+    } catch (error) {
+      const normalizeError = { ...error };
+
+      normalizeError.message = [error.message.split('\n')];
+
+      expect(normalizeErrors(normalizeError.message)).toMatchSnapshot('error');
+    }
+  });
 });

@@ -1,5 +1,9 @@
 const cssnano = require('cssnano');
 
+/*
+ * We bring to the line here, because when passing result from the worker,
+ * the warning.toString is replaced with native Object.toString
+ * */
 function warningsToString(warnings) {
   return warnings.map((i) => i.toString());
 }
@@ -57,7 +61,11 @@ async function transform(options) {
 
   const result = await minify(options);
 
-  return result;
+  if (result.error) {
+    throw result.error;
+  } else {
+    return result;
+  }
 }
 
 module.exports.minify = minify;

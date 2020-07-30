@@ -20,41 +20,41 @@ import schema from './options.json';
 
 import { minify as minifyFn } from './minify';
 
-const warningRegex = /\[.+:([0-9]+),([0-9]+)\]/;
+const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
 class CssnanoPlugin {
   constructor(options = {}) {
     validateOptions(schema, options, {
-      name: 'Cssnano webpack plugin',
+      name: 'Cssnano Plugin',
       baseDataPath: 'options',
     });
 
     const {
-      test = /\.css(\?.*)?$/i,
-      sourceMap = false,
+      minify,
       cssnanoOptions = {
         preset: 'default',
       },
+      test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
+      sourceMap = false,
       cache = true,
       cacheKeys = (defaultCacheKeys) => defaultCacheKeys,
       parallel = true,
       include,
       exclude,
-      minify,
     } = options;
 
     this.options = {
       test,
-      sourceMap,
-      cssnanoOptions,
       warningsFilter,
+      sourceMap,
       cache,
       cacheKeys,
       parallel,
       include,
       exclude,
       minify,
+      cssnanoOptions,
     };
 
     if (this.options.sourceMap === true) {
@@ -106,19 +106,19 @@ class CssnanoPlugin {
       }
 
       return new Error(
-        `${file} from Cssnano Webpack Plugin\n${error.message} [${file}:${
-          error.line
-        },${error.column}]${
+        `${file} from Cssnano \n${error.message} [${file}:${error.line},${
+          error.column
+        }]${
           error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
         }`
       );
     }
 
     if (error.stack) {
-      return new Error(`${file} from Cssnano Webpack Plugin\n${error.stack}`);
+      return new Error(`${file} from Cssnano\n${error.stack}`);
     }
 
-    return new Error(`${file} from Cssnano Webpack Plugin\n${error.message}`);
+    return new Error(`${file} from Cssnano\n${error.message}`);
   }
 
   static buildWarning(
@@ -150,11 +150,11 @@ class CssnanoPlugin {
           requestShortener
         ) {
           ({ source } = original);
-          warningMessage = `${warningMessage.replace(warningRegex, '')}`;
 
-          locationMessage = `[${requestShortener.shorten(original.source)}:${
+          warningMessage = `${warningMessage.replace(warningRegex, '')}`;
+          locationMessage = `${requestShortener.shorten(original.source)}:${
             original.line
-          },${original.column}]`;
+          }:${original.column}`;
         }
       }
     }
@@ -163,7 +163,7 @@ class CssnanoPlugin {
       return null;
     }
 
-    return `Cssnano Webpack Plugin: ${warningMessage}${locationMessage}`;
+    return `Cssnano Plugin: ${warningMessage} ${locationMessage}`;
   }
 
   static isWebpack4() {
@@ -273,7 +273,7 @@ class CssnanoPlugin {
       }
     };
 
-    const postcssOptions = { to: file, from: file, map: false };
+    const postcssOptions = { to: file, from: file };
 
     const task = {
       input,
