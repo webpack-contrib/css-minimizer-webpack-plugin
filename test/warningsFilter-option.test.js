@@ -45,8 +45,8 @@ describe('warningsFilter option', () => {
             };
           });
       },
-      warningsFilter(warning) {
-        if (/foo/.test(warning.text)) {
+      warningsFilter(warning, file) {
+        if (/foo/.test(file)) {
           return false;
         }
 

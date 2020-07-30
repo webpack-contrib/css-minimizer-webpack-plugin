@@ -1,6 +1,5 @@
 import path from 'path';
 
-import postcss from 'postcss';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import RequestShortener from 'webpack/lib/RequestShortener';
@@ -272,17 +271,19 @@ describe('CssnanoPlugin', () => {
       },
     });
 
-    const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
-      result.warn('Warning', {
-        word: 'warning_word',
-        index: 2,
-        plugin: 'warning-plugin',
-      });
-    });
-
     new CssnanoPlugin({
-      parallel: false,
       minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+
+        const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
+          result.warn('Warning', {
+            word: 'warning_word',
+            index: 2,
+            plugin: 'warning-plugin',
+          });
+        });
+
         return postcss([plugin])
           .process(data.input, data.postcssOptions)
           .then((result) => {

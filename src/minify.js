@@ -1,5 +1,9 @@
 const cssnano = require('cssnano');
 
+function warningsToString(warnings) {
+  return warnings.map((i) => i.toString());
+}
+
 const minify = async (options) => {
   const {
     input,
@@ -11,7 +15,17 @@ const minify = async (options) => {
   } = options;
 
   if (minifyFn) {
-    return minifyFn({ input, postcssOptions, cssnanoOptions }, inputSourceMap);
+    const result = await minifyFn(
+      { input, postcssOptions, cssnanoOptions },
+      inputSourceMap
+    );
+
+    return {
+      css: result.css,
+      map: result.map,
+      error: result.error,
+      warnings: warningsToString(result.warnings || []),
+    };
   }
 
   if (inputSourceMap) {
@@ -24,7 +38,7 @@ const minify = async (options) => {
     css: result.css,
     map: result.map,
     error: result.error,
-    warnings: result.warnings(),
+    warnings: warningsToString(result.warnings()),
   };
 };
 
