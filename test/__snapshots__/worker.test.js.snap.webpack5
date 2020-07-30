@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`worker should emit error: error 1`] = `
+Array [
+  "/entry.css:1:1: Unknown word",
+]
+`;
+
+exports[`worker should minify css: css 1`] = `".foo{color:red}.bar{color:coral}"`;
+
+exports[`worker should minify css: map 1`] = `
+Object {
+  "file": "entry.css",
+  "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
+  "names": Array [],
+  "sources": Array [
+    "foo.css",
+    "entry.css",
+  ],
+  "sourcesContent": Array [
+    ".foo{color:red;}",
+    ".foo{color:red;}
+.bar{color:coral;}",
+  ],
+  "version": 3,
+}
+`;
+
+exports[`worker should work inputSourceMap as prev: css 1`] = `".foo{color:red}.bar{color:coral}"`;
+
+exports[`worker should work inputSourceMap as prev: map 1`] = `
+Object {
+  "file": "entry.css",
+  "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
+  "names": Array [],
+  "sources": Array [
+    "foo.css",
+    "entry.css",
+  ],
+  "sourcesContent": Array [
+    ".foo{color:red;}",
+    ".foo{color:red;}
+.bar{color:coral;}",
+  ],
+  "version": 3,
+}
+`;
+
+exports[`worker should work options.minify function: css 1`] = `".minify {};"`;
+
+exports[`worker should work options.minify function: map 1`] = `undefined`;

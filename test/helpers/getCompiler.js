@@ -4,26 +4,18 @@ import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { createFsFromVolume, Volume } from 'memfs';
 
-module.exports.compile = (compiler) => {
-  return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
-      if (err) return reject(err);
-      return resolve(stats);
-    });
-  });
-};
-
-module.exports.createCompiler = (options) => {
+export default function getCompiler(options) {
   const compiler = webpack({
     mode: 'production',
     bail: true,
-    cache: false,
+    cache: getCompiler.isWebpack4() ? false : { type: 'memory' },
     optimization: {
       minimize: false,
+      noEmitOnErrors: false,
     },
     output: {
       pathinfo: false,
-      path: `${__dirname}/dist`,
+      path: path.resolve(__dirname, 'dist'),
       filename: '[name].js',
       chunkFilename: '[id].[name].js',
     },
@@ -51,4 +43,6 @@ module.exports.createCompiler = (options) => {
   compiler.outputFileSystem = outputFileSystem;
 
   return compiler;
-};
+}
+
+getCompiler.isWebpack4 = () => webpack.version[0] === '4';

@@ -1,12 +1,34 @@
 const cssnano = require('cssnano');
 
-const minify = (options) => {
-  const { input, postcssOptions, cssnanoOptions } = options;
+const minify = async (options) => {
+  const {
+    input,
+    postcssOptions,
+    cssnanoOptions,
+    map,
+    inputSourceMap,
+    minify: minifyFn,
+  } = options;
 
-  return cssnano.process(input, postcssOptions, cssnanoOptions);
+  if (minifyFn) {
+    return minifyFn({ input, postcssOptions, cssnanoOptions }, inputSourceMap);
+  }
+
+  if (inputSourceMap) {
+    postcssOptions.map = { prev: inputSourceMap, ...map };
+  }
+
+  const result = await cssnano.process(input, postcssOptions, cssnanoOptions);
+
+  return {
+    css: result.css,
+    map: result.map,
+    error: result.error,
+    warnings: result.warnings(),
+  };
 };
 
-function transform(options) {
+async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)
   // Safer for possible security issues, albeit not critical at all here
   // eslint-disable-next-line no-new-func, no-param-reassign
@@ -19,13 +41,9 @@ function transform(options) {
     `'use strict'\nreturn ${options}`
   )(exports, require, module, __filename, __dirname);
 
-  const result = minify(options);
+  const result = await minify(options);
 
-  if (result.error) {
-    throw result.error;
-  } else {
-    return result;
-  }
+  return result;
 }
 
 module.exports.minify = minify;

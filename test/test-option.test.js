@@ -1,17 +1,16 @@
 import CssnanoPlugin from '../src/index';
 
-import { createCompiler, compile } from './compiler';
+import { getCompiler, compile, readAsset, removeCache } from './helpers';
 
-import { readAsset, removeCache } from './helpers';
+jest.setTimeout(30000);
 
 describe('when applied with "test" option', () => {
-  jest.setTimeout(30000);
   let compiler;
 
   beforeEach(() => {
     Promise.all([removeCache()]);
 
-    compiler = createCompiler({
+    compiler = getCompiler({
       entry: {
         bar1: `${__dirname}/fixtures/test/bar1.css`,
         bar2: `${__dirname}/fixtures/test/bar2.css`,

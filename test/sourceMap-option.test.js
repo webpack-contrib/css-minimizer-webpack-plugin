@@ -1,15 +1,21 @@
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-
 import webpack from 'webpack';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import CssnanoPlugin from '../src/index';
 
-import { createCompiler, compile } from './compiler';
+import {
+  getCompiler,
+  compile,
+  readAsset,
+  normalizedSourceMap,
+  removeCache,
+  getErrors,
+  getWarnings,
+} from './helpers';
 
-import { readAsset, normalizedSourceMap, removeCache } from './helpers';
+jest.setTimeout(30000);
 
 describe('when applied with "sourceMap" option', () => {
-  jest.setTimeout(30000);
   const baseConfig = {
     devtool: 'source-map',
     entry: {
@@ -37,7 +43,7 @@ describe('when applied with "sourceMap" option', () => {
   afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot for "false" value, without previous sourcemap', () => {
-    const compiler = createCompiler(baseConfig);
+    const compiler = getCompiler(baseConfig);
     new CssnanoPlugin().apply(compiler);
 
     return compile(compiler).then((stats) => {
@@ -53,7 +59,7 @@ describe('when applied with "sourceMap" option', () => {
   });
 
   it('matches snapshot for "true" value, without previous sourcemap', () => {
-    const compiler = createCompiler(baseConfig);
+    const compiler = getCompiler(baseConfig);
     new CssnanoPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -93,7 +99,7 @@ describe('when applied with "sourceMap" option', () => {
       },
     });
 
-    const compiler = createCompiler(config);
+    const compiler = getCompiler(config);
     new CssnanoPlugin({
       sourceMap: false,
     }).apply(compiler);
@@ -126,7 +132,7 @@ describe('when applied with "sourceMap" option', () => {
       },
     });
 
-    const compiler = createCompiler(config);
+    const compiler = getCompiler(config);
     new CssnanoPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -151,7 +157,7 @@ describe('when applied with "sourceMap" option', () => {
   });
 
   it('matches snapshot for "inline" value', () => {
-    const compiler = createCompiler(baseConfig);
+    const compiler = getCompiler(baseConfig);
     new CssnanoPlugin({
       sourceMap: { inline: true },
     }).apply(compiler);
@@ -202,7 +208,7 @@ describe('when applied with "sourceMap" option', () => {
       ],
     });
 
-    const compiler = createCompiler(config);
+    const compiler = getCompiler(config);
     new CssnanoPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -216,6 +222,71 @@ describe('when applied with "sourceMap" option', () => {
         if (/\.js/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
+    });
+  });
+
+  it('should emit warning when broken sourcemap', () => {
+    const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
+      apply(pluginCompiler) {
+        pluginCompiler.hooks.compilation.tap(
+          { name: this.constructor.name },
+          (compilation) => {
+            compilation.hooks.additionalChunkAssets.tap(
+              { name: this.constructor.name },
+              () => {
+                compilation.additionalChunkAssets.push('broken-source-map.css');
+
+                const assetContent = '.bar {color: red};';
+
+                // eslint-disable-next-line no-param-reassign
+                compilation.assets['broken-source-map.css'] = {
+                  size() {
+                    return assetContent.length;
+                  },
+                  source() {
+                    return assetContent;
+                  },
+                  sourceAndMap() {
+                    return {
+                      source: this.source(),
+                      map: {
+                        sources: [],
+                        names: [],
+                        mappings: 'AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO',
+                        file: 'x',
+                        sourcesContent: [],
+                      },
+                    };
+                  },
+                };
+              }
+            );
+          }
+        );
+      }
+    })();
+
+    const config = Object.assign(baseConfig, {
+      entry: {
+        entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
+      },
+      plugins: [
+        emitBrokenSourceMapPlugin,
+        new MiniCssExtractPlugin({
+          filename: 'dist/[name].css',
+          chunkFilename: 'dist/[id].[name].css',
+        }),
+      ],
+    });
+
+    const compiler = getCompiler(config);
+    new CssnanoPlugin({
+      sourceMap: true,
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(getErrors(stats)).toMatchSnapshot('error');
+      expect(getWarnings(stats)).toMatchSnapshot('warning');
     });
   });
 });

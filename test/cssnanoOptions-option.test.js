@@ -1,18 +1,16 @@
 import CssnanoPlugin from '../src/index';
 
-import { createCompiler, compile } from './compiler';
+import { getCompiler, compile, readAsset, removeCache } from './helpers';
 
-import { readAsset, removeCache } from './helpers';
+jest.setTimeout(30000);
 
 describe('when applied with "cssnanoOptions" option', () => {
-  jest.setTimeout(30000);
-
   beforeEach(() => Promise.all([removeCache()]));
 
   afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot for "discardComments" option (enable [default])', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/discardComments.css`,
       },
@@ -32,7 +30,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "discardComments" option (disable)', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/discardComments.css`,
       },
@@ -56,7 +54,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "discardComments" option (enable, with "removeAll" option)', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/discardComments.css`,
       },
@@ -80,7 +78,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "mergeRules" option (enable [default])', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/mergeRules.css`,
       },
@@ -100,7 +98,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "mergeRules" option (disable)', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/mergeRules.css`,
       },
@@ -124,7 +122,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "discardEmpty" option (enable [default])', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/discardEmpty.css`,
       },
@@ -144,7 +142,7 @@ describe('when applied with "cssnanoOptions" option', () => {
   });
 
   it('matches snapshot for "discardEmpty" option (disable)', () => {
-    const compiler = createCompiler({
+    const compiler = getCompiler({
       entry: {
         entry: `${__dirname}/fixtures/cssnanooptions/discardEmpty.css`,
       },

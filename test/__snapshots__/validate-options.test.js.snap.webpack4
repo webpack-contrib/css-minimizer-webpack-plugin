@@ -147,6 +147,12 @@ exports[`validation 12`] = `
 
 exports[`validation 13`] = `
 "Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
+ - options.minify should be an instance of function.
+   -> Allows you to override default minify function."
+`;
+
+exports[`validation 14`] = `
+"Invalid options object. Cssnano webpack plugin has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'unknown'. These properties are valid:
-   object { test?, include?, exclude?, sourceMap?, cssnanoOptions?, cache?, cacheKeys?, parallel?, warningsFilter? }"
+   object { test?, include?, exclude?, sourceMap?, cssnanoOptions?, cache?, cacheKeys?, parallel?, warningsFilter?, minify? }"
 `;

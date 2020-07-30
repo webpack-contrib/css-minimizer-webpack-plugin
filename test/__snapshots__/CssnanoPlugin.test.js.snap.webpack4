@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CssnanoPlugin buildError method 1`] = `
+[Error: test.css from Cssnano Webpack Plugin
+Message]
+`;
+
+exports[`CssnanoPlugin buildError method 2`] = `
+[Error: test.css from Cssnano Webpack Plugin
+Message [test.css:1,1]]
+`;
+
+exports[`CssnanoPlugin buildError method 3`] = `
+[Error: test.css from Cssnano Webpack Plugin
+Message [http://example.com/www/js/one.css:1,1][test.css:1,1]]
+`;
+
+exports[`CssnanoPlugin buildError method 4`] = `
+[Error: test.css from Cssnano Webpack Plugin
+Stack]
+`;
+
+exports[`CssnanoPlugin buildSourceMap method 1`] = `
+SourceMapConsumer {
+  "_absoluteSources": Array [
+    "http://example.com/www/js/one.css",
+    "http://example.com/www/js/two.css",
+  ],
+  "_mappings": "CAAC,IAAI,IAAM,SAAUA,GAClB,OAAOC,IAAID;CCDb,IAAI,IAAM,SAAUE,GAClB,OAAOA",
+  "_names": ArraySet {
+    "_array": Array [
+      "bar",
+      "baz",
+      "n",
+    ],
+    "_set": Map {
+      "bar" => 0,
+      "baz" => 1,
+      "n" => 2,
+    },
+  },
+  "_sourceMapURL": undefined,
+  "_sources": ArraySet {
+    "_array": Array [
+      "one.css",
+      "two.css",
+    ],
+    "_set": Map {
+      "one.css" => 0,
+      "two.css" => 1,
+    },
+  },
+  "file": "test.css",
+  "sourceRoot": "http://example.com/www/js/",
+  "sourcesContent": null,
+}
+`;
+
+exports[`CssnanoPlugin buildWarning method 1`] = `"Cssnano Webpack Plugin: Warning [test.css:1,1]"`;
+
+exports[`CssnanoPlugin buildWarning method 2`] = `"Cssnano Webpack Plugin: Warning [test.css:1,1]"`;
+
+exports[`CssnanoPlugin buildWarning method 3`] = `"Cssnano Webpack Plugin: Warning [test.css:1,1]"`;
+
+exports[`CssnanoPlugin buildWarning method 4`] = `"Cssnano Webpack Plugin: Warning [http://example.com/www/js/one.css:1,1]"`;
+
+exports[`CssnanoPlugin buildWarning method 5`] = `"Cssnano Webpack Plugin: Warning [http://example.com/www/js/one.css:1,1]"`;
+
+exports[`CssnanoPlugin buildWarning method 6`] = `null`;
+
+exports[`CssnanoPlugin should build error: error 1`] = `
+Array [
+  "Error: error.css from Cssnano Webpack Plugin
+/error.css:1:1: Unknown word [error.css:1,1]",
+]
+`;
+
+exports[`CssnanoPlugin should build error: warning 1`] = `Array []`;
+
+exports[`CssnanoPlugin should build warning: error 1`] = `Array []`;
+
+exports[`CssnanoPlugin should build warning: warning 1`] = `
+Array [
+  "Cssnano Webpack Plugin: warning-plugin: Warning",
+]
+`;
+
+exports[`CssnanoPlugin should respect the hash options #1: entry.css 1`] = `"a{text-align:center}"`;
+
+exports[`CssnanoPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACA,SACA,CACA,EACA,UACA\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`CssnanoPlugin should work with assets using querystring: entry.css?v=test 1`] = `
+"body{color:red}a{color:#00f}
+/*# sourceMappingURL=entry.css.map?v=test*/"
+`;
+
+exports[`CssnanoPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: assets 1`] = `
+Object {
+  "one.css": ".minify {};",
+  "two.css": ".minify {};",
+}
+`;
+
+exports[`CssnanoPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: errors 1`] = `Array []`;
+
+exports[`CssnanoPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: process stderr output 1`] = `
+"stderr
+stderr
+"
+`;
+
+exports[`CssnanoPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: process stdout output 1`] = `
+"stdout
+stdout
+"
+`;
+
+exports[`CssnanoPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: warnings 1`] = `Array []`;
