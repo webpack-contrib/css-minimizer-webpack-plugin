@@ -1,6 +1,6 @@
 import path from 'path';
 
-import postcss from 'postcss';
+import { SourceMapConsumer } from 'source-map';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import RequestShortener from 'webpack/lib/RequestShortener';
@@ -142,13 +142,6 @@ describe('CssnanoPlugin', () => {
     expect(CssnanoPlugin.isSourceMap(emptyRawSourceMap)).toBe(true);
   });
 
-  it('buildSourceMap method', () => {
-    expect(CssnanoPlugin.buildSourceMap()).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap('invalid')).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap({})).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap(rawSourceMap)).toMatchSnapshot();
-  });
-
   it('buildError method', () => {
     const error = new Error('Message');
 
@@ -166,7 +159,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildError(
         errorWithLineAndCol,
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap)
+        new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
 
@@ -180,7 +173,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildError(
         otherErrorWithLineAndCol,
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/')
       )
     ).toMatchSnapshot();
@@ -196,40 +189,40 @@ describe('CssnanoPlugin', () => {
 
   it('buildWarning method', () => {
     expect(
-      CssnanoPlugin.buildWarning('Warning [test.css:1,1]')
+      CssnanoPlugin.buildWarning('Warning test.css:1:1')
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning('Warning [test.css:1,1]', 'test.css')
+      CssnanoPlugin.buildWarning('Warning test.css:1:1', 'test.css')
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap)
+        new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/')
       )
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
         () => true
       )
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
-        'Warning [test.css:1,1]',
+        'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
         () => false
       )
@@ -272,17 +265,26 @@ describe('CssnanoPlugin', () => {
       },
     });
 
-    const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
-      result.warn('Warning', {
-        word: 'warning_word',
-        index: 2,
-        plugin: 'warning-plugin',
-      });
-    });
-
     new CssnanoPlugin({
-      parallel: false,
+      sourceMap: true,
       minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+
+        const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
+          let rule;
+          css.walkDecls((decl) => {
+            rule = decl;
+          });
+
+          result.warn('Warning', {
+            node: rule,
+            word: 'warning_word',
+            index: 2,
+            plugin: 'warning-plugin',
+          });
+        });
+
         return postcss([plugin])
           .process(data.input, data.postcssOptions)
           .then((result) => {
