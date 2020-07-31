@@ -7,7 +7,6 @@ import {
   util,
   ModuleFilenameHelpers,
   SourceMapDevToolPlugin,
-  javascript,
   version as webpackVersion,
 } from 'webpack';
 import validateOptions from 'schema-utils';
@@ -482,38 +481,11 @@ class CssnanoPlugin {
       }
 
       if (CssnanoPlugin.isWebpack4()) {
-        const { mainTemplate, chunkTemplate } = compilation;
-        const data = serialize({
-          cssnano: cssnanoPackageJson.version,
-          cssnanoOptions: this.options.cssnanoOptions,
-        });
-
-        // Regenerate `contenthash` for minified assets
-        for (const template of [mainTemplate, chunkTemplate]) {
-          template.hooks.hashForChunk.tap(plugin, (hash) => {
-            hash.update('CssnanoPlugin');
-            hash.update(data);
-          });
-        }
-
         compilation.hooks.optimizeChunkAssets.tapPromise(
           plugin,
           optimizeFn.bind(this, compilation)
         );
       } else {
-        const hooks = javascript.JavascriptModulesPlugin.getCompilationHooks(
-          compilation
-        );
-        const data = serialize({
-          cssnano: cssnanoPackageJson.version,
-          cssnanoOptions: this.options.cssnanoOptions,
-        });
-
-        hooks.chunkHash.tap(plugin, (chunk, hash) => {
-          hash.update('CssnanoPlugin');
-          hash.update(data);
-        });
-
         compilation.hooks.optimizeAssets.tapPromise(
           plugin,
           optimizeFn.bind(this, compilation)
