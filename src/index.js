@@ -1,8 +1,8 @@
 import os from 'os';
 
-import pLimit from 'p-limit';
+import { SourceMapConsumer } from 'source-map';
+import { SourceMapSource, RawSource } from 'webpack-sources';
 import RequestShortener from 'webpack/lib/RequestShortener';
-import cssnanoPackageJson from 'cssnano/package.json';
 import {
   util,
   ModuleFilenameHelpers,
@@ -10,10 +10,10 @@ import {
   javascript,
   version as webpackVersion,
 } from 'webpack';
-import { SourceMapSource, RawSource } from 'webpack-sources';
-import { SourceMapConsumer } from 'source-map';
 import validateOptions from 'schema-utils';
 import serialize from 'serialize-javascript';
+import cssnanoPackageJson from 'cssnano/package.json';
+import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
 import schema from './options.json';
@@ -72,14 +72,6 @@ class CssnanoPlugin {
         Array.isArray(input.sources) &&
         typeof input.mappings === 'string'
     );
-  }
-
-  static buildSourceMap(inputSourceMap) {
-    if (!inputSourceMap || !CssnanoPlugin.isSourceMap(inputSourceMap)) {
-      return null;
-    }
-
-    return new SourceMapConsumer(inputSourceMap);
   }
 
   static buildError(error, file, sourceMap, requestShortener) {
@@ -217,8 +209,12 @@ class CssnanoPlugin {
 
       let sourceMap = null;
 
-      if (error || (warnings && warnings.length > 0)) {
-        sourceMap = CssnanoPlugin.buildSourceMap(inputSourceMap);
+      if (
+        (error || (warnings && warnings.length > 0)) &&
+        inputSourceMap &&
+        CssnanoPlugin.isSourceMap(inputSourceMap)
+      ) {
+        sourceMap = new SourceMapConsumer(inputSourceMap);
       }
 
       // Handling results
@@ -273,12 +269,10 @@ class CssnanoPlugin {
       }
     };
 
-    const postcssOptions = { to: file, from: file };
-
     const task = {
+      file,
       input,
       inputSourceMap,
-      postcssOptions,
       map: this.options.sourceMap,
       cssnanoOptions: this.options.cssnanoOptions,
       minify: this.options.minify,
@@ -380,10 +374,7 @@ class CssnanoPlugin {
         }
 
         if (cache.isEnabled() && !taskResult.error) {
-          taskResult = await cache.store(task, taskResult).then(
-            () => taskResult,
-            () => taskResult
-          );
+          await cache.store(task, taskResult);
         }
 
         task.callback(taskResult);
@@ -392,7 +383,7 @@ class CssnanoPlugin {
       };
 
       scheduledTasks.push(
-        limit(() => {
+        limit(async () => {
           const task = getTaskForAsset(assetName).next().value;
 
           if (!task) {
@@ -401,10 +392,17 @@ class CssnanoPlugin {
           }
 
           if (cache.isEnabled()) {
-            return cache.get(task).then(
-              (taskResult) => task.callback(taskResult),
-              () => enqueue(task)
-            );
+            let taskResult;
+
+            try {
+              taskResult = await cache.get(task);
+            } catch (ignoreError) {
+              return enqueue(task);
+            }
+
+            task.callback(taskResult);
+
+            return Promise.resolve();
           }
 
           return enqueue(task);
@@ -412,13 +410,11 @@ class CssnanoPlugin {
       );
     }
 
-    return Promise.all(scheduledTasks).then(() => {
-      if (worker) {
-        return worker.end();
-      }
+    await Promise.all(scheduledTasks);
 
-      return Promise.resolve();
-    });
+    if (worker) {
+      await worker.end();
+    }
   }
 
   apply(compiler) {

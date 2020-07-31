@@ -1,5 +1,6 @@
 import path from 'path';
 
+import { SourceMapConsumer } from 'source-map';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import RequestShortener from 'webpack/lib/RequestShortener';
@@ -141,13 +142,6 @@ describe('CssnanoPlugin', () => {
     expect(CssnanoPlugin.isSourceMap(emptyRawSourceMap)).toBe(true);
   });
 
-  it('buildSourceMap method', () => {
-    expect(CssnanoPlugin.buildSourceMap()).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap('invalid')).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap({})).toBe(null);
-    expect(CssnanoPlugin.buildSourceMap(rawSourceMap)).toMatchSnapshot();
-  });
-
   it('buildError method', () => {
     const error = new Error('Message');
 
@@ -165,7 +159,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildError(
         errorWithLineAndCol,
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap)
+        new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
 
@@ -179,7 +173,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildError(
         otherErrorWithLineAndCol,
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/')
       )
     ).toMatchSnapshot();
@@ -204,14 +198,14 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap)
+        new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
     expect(
       CssnanoPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/')
       )
     ).toMatchSnapshot();
@@ -219,7 +213,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
         () => true
       )
@@ -228,7 +222,7 @@ describe('CssnanoPlugin', () => {
       CssnanoPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
-        CssnanoPlugin.buildSourceMap(rawSourceMap),
+        new SourceMapConsumer(rawSourceMap),
         new RequestShortener('/example.com/www/js/'),
         () => false
       )

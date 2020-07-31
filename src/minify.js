@@ -10,13 +10,15 @@ function warningsToString(warnings) {
 
 const minify = async (options) => {
   const {
+    file,
     input,
-    postcssOptions,
     cssnanoOptions,
     map,
     inputSourceMap,
     minify: minifyFn,
   } = options;
+
+  const postcssOptions = { to: file, from: file };
 
   if (minifyFn) {
     const result = await minifyFn(

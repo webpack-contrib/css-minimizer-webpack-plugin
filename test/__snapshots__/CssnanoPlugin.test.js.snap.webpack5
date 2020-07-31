@@ -20,42 +20,6 @@ exports[`CssnanoPlugin buildError method 4`] = `
 Stack]
 `;
 
-exports[`CssnanoPlugin buildSourceMap method 1`] = `
-SourceMapConsumer {
-  "_absoluteSources": Array [
-    "http://example.com/www/js/one.css",
-    "http://example.com/www/js/two.css",
-  ],
-  "_mappings": "CAAC,IAAI,IAAM,SAAUA,GAClB,OAAOC,IAAID;CCDb,IAAI,IAAM,SAAUE,GAClB,OAAOA",
-  "_names": ArraySet {
-    "_array": Array [
-      "bar",
-      "baz",
-      "n",
-    ],
-    "_set": Map {
-      "bar" => 0,
-      "baz" => 1,
-      "n" => 2,
-    },
-  },
-  "_sourceMapURL": undefined,
-  "_sources": ArraySet {
-    "_array": Array [
-      "one.css",
-      "two.css",
-    ],
-    "_set": Map {
-      "one.css" => 0,
-      "two.css" => 1,
-    },
-  },
-  "file": "test.css",
-  "sourceRoot": "http://example.com/www/js/",
-  "sourcesContent": null,
-}
-`;
-
 exports[`CssnanoPlugin buildWarning method 1`] = `"Cssnano Plugin: Warning test.css:1:1 "`;
 
 exports[`CssnanoPlugin buildWarning method 2`] = `"Cssnano Plugin: Warning test.css:1:1 "`;
