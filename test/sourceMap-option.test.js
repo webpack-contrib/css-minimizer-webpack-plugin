@@ -13,8 +13,6 @@ import {
   getWarnings,
 } from './helpers';
 
-jest.setTimeout(30000);
-
 describe('when applied with "sourceMap" option', () => {
   const baseConfig = {
     devtool: 'source-map',

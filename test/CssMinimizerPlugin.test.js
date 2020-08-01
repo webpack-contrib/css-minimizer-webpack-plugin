@@ -18,8 +18,6 @@ import {
   normalizedSourceMap,
 } from './helpers';
 
-jest.setTimeout(30000);
-
 describe('CssMinimizerPlugin', () => {
   const rawSourceMap = {
     version: 3,
