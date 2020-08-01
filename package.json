@@ -1,12 +1,12 @@
 {
-  "name": "cssnano-webpack-plugin",
-  "version": "1.0.3",
+  "name": "css-minimizer-webpack-plugin",
+  "version": "1.0.0",
   "description": "cssnano plugin for Webpack",
   "license": "MIT",
-  "repository": "webpack-contrib/cssnano-webpack-plugin",
+  "repository": "webpack-contrib/css-minimizer-webpack-plugin",
   "author": "Loann Neveu",
-  "homepage": "https://github.com/webpack-contrib/cssnano-webpack-plugin",
-  "bugs": "https://github.com/webpack-contrib/cssnano-webpack-plugin/issues",
+  "homepage": "https://github.com/webpack-contrib/css-minimizer-webpack-plugin",
+  "bugs": "https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues",
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"

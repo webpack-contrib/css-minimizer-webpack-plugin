@@ -18,7 +18,7 @@ about: Would you like something work differently? Have an alternative approach? 
 - Node Version:
 - NPM Version:
 - webpack Version:
-- cssnano-webpack-plugin Version:
+- css-minimizer-webpack-plugin Version:
 
 ### Expected Behavior / Situation
 
