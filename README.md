@@ -16,11 +16,7 @@
 
 This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
 
-Fully integrated in Webpack ecosystem: based on compiler hooks, respecting default Webpack output sources and compatible with other plugins like _SourceMapDevToolPlugin_ or _webpack-subresource-integrity_.
-
-Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string.
-
-Works with Webpack 4+.
+Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string, allows to cache and works in parallel mode.
 
 ## Getting Started
 
@@ -53,7 +49,9 @@ module.exports = {
 };
 ```
 
-This will enable CSS optimization only in production mode. If you want to run it also in development, put the plugin configuration in the `plugins` option array.
+This will enable CSS optimization only in production mode.
+If you want to run it also in development, put the plugin configuration in the `plugins` option array.
+
 And run `webpack` via your preferred method.
 
 ## Options
@@ -270,10 +268,7 @@ Default configuration when enabled: `{ inline: false }`.
 
 **Works only with `source-map`, `inline-source-map`, `hidden-source-map` and `nosources-source-map` values for the [`devtool`](https://webpack.js.org/configuration/devtool/) option.**
 
-Why?
-
-- `eval` wraps modules in `eval("string")` and the minimizer does not handle strings.
-- `cheap` has not column information and minimizer generate only a single line, which leave only a single mapping.
+Why? Because CSS support only these source map types.
 
 The plugin respect the [`devtool`](https://webpack.js.org/configuration/devtool/) and using the `SourceMapDevToolPlugin` plugin.
 Using supported `devtool` values enable source map generation.

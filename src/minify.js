@@ -1,4 +1,4 @@
-const cssMinimizer = require('cssnano');
+const cssnano = require('cssnano');
 
 /*
  * We bring to the line here, because when passing result from the worker,
@@ -38,11 +38,7 @@ const minify = async (options) => {
     postcssOptions.map = { prev: inputSourceMap, ...map };
   }
 
-  const result = await cssMinimizer.process(
-    input,
-    postcssOptions,
-    minimizerOptions
-  );
+  const result = await cssnano.process(input, postcssOptions, minimizerOptions);
 
   return {
     css: result.css,

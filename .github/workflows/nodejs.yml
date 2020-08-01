@@ -1,4 +1,4 @@
-name: cssnano-webpack-plugin
+name: css-minimizer-webpack-plugin
 
 on:
   push:

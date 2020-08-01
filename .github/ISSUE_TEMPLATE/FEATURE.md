@@ -18,7 +18,7 @@ about: Suggest an idea for this project
 - Node Version:
 - NPM Version:
 - webpack Version:
-- cssnano-webpack-plugin Version:
+- css-minimizer-webpack-plugin Version:
 
 ### Feature Proposal
 
