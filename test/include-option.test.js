@@ -1,4 +1,4 @@
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   compile,
@@ -27,7 +27,7 @@ describe('include option', () => {
   afterEach(() => Promise.all([removeCache()]));
 
   it('should match snapshot for a single RegExp value included1', async () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       include: /included1/i,
     }).apply(compiler);
 
@@ -39,7 +39,7 @@ describe('include option', () => {
   });
 
   it('should match snapshot for a single String value included1', async () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       include: 'included1',
     }).apply(compiler);
 
@@ -51,7 +51,7 @@ describe('include option', () => {
   });
 
   it('should match snapshot for multiple RegExp values included1 and included2', async () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       include: [/included1/i, /included2/i],
     }).apply(compiler);
 
@@ -63,7 +63,7 @@ describe('include option', () => {
   });
 
   it('should match snapshot for multiple String values included1 and included2', async () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       include: ['included1', 'included2'],
     }).apply(compiler);
 

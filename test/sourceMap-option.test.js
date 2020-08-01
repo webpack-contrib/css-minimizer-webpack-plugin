@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   getCompiler,
@@ -44,7 +44,7 @@ describe('when applied with "sourceMap" option', () => {
 
   it('matches snapshot for "false" value, without previous sourcemap', () => {
     const compiler = getCompiler(baseConfig);
-    new CssnanoPlugin().apply(compiler);
+    new CssMinimizerPlugin().apply(compiler);
 
     return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
@@ -60,7 +60,7 @@ describe('when applied with "sourceMap" option', () => {
 
   it('matches snapshot for "true" value, without previous sourcemap', () => {
     const compiler = getCompiler(baseConfig);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 
@@ -100,7 +100,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: false,
     }).apply(compiler);
 
@@ -133,7 +133,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 
@@ -158,7 +158,7 @@ describe('when applied with "sourceMap" option', () => {
 
   it('matches snapshot for "inline" value', () => {
     const compiler = getCompiler(baseConfig);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: { inline: true },
     }).apply(compiler);
 
@@ -209,7 +209,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 
@@ -280,7 +280,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 

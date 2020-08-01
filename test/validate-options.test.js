@@ -1,187 +1,187 @@
-import CssnanoWebpackPlugin from '../src';
+import CssMinimizerPlugin from '../src';
 
 it('validation', () => {
   /* eslint-disable no-new */
   expect(() => {
-    new CssnanoWebpackPlugin({ test: /foo/ });
+    new CssMinimizerPlugin({ test: /foo/ });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: 'foo' });
+    new CssMinimizerPlugin({ test: 'foo' });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: [/foo/] });
+    new CssMinimizerPlugin({ test: [/foo/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: [/foo/, /bar/] });
+    new CssMinimizerPlugin({ test: [/foo/, /bar/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ test: ['foo', 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ test: [/foo/, 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: true });
+    new CssMinimizerPlugin({ test: true });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ test: [true] });
+    new CssMinimizerPlugin({ test: [true] });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: /foo/ });
+    new CssMinimizerPlugin({ include: /foo/ });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: 'foo' });
+    new CssMinimizerPlugin({ include: 'foo' });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: [/foo/] });
+    new CssMinimizerPlugin({ include: [/foo/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: [/foo/, /bar/] });
+    new CssMinimizerPlugin({ include: [/foo/, /bar/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ include: ['foo', 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ include: [/foo/, 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: true });
+    new CssMinimizerPlugin({ include: true });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ include: [true] });
+    new CssMinimizerPlugin({ include: [true] });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: /foo/ });
+    new CssMinimizerPlugin({ exclude: /foo/ });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: 'foo' });
+    new CssMinimizerPlugin({ exclude: 'foo' });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: [/foo/] });
+    new CssMinimizerPlugin({ exclude: [/foo/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: [/foo/, /bar/] });
+    new CssMinimizerPlugin({ exclude: [/foo/, /bar/] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ exclude: ['foo', 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ exclude: [/foo/, 'bar'] });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: true });
+    new CssMinimizerPlugin({ exclude: true });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ exclude: [true] });
+    new CssMinimizerPlugin({ exclude: [true] });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ sourceMap: true });
+    new CssMinimizerPlugin({ sourceMap: true });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ sourceMap: false });
+    new CssMinimizerPlugin({ sourceMap: false });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ sourceMap: { inline: true } });
+    new CssMinimizerPlugin({ sourceMap: { inline: true } });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ sourceMap: 'true' });
+    new CssMinimizerPlugin({ sourceMap: 'true' });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cssnanoOptions: {} });
+    new CssMinimizerPlugin({ minimizerOptions: {} });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cssnanoOptions: null });
+    new CssMinimizerPlugin({ minimizerOptions: null });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({
-      cssnanoOptions: { colormin: true },
+    new CssMinimizerPlugin({
+      minimizerOptions: { colormin: true },
     });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cache: true });
+    new CssMinimizerPlugin({ cache: true });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cache: false });
+    new CssMinimizerPlugin({ cache: false });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cache: 'path/to/cache/directory' });
+    new CssMinimizerPlugin({ cache: 'path/to/cache/directory' });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cache: {} });
+    new CssMinimizerPlugin({ cache: {} });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cacheKeys() {} });
+    new CssMinimizerPlugin({ cacheKeys() {} });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ cacheKeys: 'test' });
+    new CssMinimizerPlugin({ cacheKeys: 'test' });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ parallel: true });
+    new CssMinimizerPlugin({ parallel: true });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ parallel: false });
+    new CssMinimizerPlugin({ parallel: false });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ parallel: 2 });
+    new CssMinimizerPlugin({ parallel: 2 });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ parallel: '2' });
+    new CssMinimizerPlugin({ parallel: '2' });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ parallel: {} });
+    new CssMinimizerPlugin({ parallel: {} });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ minify() {} });
+    new CssMinimizerPlugin({ minify() {} });
   }).not.toThrow();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ minify: true });
+    new CssMinimizerPlugin({ minify: true });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssnanoWebpackPlugin({ unknown: true });
+    new CssMinimizerPlugin({ unknown: true });
   }).toThrowErrorMatchingSnapshot();
   /* eslint-enable no-new */
 });

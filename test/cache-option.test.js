@@ -2,7 +2,7 @@ import cacache from 'cacache';
 import findCacheDir from 'find-cache-dir';
 
 import Webpack4Cache from '../src/Webpack4Cache';
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   compile,
@@ -71,7 +71,7 @@ if (getCompiler.isWebpack4()) {
         .spyOn(Webpack4Cache, 'getCacheDirectory')
         .mockImplementation(() => uniqueCacheDirectory);
 
-      new CssnanoPlugin().apply(compiler);
+      new CssMinimizerPlugin().apply(compiler);
 
       const stats = await compile(compiler);
 
@@ -112,7 +112,7 @@ if (getCompiler.isWebpack4()) {
       const cacacheGetSpy = jest.spyOn(cacache, 'get');
       const cacachePutSpy = jest.spyOn(cacache, 'put');
 
-      new CssnanoPlugin({ cache: false }).apply(compiler);
+      new CssMinimizerPlugin({ cache: false }).apply(compiler);
 
       const stats = await compile(compiler);
 
@@ -138,7 +138,7 @@ if (getCompiler.isWebpack4()) {
           return uniqueOtherDirectory;
         });
 
-      new CssnanoPlugin({ cache: true }).apply(compiler);
+      new CssMinimizerPlugin({ cache: true }).apply(compiler);
 
       const stats = await compile(compiler);
 
@@ -179,7 +179,7 @@ if (getCompiler.isWebpack4()) {
       const cacacheGetSpy = jest.spyOn(cacache, 'get');
       const cacachePutSpy = jest.spyOn(cacache, 'put');
 
-      new CssnanoPlugin({ cache: otherCacheDir }).apply(compiler);
+      new CssMinimizerPlugin({ cache: otherCacheDir }).apply(compiler);
 
       const stats = await compile(compiler);
 
@@ -219,7 +219,7 @@ if (getCompiler.isWebpack4()) {
       const cacacheGetSpy = jest.spyOn(cacache, 'get');
       const cacachePutSpy = jest.spyOn(cacache, 'put');
 
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         cache: otherOtherCacheDir,
         cacheKeys: (defaultCacheKeys, file) => {
           // eslint-disable-next-line no-param-reassign
@@ -275,7 +275,7 @@ if (getCompiler.isWebpack4()) {
           return otherOtherOtherCacheDir;
         });
 
-      new CssnanoPlugin({ cache: true }).apply(compiler);
+      new CssMinimizerPlugin({ cache: true }).apply(compiler);
 
       const stats = await compile(compiler);
 
@@ -304,7 +304,7 @@ if (getCompiler.isWebpack4()) {
         },
       });
 
-      new CssnanoPlugin({ cache: true }).apply(compiler);
+      new CssMinimizerPlugin({ cache: true }).apply(compiler);
 
       const newStats = await compile(compiler);
 
