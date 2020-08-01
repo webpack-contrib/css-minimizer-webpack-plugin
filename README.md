@@ -12,7 +12,7 @@
 [![chat][chat]][chat-url]
 [![size][size]][size-url]
 
-# cssnano-webpack-plugin
+# css-minimizer-webpack-plugin
 
 This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
 
@@ -24,10 +24,10 @@ Works with Webpack 4+.
 
 ## Getting Started
 
-To begin, you'll need to install `cssnano-webpack-plugin`:
+To begin, you'll need to install `css-minimizer-webpack-plugin`:
 
 ```console
-$ npm install cssnano-webpack-plugin --save-dev
+$ npm install css-minimizer-webpack-plugin --save-dev
 ```
 
 Then add the plugin to your `webpack` configuration. For example:
@@ -35,7 +35,7 @@ Then add the plugin to your `webpack` configuration. For example:
 **webpack.config.js**
 
 ```js
-const CssnanoPlugin = require('cssnano-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   module: {
@@ -48,7 +48,7 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new CssnanoPlugin()],
+    minimizer: [new CssMinimizerPlugin()],
   },
 };
 ```
@@ -69,7 +69,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         test: /\.foo\.css$/i,
       }),
     ],
@@ -91,7 +91,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         include: /\/includes/,
       }),
     ],
@@ -113,7 +113,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         exclude: /\/excludes/,
       }),
     ],
@@ -129,7 +129,7 @@ Type: `Boolean|String`
 Default: `true`
 
 Enable file caching.
-Default path to cache directory: `node_modules/.cache/cssnano-webpack-plugin`.
+Default path to cache directory: `node_modules/.cache/css-minimizer-webpack-plugin`.
 
 > ℹ️ If you use your own `minify` function please read the `minify` section for cache invalidation correctly.
 
@@ -144,7 +144,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         cache: true,
       }),
     ],
@@ -163,7 +163,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         cache: 'path/to/cache',
       }),
     ],
@@ -184,9 +184,9 @@ Default cache keys:
 
 ```js
 ({
-  cssnano: require('cssnano/package.json').version, // cssnano version
-  'cssnano-webpack-plugin': require('../package.json').version, // plugin version
-  'cssnano-webpack-plugin-options': this.options, // plugin options
+  cssMinimizer: require('cssnano/package.json').version, // cssnano version
+  'css-minimizer-webpack-plugin': require('../package.json').version, // plugin version
+  'css-minimizer-webpack-plugin-options': this.options, // plugin options
   path: compiler.outputPath ? `${compiler.outputPath}/${file}` : file, // asset path
   hash: crypto.createHash('md4').update(input).digest('hex'), // source file hash
 });
@@ -199,7 +199,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         cache: true,
         cacheKeys: (defaultCacheKeys, file) => {
           defaultCacheKeys.myCacheKey = 'myCacheKeyValue';
@@ -233,7 +233,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         parallel: true,
       }),
     ],
@@ -252,7 +252,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         parallel: 4,
       }),
     ],
@@ -289,7 +289,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         sourceMap: true,
       }),
     ],
@@ -315,10 +315,10 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         minify: (data) => {
           const postcss = require('postcss');
-          const { input, postcssOptions, cssnanoOptions } = data;
+          const { input, postcssOptions, minimizerOptions } = data;
 
           const plugin = postcss.plugin(
             'custom-plugin',
@@ -344,7 +344,7 @@ module.exports = {
 };
 ```
 
-### `cssnanoOptions`
+### `minimizerOptions`
 
 Type: `Object`
 Default: `{ preset: 'default' }`
@@ -356,8 +356,8 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
-        cssnanoOptions: {
+      new CssMinimizerPlugin({
+        minimizerOptions: {
           preset: [
             'default',
             {
@@ -376,7 +376,7 @@ module.exports = {
 Type: `Function<(warning, file, source) -> Boolean>`
 Default: `() => true`
 
-Allow to filter [cssnano](https://github.com/cssnano/cssnano) warnings.
+Allow to filter css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
 Return `true` to keep the warning, a falsy value (`false`/`null`/`undefined`) otherwise.
 
 > ⚠️ The `source` argument will contain `undefined` if you don't use source maps.
@@ -388,7 +388,7 @@ module.exports = {
   optimization: {
     minimize: true,
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         warningsFilter: (warning, file, source) => {
           if (/Dropping unreachable code/i.test(warning)) {
             return true;
@@ -417,7 +417,7 @@ module.exports = {
 Don't forget to enable `sourceMap` options for all loaders.
 
 ```js
-const CssnanoPlugin = require('cssnano-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   module: {
@@ -434,7 +434,7 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new CssnanoPlugin({
+      new CssMinimizerPlugin({
         sourceMap: true,
       }),
     ],
@@ -450,8 +450,8 @@ Remove all comments (including comments starting with `/*!`).
 module.exports = {
   optimization: {
     minimizer: [
-      new CssnanoPlugin({
-        cssnanoOptions: {
+      new CssMinimizerPlugin({
+        minimizerOptions: {
           preset: [
             'default',
             {
@@ -475,17 +475,17 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 
 [MIT](./LICENSE)
 
-[npm]: https://img.shields.io/npm/v/cssnano-webpack-plugin.svg
-[npm-url]: https://npmjs.com/package/cssnano-webpack-plugin
-[node]: https://img.shields.io/node/v/cssnano-webpack-plugin.svg
+[npm]: https://img.shields.io/npm/v/css-minimizer-webpack-plugin.svg
+[npm-url]: https://npmjs.com/package/css-minimizer-webpack-plugin
+[node]: https://img.shields.io/node/v/css-minimizer-webpack-plugin.svg
 [node-url]: https://nodejs.org
-[deps]: https://david-dm.org/webpack-contrib/cssnano-webpack-plugin.svg
-[deps-url]: https://david-dm.org/webpack-contrib/cssnano-webpack-plugin
-[tests]: https://github.com/webpack-contrib/cssnano-webpack-plugin/workflows/cssnano-webpack-plugin/badge.svg
-[tests-url]: https://github.com/webpack-contrib/cssnano-webpack-plugin/actions
-[cover]: https://codecov.io/gh/webpack-contrib/cssnano-webpack-plugin/branch/master/graph/badge.svg
-[cover-url]: https://codecov.io/gh/webpack-contrib/cssnano-webpack-plugin
+[deps]: https://david-dm.org/webpack-contrib/css-minimizer-webpack-plugin.svg
+[deps-url]: https://david-dm.org/webpack-contrib/css-minimizer-webpack-plugin
+[tests]: https://github.com/webpack-contrib/css-minimizer-webpack-plugin/workflows/css-minimizer-webpack-plugin/badge.svg
+[tests-url]: https://github.com/webpack-contrib/css-minimizer-webpack-plugin/actions
+[cover]: https://codecov.io/gh/webpack-contrib/css-minimizer-webpack-plugin/branch/master/graph/badge.svg
+[cover-url]: https://codecov.io/gh/webpack-contrib/css-minimizer-webpack-plugin
 [chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
 [chat-url]: https://gitter.im/webpack/webpack
-[size]: https://packagephobia.now.sh/badge?p=cssnano-webpack-plugin
-[size-url]: https://packagephobia.now.sh/result?p=cssnano-webpack-plugin
+[size]: https://packagephobia.now.sh/badge?p=css-minimizer-webpack-plugin
+[size-url]: https://packagephobia.now.sh/result?p=css-minimizer-webpack-plugin

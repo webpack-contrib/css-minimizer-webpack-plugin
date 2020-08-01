@@ -13,7 +13,9 @@ export default class Webpack4Cache {
   }
 
   static getCacheDirectory() {
-    return findCacheDir({ name: 'cssnano-webpack-plugin' }) || os.tmpdir();
+    return (
+      findCacheDir({ name: 'css-minimizer-webpack-plugin' }) || os.tmpdir()
+    );
   }
 
   isEnabled() {

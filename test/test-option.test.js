@@ -1,4 +1,4 @@
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import { getCompiler, compile, readAsset, removeCache } from './helpers';
 
@@ -22,7 +22,7 @@ describe('when applied with "test" option', () => {
   afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot with empty value', () => {
-    new CssnanoPlugin().apply(compiler);
+    new CssMinimizerPlugin().apply(compiler);
 
     return compile(compiler).then((stats) => {
       expect(stats.compilation.errors).toEqual([]);
@@ -37,7 +37,7 @@ describe('when applied with "test" option', () => {
   });
 
   it('matches snapshot for a single "test" value (RegExp)', () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       test: /bar.*\.css$/,
     }).apply(compiler);
 
@@ -54,7 +54,7 @@ describe('when applied with "test" option', () => {
   });
 
   it('matches snapshot for multiple "test" value (RegExp)', () => {
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       test: [/bar1.*\.css$/, /bar2.*\.css$/],
     }).apply(compiler);
 

@@ -17,7 +17,7 @@ describe('worker', () => {
         file: 'x',
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
-      cssnanoOptions: { discardComments: false },
+      minimizerOptions: { discardComments: false },
     };
     const { css, map } = await transform(serialize(options));
 
@@ -29,7 +29,7 @@ describe('worker', () => {
     const options = {
       file: 'entry.css',
       input: '.foo{color:red;}\n.bar{color:coral;}',
-      cssnanoOptions: { discardComments: false },
+      minimizerOptions: { discardComments: false },
       inputSourceMap: {
         version: 3,
         sources: ['foo.css', 'bar.css'],
@@ -49,7 +49,7 @@ describe('worker', () => {
     const options = {
       file: 'entry.css',
       input: '.foo{color:red;}\n.bar{color:coral;}',
-      cssnanoOptions: { discardComments: false },
+      minimizerOptions: { discardComments: false },
       minify: () => {
         return { css: '.minify {};' };
       },
@@ -82,7 +82,7 @@ describe('worker', () => {
       file: 'entry.css',
       input: false,
       minify: () => {
-        return { error: new Error('cssnano error') };
+        return { error: new Error('css minimizer error') };
       },
     };
 

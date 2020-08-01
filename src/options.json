@@ -33,7 +33,7 @@
       ]
     }
   },
-  "title": "CssnanoWebpackPluginOptions",
+  "title": "CssMinimizerWebpackPluginOptions",
   "type": "object",
   "properties": {
     "test": {
@@ -73,8 +73,8 @@
         }
       ]
     },
-    "cssnanoOptions": {
-      "description": "Options for `cssnanoOptions`.",
+    "minimizerOptions": {
+      "description": "Options for `cssMinimizerOptions`.",
       "additionalProperties": true,
       "type": "object"
     },
@@ -105,7 +105,7 @@
       ]
     },
     "warningsFilter": {
-      "description": "Allow to filter `cssnano` warnings.",
+      "description": "Allow to filter `css minimizer` warnings.",
       "instanceof": "Function"
     },
     "minify": {

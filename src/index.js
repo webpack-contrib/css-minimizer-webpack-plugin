@@ -11,7 +11,7 @@ import {
 } from 'webpack';
 import validateOptions from 'schema-utils';
 import serialize from 'serialize-javascript';
-import cssnanoPackageJson from 'cssnano/package.json';
+import CssMinimizerPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
@@ -21,16 +21,16 @@ import { minify as minifyFn } from './minify';
 
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
-class CssnanoPlugin {
+class CssMinimizerPlugin {
   constructor(options = {}) {
     validateOptions(schema, options, {
-      name: 'Cssnano Plugin',
+      name: 'Css Minimizer Plugin',
       baseDataPath: 'options',
     });
 
     const {
       minify,
-      cssnanoOptions = {
+      minimizerOptions = {
         preset: 'default',
       },
       test = /\.css(\?.*)?$/i,
@@ -53,7 +53,7 @@ class CssnanoPlugin {
       include,
       exclude,
       minify,
-      cssnanoOptions,
+      minimizerOptions,
     };
 
     if (this.options.sourceMap === true) {
@@ -84,7 +84,7 @@ class CssnanoPlugin {
 
       if (original && original.source && requestShortener) {
         return new Error(
-          `${file} from Cssnano Webpack Plugin\n${
+          `${file} from Css Minimizer Webpack Plugin\n${
             error.message
           } [${requestShortener.shorten(original.source)}:${original.line},${
             original.column
@@ -97,7 +97,7 @@ class CssnanoPlugin {
       }
 
       return new Error(
-        `${file} from Cssnano \n${error.message} [${file}:${error.line},${
+        `${file} from Css Minimizer \n${error.message} [${file}:${error.line},${
           error.column
         }]${
           error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
@@ -106,10 +106,10 @@ class CssnanoPlugin {
     }
 
     if (error.stack) {
-      return new Error(`${file} from Cssnano\n${error.stack}`);
+      return new Error(`${file} from Css Minimizer\n${error.stack}`);
     }
 
-    return new Error(`${file} from Cssnano\n${error.message}`);
+    return new Error(`${file} from Css Minimizer\n${error.message}`);
   }
 
   static buildWarning(
@@ -154,7 +154,7 @@ class CssnanoPlugin {
       return null;
     }
 
-    return `Cssnano Plugin: ${warningMessage} ${locationMessage}`;
+    return `Css Minimizer Plugin: ${warningMessage} ${locationMessage}`;
   }
 
   static isWebpack4() {
@@ -184,7 +184,7 @@ class CssnanoPlugin {
       input = source;
 
       if (map) {
-        if (CssnanoPlugin.isSourceMap(map)) {
+        if (CssMinimizerPlugin.isSourceMap(map)) {
           inputSourceMap = map;
         } else {
           inputSourceMap = map;
@@ -211,7 +211,7 @@ class CssnanoPlugin {
       if (
         (error || (warnings && warnings.length > 0)) &&
         inputSourceMap &&
-        CssnanoPlugin.isSourceMap(inputSourceMap)
+        CssMinimizerPlugin.isSourceMap(inputSourceMap)
       ) {
         sourceMap = new SourceMapConsumer(inputSourceMap);
       }
@@ -220,7 +220,7 @@ class CssnanoPlugin {
       // Error case: add errors, and go to next file
       if (error) {
         compilation.errors.push(
-          CssnanoPlugin.buildError(
+          CssMinimizerPlugin.buildError(
             error,
             file,
             sourceMap,
@@ -253,7 +253,7 @@ class CssnanoPlugin {
       // Handling warnings
       if (warnings && warnings.length > 0) {
         warnings.forEach((warning) => {
-          const builtWarning = CssnanoPlugin.buildWarning(
+          const builtWarning = CssMinimizerPlugin.buildWarning(
             warning,
             file,
             sourceMap,
@@ -273,12 +273,12 @@ class CssnanoPlugin {
       input,
       inputSourceMap,
       map: this.options.sourceMap,
-      cssnanoOptions: this.options.cssnanoOptions,
+      minimizerOptions: this.options.minimizerOptions,
       minify: this.options.minify,
       callback,
     };
 
-    if (CssnanoPlugin.isWebpack4()) {
+    if (CssMinimizerPlugin.isWebpack4()) {
       const {
         outputOptions: { hashSalt, hashDigest, hashDigestLength, hashFunction },
       } = compilation;
@@ -294,10 +294,10 @@ class CssnanoPlugin {
 
       if (this.options.cache) {
         const defaultCacheKeys = {
-          cssnano: cssnanoPackageJson.version,
+          cssMinimizer: CssMinimizerPackageJson.version,
           // eslint-disable-next-line global-require
-          'cssnano-webpack-plugin': require('../package.json').version,
-          'cssnano-webpack-plugin-options': this.options,
+          'css-minimizer-webpack-plugin': require('../package.json').version,
+          'css-minimizer-webpack-plugin-options': this.options,
           nodeVersion: process.version,
           filename: file,
           contentHash: digest.substr(0, hashDigestLength),
@@ -310,10 +310,10 @@ class CssnanoPlugin {
       task.assetSource = assetSource;
 
       task.cacheKeys = {
-        cssnano: cssnanoPackageJson.version,
+        cssMinimizer: CssMinimizerPackageJson.version,
         // eslint-disable-next-line global-require
-        'cssnano-webpack-plugin': require('../package.json').version,
-        'cssnano-webpack-plugin-options': this.options,
+        'css-minimizer-webpack-plugin': require('../package.json').version,
+        'css-minimizer-webpack-plugin-options': this.options,
       };
     }
 
@@ -322,7 +322,7 @@ class CssnanoPlugin {
 
   // eslint-disable-next-line class-methods-use-this
   async runTasks(assetNames, getTaskForAsset, cache) {
-    const availableNumberOfCores = CssnanoPlugin.getAvailableNumberOfCores(
+    const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
       this.options.parallel
     );
 
@@ -444,7 +444,7 @@ class CssnanoPlugin {
 
     const optimizeFn = async (compilation, chunksOrAssets) => {
       const assetNames = Object.keys(
-        CssnanoPlugin.isWebpack4() ? compilation.assets : chunksOrAssets
+        CssMinimizerPlugin.isWebpack4() ? compilation.assets : chunksOrAssets
       ).filter((file) => matchObject(file));
 
       if (assetNames.length === 0) {
@@ -457,7 +457,7 @@ class CssnanoPlugin {
         compilation
       );
 
-      const CacheEngine = CssnanoPlugin.isWebpack4()
+      const CacheEngine = CssMinimizerPlugin.isWebpack4()
         ? // eslint-disable-next-line global-require
           require('./Webpack4Cache').default
         : // eslint-disable-next-line global-require
@@ -480,7 +480,7 @@ class CssnanoPlugin {
         });
       }
 
-      if (CssnanoPlugin.isWebpack4()) {
+      if (CssMinimizerPlugin.isWebpack4()) {
         compilation.hooks.optimizeChunkAssets.tapPromise(
           plugin,
           optimizeFn.bind(this, compilation)
@@ -495,4 +495,4 @@ class CssnanoPlugin {
   }
 }
 
-export default CssnanoPlugin;
+export default CssMinimizerPlugin;

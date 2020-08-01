@@ -8,7 +8,7 @@ Array [
 
 exports[`worker should emit minimizer error: error 1`] = `
 Array [
-  "cssnano error",
+  "css minimizer error",
 ]
 `;
 

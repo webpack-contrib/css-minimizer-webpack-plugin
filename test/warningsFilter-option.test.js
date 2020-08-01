@@ -1,6 +1,6 @@
 import postcss from 'postcss';
 
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   compile,
@@ -31,7 +31,7 @@ describe('warningsFilter option', () => {
       },
     });
 
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       parallel: false,
       minify: (data) => {
         return postcss([plugin])

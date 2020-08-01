@@ -5,7 +5,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import RequestShortener from 'webpack/lib/RequestShortener';
 
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   getCompiler,
@@ -20,7 +20,7 @@ import {
 
 jest.setTimeout(30000);
 
-describe('CssnanoPlugin', () => {
+describe('CssMinimizerPlugin', () => {
   const rawSourceMap = {
     version: 3,
     file: 'test.css',
@@ -57,8 +57,8 @@ describe('CssnanoPlugin', () => {
         entry: `${__dirname}/fixtures/test/foo.css`,
       },
     });
-    new CssnanoPlugin({
-      cssnanoOptions: {
+    new CssMinimizerPlugin({
+      minimizerOptions: {
         preset: ['default', { discardEmpty: false }],
       },
     }).apply(compiler);
@@ -97,7 +97,7 @@ describe('CssnanoPlugin', () => {
       },
     });
 
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       parallel: true,
       minify: () => {
         // eslint-disable-next-line no-console
@@ -122,24 +122,28 @@ describe('CssnanoPlugin', () => {
   });
 
   it('isSourceMap method', () => {
-    expect(CssnanoPlugin.isSourceMap(null)).toBe(false);
-    expect(CssnanoPlugin.isSourceMap()).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({})).toBe(false);
-    expect(CssnanoPlugin.isSourceMap([])).toBe(false);
-    expect(CssnanoPlugin.isSourceMap('foo')).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ version: 3 })).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ sources: '' })).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ mappings: [] })).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ version: 3, sources: '' })).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ version: 3, mappings: [] })).toBe(false);
-    expect(CssnanoPlugin.isSourceMap({ sources: '', mappings: [] })).toBe(
+    expect(CssMinimizerPlugin.isSourceMap(null)).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap()).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap({})).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap([])).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap('foo')).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap({ version: 3 })).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap({ sources: '' })).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap({ mappings: [] })).toBe(false);
+    expect(CssMinimizerPlugin.isSourceMap({ version: 3, sources: '' })).toBe(
+      false
+    );
+    expect(CssMinimizerPlugin.isSourceMap({ version: 3, mappings: [] })).toBe(
+      false
+    );
+    expect(CssMinimizerPlugin.isSourceMap({ sources: '', mappings: [] })).toBe(
       false
     );
     expect(
-      CssnanoPlugin.isSourceMap({ version: 3, sources: '', mappings: [] })
+      CssMinimizerPlugin.isSourceMap({ version: 3, sources: '', mappings: [] })
     ).toBe(false);
-    expect(CssnanoPlugin.isSourceMap(rawSourceMap)).toBe(true);
-    expect(CssnanoPlugin.isSourceMap(emptyRawSourceMap)).toBe(true);
+    expect(CssMinimizerPlugin.isSourceMap(rawSourceMap)).toBe(true);
+    expect(CssMinimizerPlugin.isSourceMap(emptyRawSourceMap)).toBe(true);
   });
 
   it('buildError method', () => {
@@ -147,7 +151,7 @@ describe('CssnanoPlugin', () => {
 
     error.stack = null;
 
-    expect(CssnanoPlugin.buildError(error, 'test.css')).toMatchSnapshot();
+    expect(CssMinimizerPlugin.buildError(error, 'test.css')).toMatchSnapshot();
 
     const errorWithLineAndCol = new Error('Message');
 
@@ -156,7 +160,7 @@ describe('CssnanoPlugin', () => {
     errorWithLineAndCol.column = 1;
 
     expect(
-      CssnanoPlugin.buildError(
+      CssMinimizerPlugin.buildError(
         errorWithLineAndCol,
         'test.css',
         new SourceMapConsumer(rawSourceMap)
@@ -170,7 +174,7 @@ describe('CssnanoPlugin', () => {
     otherErrorWithLineAndCol.column = 1;
 
     expect(
-      CssnanoPlugin.buildError(
+      CssMinimizerPlugin.buildError(
         otherErrorWithLineAndCol,
         'test.css',
         new SourceMapConsumer(rawSourceMap),
@@ -183,26 +187,26 @@ describe('CssnanoPlugin', () => {
     errorWithStack.stack = 'Stack';
 
     expect(
-      CssnanoPlugin.buildError(errorWithStack, 'test.css')
+      CssMinimizerPlugin.buildError(errorWithStack, 'test.css')
     ).toMatchSnapshot();
   });
 
   it('buildWarning method', () => {
     expect(
-      CssnanoPlugin.buildWarning('Warning test.css:1:1')
+      CssMinimizerPlugin.buildWarning('Warning test.css:1:1')
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning('Warning test.css:1:1', 'test.css')
+      CssMinimizerPlugin.buildWarning('Warning test.css:1:1', 'test.css')
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning(
+      CssMinimizerPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
         new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning(
+      CssMinimizerPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
         new SourceMapConsumer(rawSourceMap),
@@ -210,7 +214,7 @@ describe('CssnanoPlugin', () => {
       )
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning(
+      CssMinimizerPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
         new SourceMapConsumer(rawSourceMap),
@@ -219,7 +223,7 @@ describe('CssnanoPlugin', () => {
       )
     ).toMatchSnapshot();
     expect(
-      CssnanoPlugin.buildWarning(
+      CssMinimizerPlugin.buildWarning(
         'Warning test.css:1:1',
         'test.css',
         new SourceMapConsumer(rawSourceMap),
@@ -250,7 +254,7 @@ describe('CssnanoPlugin', () => {
       ],
     });
 
-    new CssnanoPlugin().apply(compiler);
+    new CssMinimizerPlugin().apply(compiler);
 
     return compile(compiler).then((stats) => {
       expect(getErrors(stats)).toMatchSnapshot('error');
@@ -265,7 +269,7 @@ describe('CssnanoPlugin', () => {
       },
     });
 
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
       minify: (data) => {
         // eslint-disable-next-line global-require
@@ -319,7 +323,7 @@ describe('CssnanoPlugin', () => {
     };
 
     const compiler = getCompiler(config);
-    new CssnanoPlugin({
+    new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 

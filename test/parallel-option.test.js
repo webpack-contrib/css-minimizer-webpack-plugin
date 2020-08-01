@@ -2,7 +2,7 @@ import os from 'os';
 
 import Worker from 'jest-worker';
 
-import CssnanoPlugin from '../src/index';
+import CssMinimizerPlugin from '../src/index';
 
 import {
   compile,
@@ -67,7 +67,7 @@ describe('parallel option', () => {
   afterEach(() => Promise.all([removeCache()]));
 
   it('should match snapshot when a value is not specify', async () => {
-    new CssnanoPlugin().apply(compiler);
+    new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -86,7 +86,7 @@ describe('parallel option', () => {
   });
 
   it('should match snapshot for the "false" value', async () => {
-    new CssnanoPlugin({ parallel: false }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: false }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -98,7 +98,7 @@ describe('parallel option', () => {
   });
 
   it('should match snapshot for the "true" value', async () => {
-    new CssnanoPlugin({ parallel: true }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: true }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -117,7 +117,7 @@ describe('parallel option', () => {
   });
 
   it('should match snapshot for the "2" value', async () => {
-    new CssnanoPlugin({ parallel: 2 }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: 2 }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -140,7 +140,7 @@ describe('parallel option', () => {
       entry: `${__dirname}/fixtures/entry.js`,
     });
 
-    new CssnanoPlugin({ parallel: true }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: true }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -167,7 +167,7 @@ describe('parallel option', () => {
 
     compiler = getCompiler({ entry: entries });
 
-    new CssnanoPlugin({ parallel: true }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: true }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -194,7 +194,7 @@ describe('parallel option', () => {
 
     compiler = getCompiler({ entry: entries });
 
-    new CssnanoPlugin({ parallel: true }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: true }).apply(compiler);
 
     const stats = await compile(compiler);
 
@@ -232,7 +232,7 @@ describe('parallel option', () => {
       },
     });
 
-    new CssnanoPlugin({ parallel: true }).apply(compiler);
+    new CssMinimizerPlugin({ parallel: true }).apply(compiler);
 
     const stats = await compile(compiler);
 
