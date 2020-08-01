@@ -2,8 +2,6 @@ import CssMinimizerPlugin from '../src/index';
 
 import { getCompiler, compile, readAsset, removeCache } from './helpers';
 
-jest.setTimeout(30000);
-
 describe('when applied with "test" option', () => {
   let compiler;
 

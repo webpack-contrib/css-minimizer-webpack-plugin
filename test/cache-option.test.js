@@ -25,8 +25,6 @@ const otherOtherOtherCacheDir = findCacheDir({
   name: 'other-other-other-cache-directory',
 });
 
-jest.setTimeout(30000);
-
 if (getCompiler.isWebpack4()) {
   describe('cache option', () => {
     let compiler;

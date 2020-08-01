@@ -44,8 +44,6 @@ jest.mock('jest-worker', () => {
 
 const workerPath = require.resolve('../src/minify');
 
-jest.setTimeout(30000);
-
 describe('parallel option', () => {
   let compiler;
 
