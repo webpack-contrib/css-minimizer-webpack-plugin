@@ -49,7 +49,15 @@ Array [
 ]
 `;
 
-exports[`CssMinimizerPlugin should respect the hash options #1: entry.css 1`] = `"a{text-align:center}"`;
+exports[`CssMinimizerPlugin should respect the hash options #1: assets 1`] = `
+Object {
+  "entry.css": "a{text-align:center}",
+}
+`;
+
+exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 

@@ -39,7 +39,7 @@ describe('CssMinimizerPlugin', () => {
 
   afterEach(() => Promise.all([removeCache()]));
 
-  it('should respect the hash options #1', () => {
+  it('should respect the hash options #1', async () => {
     const compiler = getCompiler({
       output: {
         pathinfo: false,
@@ -61,16 +61,11 @@ describe('CssMinimizerPlugin', () => {
       },
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js$/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
-    });
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
   it('should write stdout and stderr of workers to stdout and stderr of main process in parallel mode', async () => {

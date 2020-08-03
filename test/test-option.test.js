@@ -1,6 +1,13 @@
 import CssMinimizerPlugin from '../src/index';
 
-import { getCompiler, compile, readAsset, removeCache } from './helpers';
+import {
+  getCompiler,
+  compile,
+  readAssets,
+  removeCache,
+  getErrors,
+  getWarnings,
+} from './helpers';
 
 describe('when applied with "test" option', () => {
   let compiler;
@@ -19,52 +26,37 @@ describe('when applied with "test" option', () => {
 
   afterEach(() => Promise.all([removeCache()]));
 
-  it('matches snapshot with empty value', () => {
+  it('matches snapshot with empty value', async () => {
     new CssMinimizerPlugin().apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js$/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
-    });
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for a single "test" value (RegExp)', () => {
+  it('matches snapshot for a single "test" value (RegExp)', async () => {
     new CssMinimizerPlugin({
       test: /bar.*\.css$/,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js$/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
-    });
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for multiple "test" value (RegExp)', () => {
+  it('matches snapshot for multiple "test" value (RegExp)', async () => {
     new CssMinimizerPlugin({
       test: [/bar1.*\.css$/, /bar2.*\.css$/],
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js$/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
-    });
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 });

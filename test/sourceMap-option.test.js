@@ -7,6 +7,7 @@ import {
   getCompiler,
   compile,
   readAsset,
+  readAssets,
   normalizedSourceMap,
   removeCache,
   getErrors,
@@ -40,48 +41,45 @@ describe('when applied with "sourceMap" option', () => {
 
   afterEach(() => Promise.all([removeCache()]));
 
-  it('matches snapshot for "false" value, without previous sourcemap', () => {
+  it('matches snapshot for "false" value, without previous sourcemap', async () => {
     const compiler = getCompiler(baseConfig);
     new CssMinimizerPlugin().apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
+    const maps = readAssets(compiler, stats, '.css.map');
+
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+
+    Object.keys(maps).forEach((assetKey) => {
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for "true" value, without previous sourcemap', () => {
+  it('matches snapshot for "true" value, without previous sourcemap', async () => {
     const compiler = getCompiler(baseConfig);
     new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      // eslint-disable-next-line guard-for-in
-      for (const file in stats.compilation.assets) {
-        if (/\.css$/.test(file)) {
-          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-        }
+    const maps = readAssets(compiler, stats, '.css.map');
 
-        // eslint-disable-next-line no-continue
-        if (!/\.css.map/.test(file)) continue;
-        expect(
-          normalizedSourceMap(readAsset(file, compiler, stats))
-        ).toMatchSnapshot(file);
-      }
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+
+    Object.keys(maps).forEach((assetKey) => {
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for "false" value, using previous sourcemap', () => {
+  it('matches snapshot for "false" value, using previous sourcemap', async () => {
     const config = Object.assign(baseConfig, {
       module: {
         rules: [
@@ -102,19 +100,21 @@ describe('when applied with "sourceMap" option', () => {
       sourceMap: false,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
+    const maps = readAssets(compiler, stats, '.css.map');
+
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+
+    Object.keys(maps).forEach((assetKey) => {
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for "true" value, using previous sourcemap', () => {
+  it('matches snapshot for "true" value, using previous sourcemap', async () => {
     const config = Object.assign(baseConfig, {
       module: {
         rules: [
@@ -135,23 +135,18 @@ describe('when applied with "sourceMap" option', () => {
       sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      // eslint-disable-next-line guard-for-in
-      for (const file in stats.compilation.assets) {
-        if (/\.css$/.test(file)) {
-          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-        }
+    const maps = readAssets(compiler, stats, '.css.map');
 
-        // eslint-disable-next-line no-continue
-        if (!/\.css.map/.test(file)) continue;
-        expect(
-          normalizedSourceMap(readAsset(file, compiler, stats))
-        ).toMatchSnapshot(file);
-      }
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+
+    Object.keys(maps).forEach((assetKey) => {
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
   it('matches snapshot for "inline" value', () => {
@@ -178,7 +173,7 @@ describe('when applied with "sourceMap" option', () => {
     });
   });
 
-  it('matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options)', () => {
+  it('matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options)', async () => {
     const config = Object.assign(baseConfig, {
       devtool: false,
       module: {
@@ -211,19 +206,21 @@ describe('when applied with "sourceMap" option', () => {
       sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(stats.compilation.errors).toEqual([]);
-      expect(stats.compilation.warnings).toEqual([]);
+    const stats = await compile(compiler);
 
-      for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
-      }
+    const maps = readAssets(compiler, stats, '.css.map');
+
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+
+    Object.keys(maps).forEach((assetKey) => {
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('should emit warning when broken sourcemap', () => {
+  it('should emit warning when broken sourcemap', async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -282,9 +279,9 @@ describe('when applied with "sourceMap" option', () => {
       sourceMap: true,
     }).apply(compiler);
 
-    return compile(compiler).then((stats) => {
-      expect(getErrors(stats)).toMatchSnapshot('error');
-      expect(getWarnings(stats)).toMatchSnapshot('warning');
-    });
+    const stats = await compile(compiler);
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 });
