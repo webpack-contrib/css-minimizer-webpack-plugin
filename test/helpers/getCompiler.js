@@ -11,7 +11,6 @@ export default function getCompiler(options) {
     cache: getCompiler.isWebpack4() ? false : { type: 'memory' },
     optimization: {
       minimize: false,
-      noEmitOnErrors: false,
     },
     output: {
       pathinfo: false,
