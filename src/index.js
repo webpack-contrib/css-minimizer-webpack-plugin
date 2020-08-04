@@ -505,11 +505,11 @@ class CssMinimizerPlugin {
       return Promise.resolve();
     };
 
-    const plugin = { name: this.constructor.name };
+    const pluginName = this.constructor.name;
 
-    compiler.hooks.compilation.tap(plugin, (compilation) => {
+    compiler.hooks.compilation.tap(pluginName, (compilation) => {
       if (this.options.sourceMap) {
-        compilation.hooks.buildModule.tap(plugin, (moduleArg) => {
+        compilation.hooks.buildModule.tap(pluginName, (moduleArg) => {
           // to get detailed location info about errors
           // eslint-disable-next-line no-param-reassign
           moduleArg.useSourceMap = true;
@@ -518,16 +518,22 @@ class CssMinimizerPlugin {
 
       if (CssMinimizerPlugin.isWebpack4()) {
         compilation.hooks.optimizeChunkAssets.tapPromise(
-          plugin,
+          pluginName,
           optimizeFn.bind(this, compilation)
         );
       } else {
-        compilation.hooks.optimizeAssets.tapPromise(
-          plugin,
+        // eslint-disable-next-line global-require
+        const Compilation = require('webpack/lib/Compilation');
+
+        compilation.hooks.processAssets.tapPromise(
+          {
+            name: pluginName,
+            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
+          },
           optimizeFn.bind(this, compilation)
         );
 
-        compilation.hooks.statsPrinter.tap(plugin, (stats) => {
+        compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
           stats.hooks.print
             .for('asset.info.minimized')
             .tap(
