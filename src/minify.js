@@ -10,7 +10,7 @@ function warningsToString(warnings) {
 
 const minify = async (options) => {
   const {
-    file,
+    name,
     input,
     minimizerOptions,
     map,
@@ -18,7 +18,7 @@ const minify = async (options) => {
     minify: minifyFn,
   } = options;
 
-  const postcssOptions = { to: file, from: file };
+  const postcssOptions = { to: name, from: name };
 
   if (minifyFn) {
     const result = await minifyFn(

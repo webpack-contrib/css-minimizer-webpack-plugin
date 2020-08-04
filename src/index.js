@@ -171,8 +171,38 @@ class CssMinimizerPlugin {
       : Math.min(Number(parallel) || 0, cpus.length - 1);
   }
 
-  *taskGenerator(compiler, compilation, file) {
-    const assetSource = compilation.assets[file];
+  // eslint-disable-next-line consistent-return
+  static getAsset(compilation, name) {
+    // New API
+    if (compilation.getAsset) {
+      return compilation.getAsset(name);
+    }
+
+    if (compilation.assets[name]) {
+      return { name, source: compilation.assets[name], info: {} };
+    }
+  }
+
+  static updateAsset(compilation, name, newSource, assetInfo) {
+    // New API
+    if (compilation.updateAsset) {
+      compilation.updateAsset(name, newSource, assetInfo);
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    compilation.assets[name] = newSource;
+  }
+
+  *taskGenerator(compiler, compilation, name) {
+    const { info, source: assetSource } = CssMinimizerPlugin.getAsset(
+      compilation,
+      name
+    );
+
+    // Skip double minimize assets from child compilation
+    if (info.minimized) {
+      yield false;
+    }
 
     let input;
     let inputSourceMap;
@@ -190,7 +220,7 @@ class CssMinimizerPlugin {
           inputSourceMap = map;
 
           compilation.warnings.push(
-            new Error(`${file} contains invalid source map`)
+            new Error(`${name} contains invalid source map`)
           );
         }
       }
@@ -222,7 +252,7 @@ class CssMinimizerPlugin {
         compilation.errors.push(
           CssMinimizerPlugin.buildError(
             error,
-            file,
+            name,
             sourceMap,
             new RequestShortener(compiler.context)
           )
@@ -236,7 +266,7 @@ class CssMinimizerPlugin {
       if (map) {
         outputSource = new SourceMapSource(
           code,
-          file,
+          name,
           map,
           input,
           inputSourceMap,
@@ -246,16 +276,17 @@ class CssMinimizerPlugin {
         outputSource = new RawSource(code);
       }
 
-      // Updating assets
-      // eslint-disable-next-line no-param-reassign
-      compilation.assets[file] = outputSource;
+      CssMinimizerPlugin.updateAsset(compilation, name, outputSource, {
+        ...info,
+        minimized: true,
+      });
 
       // Handling warnings
       if (warnings && warnings.length > 0) {
         warnings.forEach((warning) => {
           const builtWarning = CssMinimizerPlugin.buildWarning(
             warning,
-            file,
+            name,
             sourceMap,
             new RequestShortener(compiler.context),
             this.options.warningsFilter
@@ -269,7 +300,7 @@ class CssMinimizerPlugin {
     };
 
     const task = {
-      file,
+      name,
       input,
       inputSourceMap,
       map: this.options.sourceMap,
@@ -299,11 +330,11 @@ class CssMinimizerPlugin {
           'css-minimizer-webpack-plugin': require('../package.json').version,
           'css-minimizer-webpack-plugin-options': this.options,
           nodeVersion: process.version,
-          filename: file,
+          filename: name,
           contentHash: digest.substr(0, hashDigestLength),
         };
 
-        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, file);
+        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, name);
       }
     } else {
       // For webpack@5 cache
