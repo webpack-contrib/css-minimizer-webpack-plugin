@@ -340,4 +340,35 @@ describe('CssMinimizerPlugin', () => {
       }
     });
   });
+
+  it('should work with child compilation', async () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/entry.js`,
+      },
+      module: {
+        rules: [
+          {
+            test: /entry.js$/i,
+            use: [
+              {
+                loader: path.resolve(__dirname, './helpers/preLoader'),
+              },
+            ],
+          },
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+        ],
+      },
+    });
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
 });

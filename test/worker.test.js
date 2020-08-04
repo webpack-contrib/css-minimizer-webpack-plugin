@@ -7,7 +7,7 @@ import { normalizeErrors } from './helpers';
 describe('worker', () => {
   it('should minify css', async () => {
     const options = {
-      file: 'entry.css',
+      name: 'entry.css',
       input: '.foo{color:red;}\n.bar{color:coral;}',
       inputSourceMap: {
         version: 3,
@@ -27,7 +27,7 @@ describe('worker', () => {
 
   it('should work inputSourceMap as prev', async () => {
     const options = {
-      file: 'entry.css',
+      name: 'entry.css',
       input: '.foo{color:red;}\n.bar{color:coral;}',
       minimizerOptions: { discardComments: false },
       inputSourceMap: {
@@ -47,7 +47,7 @@ describe('worker', () => {
 
   it('should work options.minify function', async () => {
     const options = {
-      file: 'entry.css',
+      name: 'entry.css',
       input: '.foo{color:red;}\n.bar{color:coral;}',
       minimizerOptions: { discardComments: false },
       minify: () => {
@@ -62,7 +62,7 @@ describe('worker', () => {
 
   it('should emit error', async () => {
     const options = {
-      file: 'entry.css',
+      name: 'entry.css',
       input: false,
     };
 
@@ -79,7 +79,7 @@ describe('worker', () => {
 
   it('should emit minimizer error', async () => {
     const options = {
-      file: 'entry.css',
+      name: 'entry.css',
       input: false,
       minify: () => {
         return { error: new Error('css minimizer error') };
