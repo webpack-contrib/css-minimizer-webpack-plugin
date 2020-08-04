@@ -339,13 +339,6 @@ class CssMinimizerPlugin {
     } else {
       // For webpack@5 cache
       task.assetSource = assetSource;
-
-      task.cacheKeys = {
-        cssMinimizer: CssMinimizerPackageJson.version,
-        // eslint-disable-next-line global-require
-        'css-minimizer-webpack-plugin': require('../package.json').version,
-        'css-minimizer-webpack-plugin-options': this.options,
-      };
     }
 
     yield task;
