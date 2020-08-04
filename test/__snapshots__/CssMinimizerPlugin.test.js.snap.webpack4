@@ -66,6 +66,16 @@ exports[`CssMinimizerPlugin should work with assets using querystring: entry.css
 /*# sourceMappingURL=entry.css.map?v=test*/"
 `;
 
+exports[`CssMinimizerPlugin should work with child compilation: assets 1`] = `
+Object {
+  "entry.css": ".entry{text-align:center}",
+}
+`;
+
+exports[`CssMinimizerPlugin should work with child compilation: errors 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with child compilation: warnings 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: assets 1`] = `
 Object {
   "one.css": ".minify {};",
