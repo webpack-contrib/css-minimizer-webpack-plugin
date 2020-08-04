@@ -371,4 +371,23 @@ describe('CssMinimizerPlugin', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
+
+  it('should work and show minimized assets in stats', async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/entry.js`,
+      },
+    });
+
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(stats.toString().indexOf('[minimized]') !== -1).toBe(
+      !getCompiler.isWebpack4()
+    );
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
 });
