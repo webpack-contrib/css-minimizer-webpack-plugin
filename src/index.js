@@ -1,10 +1,10 @@
 import os from 'os';
+import crypto from 'crypto';
 
 import { SourceMapConsumer } from 'source-map';
 import { SourceMapSource, RawSource } from 'webpack-sources';
 import RequestShortener from 'webpack/lib/RequestShortener';
 import {
-  util,
   ModuleFilenameHelpers,
   SourceMapDevToolPlugin,
   version as webpackVersion,
@@ -157,10 +157,6 @@ class CssMinimizerPlugin {
     return `Css Minimizer Plugin: ${warningMessage} ${locationMessage}`;
   }
 
-  static isWebpack4() {
-    return webpackVersion[0] === '4';
-  }
-
   static getAvailableNumberOfCores(parallel) {
     // In some cases cpus() returns undefined
     // https://github.com/nodejs/node/issues/19022
@@ -193,14 +189,14 @@ class CssMinimizerPlugin {
     compilation.assets[name] = newSource;
   }
 
-  *taskGenerator(compiler, compilation, name) {
-    const { info, source: assetSource } = CssMinimizerPlugin.getAsset(
-      compilation,
-      name
-    );
+  *getTask(compiler, compilation, assetName) {
+    const {
+      info: assetInfo,
+      source: assetSource,
+    } = CssMinimizerPlugin.getAsset(compilation, assetName);
 
     // Skip double minimize assets from child compilation
-    if (info.minimized) {
+    if (assetInfo.minimized) {
       yield false;
     }
 
@@ -220,7 +216,7 @@ class CssMinimizerPlugin {
           inputSourceMap = map;
 
           compilation.warnings.push(
-            new Error(`${name} contains invalid source map`)
+            new Error(`${assetName} contains invalid source map`)
           );
         }
       }
@@ -233,119 +229,121 @@ class CssMinimizerPlugin {
       input = input.toString();
     }
 
-    const callback = (taskResult) => {
-      const { css: code, error, map, warnings } = taskResult;
+    const task = {
+      assetSource,
+      assetInfo,
+      assetName,
+      input,
+      inputSourceMap,
+      map: this.options.sourceMap,
+      minimizerOptions: this.options.minimizerOptions,
+      minify: this.options.minify,
+    };
 
-      let sourceMap = null;
+    if (CssMinimizerPlugin.isWebpack4()) {
+      if (this.options.cache) {
+        const defaultCacheKeys = {
+          nodeVersion: process.version,
+          // eslint-disable-next-line global-require
+          'css-minimizer-webpack-plugin': require('../package.json').version,
+          cssMinimizer: CssMinimizerPackageJson.version,
+          'css-minimizer-webpack-plugin-options': this.options,
+          assetName,
+          contentHash: crypto.createHash('md4').update(input).digest('hex'),
+        };
 
-      if (
-        (error || (warnings && warnings.length > 0)) &&
-        inputSourceMap &&
-        CssMinimizerPlugin.isSourceMap(inputSourceMap)
-      ) {
-        sourceMap = new SourceMapConsumer(inputSourceMap);
+        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, assetName);
       }
+    }
 
-      // Handling results
-      // Error case: add errors, and go to next file
-      if (error) {
-        compilation.errors.push(
-          CssMinimizerPlugin.buildError(
-            error,
-            name,
-            sourceMap,
-            new RequestShortener(compiler.context)
-          )
-        );
+    yield task;
+  }
 
-        return;
-      }
+  afterTask(compiler, compilation, task, weakCache) {
+    const {
+      error,
+      inputSourceMap,
+      assetName,
+      input,
+      assetInfo,
+      assetSource,
+      output,
+    } = task;
 
-      let outputSource;
+    let sourceMap = null;
 
+    if (
+      (error || (output && output.warnings && output.warnings.length > 0)) &&
+      inputSourceMap &&
+      CssMinimizerPlugin.isSourceMap(inputSourceMap)
+    ) {
+      sourceMap = new SourceMapConsumer(inputSourceMap);
+    }
+
+    // Handling results
+    // Error case: add errors, and go to next file
+    if (error) {
+      compilation.errors.push(
+        CssMinimizerPlugin.buildError(
+          error,
+          assetName,
+          sourceMap,
+          new RequestShortener(compiler.context)
+        )
+      );
+
+      return;
+    }
+
+    const { css: code, map, warnings } = output;
+
+    let weakOutput = weakCache.get(assetSource);
+
+    if (!weakOutput) {
       if (map) {
-        outputSource = new SourceMapSource(
+        weakOutput = new SourceMapSource(
           code,
-          name,
+          assetName,
           map,
           input,
           inputSourceMap,
           true
         );
       } else {
-        outputSource = new RawSource(code);
+        weakOutput = new RawSource(code);
       }
 
-      CssMinimizerPlugin.updateAsset(compilation, name, outputSource, {
-        ...info,
-        minimized: true,
-      });
-
-      // Handling warnings
-      if (warnings && warnings.length > 0) {
-        warnings.forEach((warning) => {
-          const builtWarning = CssMinimizerPlugin.buildWarning(
-            warning,
-            name,
-            sourceMap,
-            new RequestShortener(compiler.context),
-            this.options.warningsFilter
-          );
-
-          if (builtWarning) {
-            compilation.warnings.push(builtWarning);
-          }
-        });
-      }
-    };
-
-    const task = {
-      name,
-      input,
-      inputSourceMap,
-      map: this.options.sourceMap,
-      minimizerOptions: this.options.minimizerOptions,
-      minify: this.options.minify,
-      callback,
-    };
-
-    if (CssMinimizerPlugin.isWebpack4()) {
-      const {
-        outputOptions: { hashSalt, hashDigest, hashDigestLength, hashFunction },
-      } = compilation;
-      const hash = util.createHash(hashFunction);
-
-      if (hashSalt) {
-        hash.update(hashSalt);
-      }
-
-      hash.update(input);
-
-      const digest = hash.digest(hashDigest);
-
-      if (this.options.cache) {
-        const defaultCacheKeys = {
-          cssMinimizer: CssMinimizerPackageJson.version,
-          // eslint-disable-next-line global-require
-          'css-minimizer-webpack-plugin': require('../package.json').version,
-          'css-minimizer-webpack-plugin-options': this.options,
-          nodeVersion: process.version,
-          filename: name,
-          contentHash: digest.substr(0, hashDigestLength),
-        };
-
-        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, name);
-      }
-    } else {
-      // For webpack@5 cache
-      task.assetSource = assetSource;
+      weakCache.set(assetSource, weakOutput);
     }
 
-    yield task;
+    CssMinimizerPlugin.updateAsset(compilation, assetName, weakOutput, {
+      ...assetInfo,
+      minimized: true,
+    });
+
+    // Handling warnings
+    if (warnings && warnings.length > 0) {
+      warnings.forEach((warning) => {
+        const builtWarning = CssMinimizerPlugin.buildWarning(
+          warning,
+          assetName,
+          sourceMap,
+          new RequestShortener(compiler.context),
+          this.options.warningsFilter
+        );
+
+        if (builtWarning) {
+          compilation.warnings.push(builtWarning);
+        }
+      });
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async runTasks(assetNames, getTaskForAsset, cache) {
+  async runTasks(compiler, compilation, assetNames, CacheEngine, weakCache) {
+    const cache = new CacheEngine(compilation, {
+      cache: this.options.cache,
+    });
     const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
       this.options.parallel
     );
@@ -384,51 +382,44 @@ class CssMinimizerPlugin {
 
     for (const assetName of assetNames) {
       const enqueue = async (task) => {
-        let taskResult;
-
         try {
-          if (worker) {
-            taskResult = await worker.transform(serialize(task));
-          } else {
-            taskResult = await minifyFn(task);
-          }
+          // eslint-disable-next-line no-param-reassign
+          task.output = worker
+            ? await worker.transform(serialize(task))
+            : await minifyFn(task);
         } catch (error) {
-          taskResult = { error };
+          // eslint-disable-next-line no-param-reassign
+          task.error = error;
         }
 
-        if (cache.isEnabled() && !taskResult.error) {
-          await cache.store(task, taskResult);
+        if (cache.isEnabled() && typeof task.output !== 'undefined') {
+          await cache.store(task);
         }
 
-        task.callback(taskResult);
-
-        return taskResult;
+        this.afterTask(compiler, compilation, task, weakCache);
       };
 
       scheduledTasks.push(
         limit(async () => {
-          const task = getTaskForAsset(assetName).next().value;
+          const task = this.getTask(compiler, compilation, assetName).next()
+            .value;
 
           if (!task) {
-            // Something went wrong, for example the `cacheKeys` option throw an error
             return Promise.resolve();
           }
 
           if (cache.isEnabled()) {
-            let taskResult;
-
             try {
-              taskResult = await cache.get(task);
+              task.output = await cache.get(task);
             } catch (ignoreError) {
               return enqueue(task);
             }
 
-            // Webpack@5 return `undefined` when cache is not found
-            if (!taskResult) {
+            if (!task.output) {
               return enqueue(task);
             }
 
-            task.callback(taskResult);
+            this.afterTask(compiler, compilation, task, weakCache);
 
             return Promise.resolve();
           }
@@ -445,7 +436,12 @@ class CssMinimizerPlugin {
     }
   }
 
+  static isWebpack4() {
+    return webpackVersion[0] === '4';
+  }
+
   apply(compiler) {
+    const pluginName = this.constructor.name;
     const { devtool, plugins } = compiler.options;
 
     this.options.sourceMap =
@@ -471,34 +467,27 @@ class CssMinimizerPlugin {
       this.options
     );
 
-    const optimizeFn = async (compilation, chunksOrAssets) => {
+    const weakCache = new WeakMap();
+
+    const optimizeFn = async (compilation, CacheEngine, assets) => {
       const assetNames = Object.keys(
-        CssMinimizerPlugin.isWebpack4() ? compilation.assets : chunksOrAssets
-      ).filter((file) => matchObject(file));
+        typeof assets === 'undefined' ? compilation.assets : assets
+      ).filter((assetName) => matchObject(assetName));
 
       if (assetNames.length === 0) {
         return Promise.resolve();
       }
 
-      const getTaskForAsset = this.taskGenerator.bind(
-        this,
+      await this.runTasks(
         compiler,
-        compilation
+        compilation,
+        assetNames,
+        CacheEngine,
+        weakCache
       );
-
-      const CacheEngine = CssMinimizerPlugin.isWebpack4()
-        ? // eslint-disable-next-line global-require
-          require('./Webpack4Cache').default
-        : // eslint-disable-next-line global-require
-          require('./Webpack5Cache').default;
-      const cache = new CacheEngine(compilation, { cache: this.options.cache });
-
-      await this.runTasks(assetNames, getTaskForAsset, cache);
 
       return Promise.resolve();
     };
-
-    const pluginName = this.constructor.name;
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
       if (this.options.sourceMap) {
@@ -510,11 +499,24 @@ class CssMinimizerPlugin {
       }
 
       if (CssMinimizerPlugin.isWebpack4()) {
-        compilation.hooks.optimizeChunkAssets.tapPromise(
-          pluginName,
-          optimizeFn.bind(this, compilation)
+        // eslint-disable-next-line global-require
+        const CacheEngine = require('./Webpack4Cache').default;
+
+        compilation.hooks.optimizeChunkAssets.tapPromise(pluginName, () =>
+          optimizeFn(compilation, CacheEngine)
         );
       } else {
+        if (this.options.sourceMap) {
+          compilation.hooks.buildModule.tap(pluginName, (moduleArg) => {
+            // to get detailed location info about errors
+            // eslint-disable-next-line no-param-reassign
+            moduleArg.useSourceMap = true;
+          });
+        }
+
+        // eslint-disable-next-line global-require
+        const CacheEngine = require('./Webpack5Cache').default;
+
         // eslint-disable-next-line global-require
         const Compilation = require('webpack/lib/Compilation');
 
@@ -523,7 +525,7 @@ class CssMinimizerPlugin {
             name: pluginName,
             stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
           },
-          optimizeFn.bind(this, compilation)
+          (assets) => optimizeFn(compilation, CacheEngine, assets)
         );
 
         compilation.hooks.statsPrinter.tap(pluginName, (stats) => {

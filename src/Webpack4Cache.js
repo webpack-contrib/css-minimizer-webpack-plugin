@@ -26,12 +26,23 @@ export default class Webpack4Cache {
     // eslint-disable-next-line no-param-reassign
     task.cacheIdent = task.cacheIdent || serialize(task.cacheKeys);
 
-    const { data } = await cacache.get(this.cacheDir, task.cacheIdent);
+    let cachedResult;
 
-    return JSON.parse(data);
+    try {
+      cachedResult = await cacache.get(this.cacheDir, task.cacheIdent);
+    } catch (ignoreError) {
+      // eslint-disable-next-line no-undefined
+      return undefined;
+    }
+
+    return JSON.parse(cachedResult.data);
   }
 
-  async store(task, data) {
-    return cacache.put(this.cacheDir, task.cacheIdent, JSON.stringify(data));
+  async store(task) {
+    return cacache.put(
+      this.cacheDir,
+      task.cacheIdent,
+      JSON.stringify(task.output)
+    );
   }
 }
