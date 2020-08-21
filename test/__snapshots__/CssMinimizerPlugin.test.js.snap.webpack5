@@ -59,6 +59,16 @@ exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `Ar
 
 exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `Array []`;
 
+exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
+Object {
+  "entry.19e4764f9c1d9fe130e2.655a1d8e7614dda9272e.1afdccbeaec4b0402d74.css": "body{color:red}a{color:#00f}",
+}
+`;
+
+exports[`CssMinimizerPlugin should work and generate real content hash: errors 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work and generate real content hash: warnings 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should work and show minimized assets in stats: assets 1`] = `
 Object {
   "foo.css": "body{color:red}a{color:#00f}",

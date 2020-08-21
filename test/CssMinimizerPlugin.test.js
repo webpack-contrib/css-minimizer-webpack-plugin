@@ -1,4 +1,5 @@
 import path from 'path';
+import crypto from 'crypto';
 
 import { SourceMapConsumer } from 'source-map';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
@@ -389,5 +390,59 @@ describe('CssMinimizerPlugin', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
+
+  it('should work and generate real content hash', async () => {
+    if (getCompiler.isWebpack4()) {
+      expect(true).toBe(true);
+    } else {
+      const compiler = getCompiler({
+        entry: {
+          entry: `${__dirname}/fixtures/entry.js`,
+        },
+        output: {
+          pathinfo: false,
+          path: path.resolve(__dirname, 'dist'),
+          filename: '[name].[contenthash].[chunkhash].[fullhash].js',
+          chunkFilename: '[name].[contenthash].[chunkhash].[fullhash].js',
+        },
+        optimization: {
+          minimize: false,
+          realContentHash: true,
+        },
+        plugins: [
+          new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].[chunkhash].[fullhash].css',
+            chunkFilename: '[name].[contenthash].[chunkhash].[fullhash].css',
+          }),
+        ],
+      });
+
+      new CssMinimizerPlugin().apply(compiler);
+
+      const stats = await compile(compiler);
+      const {
+        compilation: {
+          assets,
+          options: { output },
+        },
+      } = stats;
+
+      for (const assetName of Object.keys(assets)) {
+        const [, webpackHash] = assetName.match(/^.+?\.(.+?)\..+$/);
+        const { hashDigestLength, hashDigest, hashFunction } = output;
+        const cryptoHash = crypto
+          .createHash(hashFunction)
+          .update(readAsset(assetName, compiler, stats))
+          .digest(hashDigest)
+          .slice(0, hashDigestLength);
+
+        expect(webpackHash).toBe(cryptoHash);
+      }
+
+      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(getErrors(stats)).toMatchSnapshot('errors');
+      expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    }
   });
 });
