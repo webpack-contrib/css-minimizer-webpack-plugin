@@ -2,9 +2,8 @@ import os from 'os';
 import crypto from 'crypto';
 
 import { SourceMapConsumer } from 'source-map';
-import { SourceMapSource, RawSource } from 'webpack-sources';
 import RequestShortener from 'webpack/lib/RequestShortener';
-import {
+import webpack, {
   ModuleFilenameHelpers,
   SourceMapDevToolPlugin,
   version as webpackVersion,
@@ -20,6 +19,11 @@ import schema from './options.json';
 import { minify as minifyFn } from './minify';
 
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
+
+// webpack 5 exposes the sources property to ensure the right version of webpack-sources is used
+const { SourceMapSource, RawSource } =
+  // eslint-disable-next-line global-require
+  webpack.sources || require('webpack-sources');
 
 class CssMinimizerPlugin {
   constructor(options = {}) {
