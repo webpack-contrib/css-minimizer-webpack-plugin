@@ -1,4 +1,5 @@
 import foo from './simple-emit';
+import bar from './simple-emit-2';
 
 async function load() {
   return import('./simple-async');
@@ -6,4 +7,4 @@ async function load() {
 
 load();
 
-export default [foo, css, otherCss];
+export default [foo, bar, css, otherCss];

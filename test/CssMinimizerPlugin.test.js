@@ -353,7 +353,10 @@ describe('CssMinimizerPlugin', () => {
             test: /entry.js$/i,
             use: [
               {
-                loader: path.resolve(__dirname, './helpers/preLoader'),
+                loader: path.resolve(
+                  __dirname,
+                  './helpers/emitAssetInChildCompilationLoader'
+                ),
               },
             ],
           },
@@ -462,6 +465,10 @@ describe('CssMinimizerPlugin', () => {
             test: /simple-emit.js$/i,
             loader: require.resolve('./helpers/emitAssetLoader.js'),
           },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
         ],
       },
     });
@@ -475,9 +482,9 @@ describe('CssMinimizerPlugin', () => {
         Object.keys(stats.compilation.assets).filter(
           (assetName) => stats.compilation.assets[assetName].emitted
         ).length
-      ).toBe(3);
+      ).toBe(4);
     } else {
-      expect(stats.compilation.emittedAssets.size).toBe(3);
+      expect(stats.compilation.emittedAssets.size).toBe(4);
     }
 
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');

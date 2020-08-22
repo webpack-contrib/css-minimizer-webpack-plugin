@@ -71,12 +71,14 @@ exports[`CssMinimizerPlugin should work and show minimized assets in stats: warn
 
 exports[`CssMinimizerPlugin should work in watch mode: assets 1`] = `
 Object {
+  "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
 exports[`CssMinimizerPlugin should work in watch mode: assets 2`] = `
 Object {
+  "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
