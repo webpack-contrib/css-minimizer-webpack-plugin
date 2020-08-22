@@ -4,17 +4,16 @@ import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { createFsFromVolume, Volume } from 'memfs';
 
-export default function getCompiler(options) {
+export default function getCompiler(config) {
   const compiler = webpack({
-    mode: 'production',
-    bail: true,
-    cache: getCompiler.isWebpack4() ? false : { type: 'memory' },
+    mode: 'development',
+    devtool: config.devtool || false,
+    context: path.resolve(__dirname, '../fixtures'),
     optimization: {
       minimize: false,
     },
     output: {
-      pathinfo: false,
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, '../outputs'),
       filename: '[name].js',
       chunkFilename: '[id].[name].js',
     },
@@ -32,14 +31,16 @@ export default function getCompiler(options) {
         },
       ],
     },
-    ...options,
+    ...config,
   });
 
-  const outputFileSystem = createFsFromVolume(new Volume());
-  // Todo remove when we drop webpack@4 support
-  outputFileSystem.join = path.join.bind(path);
+  if (!config.outputFileSystem) {
+    const outputFileSystem = createFsFromVolume(new Volume());
+    // Todo remove when we drop webpack@4 support
+    outputFileSystem.join = path.join.bind(path);
 
-  compiler.outputFileSystem = outputFileSystem;
+    compiler.outputFileSystem = outputFileSystem;
+  }
 
   return compiler;
 }
