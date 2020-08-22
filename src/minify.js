@@ -10,6 +10,7 @@ function warningsToString(warnings) {
 
 const minify = async (options) => {
   const {
+    assetInfo,
     assetName,
     input,
     minimizerOptions,
@@ -31,6 +32,8 @@ const minify = async (options) => {
       map: result.map,
       error: result.error,
       warnings: warningsToString(result.warnings || []),
+      assetInfo,
+      assetName,
     };
   }
 
@@ -45,6 +48,8 @@ const minify = async (options) => {
     map: result.map,
     error: result.error,
     warnings: warningsToString(result.warnings()),
+    assetInfo,
+    assetName,
   };
 };
 

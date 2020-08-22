@@ -5,11 +5,12 @@ import findCacheDir from 'find-cache-dir';
 import serialize from 'serialize-javascript';
 
 export default class Webpack4Cache {
-  constructor(compilation, options) {
-    this.cacheDir =
+  constructor(compilation, options, weakCache) {
+    this.cache =
       options.cache === true
         ? Webpack4Cache.getCacheDirectory()
         : options.cache;
+    this.weakCache = weakCache;
   }
 
   static getCacheDirectory() {
@@ -18,31 +19,51 @@ export default class Webpack4Cache {
     );
   }
 
-  isEnabled() {
-    return Boolean(this.cacheDir);
-  }
+  async get(task, sources) {
+    const weakOutput = this.weakCache.get(task.assetSource);
 
-  async get(task) {
+    if (weakOutput) {
+      return weakOutput;
+    }
+
+    if (!this.cache) {
+      // eslint-disable-next-line no-undefined
+      return undefined;
+    }
+
     // eslint-disable-next-line no-param-reassign
     task.cacheIdent = task.cacheIdent || serialize(task.cacheKeys);
 
     let cachedResult;
 
     try {
-      cachedResult = await cacache.get(this.cacheDir, task.cacheIdent);
+      cachedResult = await cacache.get(this.cache, task.cacheIdent);
     } catch (ignoreError) {
       // eslint-disable-next-line no-undefined
       return undefined;
     }
 
-    return JSON.parse(cachedResult.data);
+    cachedResult = JSON.parse(cachedResult.data);
+
+    cachedResult.source = new sources.RawSource(cachedResult.source);
+
+    return cachedResult;
   }
 
   async store(task) {
-    return cacache.put(
-      this.cacheDir,
-      task.cacheIdent,
-      JSON.stringify(task.output)
-    );
+    if (!this.weakCache.has(task.assetSource)) {
+      this.weakCache.set(task.assetSource, task.output);
+    }
+
+    if (!this.cache) {
+      // eslint-disable-next-line no-undefined
+      return undefined;
+    }
+
+    const { cacheIdent, output } = task;
+
+    const modifyOutput = { ...output, source: output.source.source() };
+
+    return cacache.put(this.cache, cacheIdent, JSON.stringify(modifyOutput));
   }
 }
