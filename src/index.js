@@ -311,7 +311,7 @@ class CssMinimizerPlugin {
     for (const assetName of assetNames) {
       scheduledTasks.push(
         limit(async () => {
-          let task = this.getTask(compiler, compilation, assetName).next()
+          const task = this.getTask(compiler, compilation, assetName).next()
             .value;
 
           if (!task) {
@@ -327,15 +327,19 @@ class CssMinimizerPlugin {
 
           let sourceMap;
 
-          if (resultOutput) {
-            task = { ...task, ...resultOutput, map: resultOutput.map || false };
-          } else {
+          if (!resultOutput) {
             try {
               // eslint-disable-next-line no-param-reassign
               resultOutput = worker
                 ? await worker.transform(serialize(task))
                 : await minifyFn(task);
             } catch (error) {
+              task.error = error;
+            }
+
+            task.error = task.error || resultOutput.error;
+
+            if (task.error) {
               if (
                 inputSourceMap &&
                 CssMinimizerPlugin.isSourceMap(inputSourceMap)
@@ -345,7 +349,7 @@ class CssMinimizerPlugin {
 
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
-                  error,
+                  task.error,
                   assetName,
                   sourceMap,
                   new RequestShortener(compiler.context)
@@ -355,7 +359,9 @@ class CssMinimizerPlugin {
               return Promise.resolve();
             }
 
-            task = { ...task, ...resultOutput, map: resultOutput.map || false };
+            task.css = resultOutput.css;
+            task.map = resultOutput.map;
+            task.warnings = resultOutput.warnings;
 
             const { css: code, map, input } = task;
 
@@ -373,6 +379,9 @@ class CssMinimizerPlugin {
             }
 
             await cache.store(task);
+          } else {
+            task.source = resultOutput.source;
+            task.warnings = resultOutput.warnings;
           }
 
           if (task.warnings && task.warnings.length > 0) {

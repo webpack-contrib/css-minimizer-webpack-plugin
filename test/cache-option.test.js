@@ -4,6 +4,8 @@ import del from 'del';
 import cacache from 'cacache';
 import findCacheDir from 'find-cache-dir';
 
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
 import Webpack4Cache from '../src/Webpack4Cache';
 import CssMinimizerPlugin from '../src/index';
 
@@ -12,6 +14,7 @@ import {
   getCompiler,
   getErrors,
   getWarnings,
+  normalizedSourceMap,
   readAssets,
   removeCache,
 } from './helpers';
@@ -31,6 +34,7 @@ const otherOtherOtherCacheDir = findCacheDir({
 if (getCompiler.isWebpack4()) {
   describe('cache option', () => {
     let compiler;
+    let sourceMapCompiler;
 
     beforeEach(() => {
       compiler = getCompiler({
@@ -41,6 +45,31 @@ if (getCompiler.isWebpack4()) {
           four: `${__dirname}/fixtures/cache-3.js`,
           five: `${__dirname}/fixtures/cache-4.js`,
         },
+      });
+
+      sourceMapCompiler = getCompiler({
+        devtool: 'source-map',
+        entry: {
+          one: `${__dirname}/fixtures/cache.js`,
+          two: `${__dirname}/fixtures/cache-1.js`,
+          three: `${__dirname}/fixtures/cache-2.js`,
+          four: `${__dirname}/fixtures/cache-3.js`,
+          five: `${__dirname}/fixtures/cache-4.js`,
+        },
+        module: {
+          rules: [
+            {
+              test: /.s?css$/i,
+              use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+            },
+          ],
+        },
+        plugins: [
+          new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].[name].css',
+          }),
+        ],
       });
 
       return Promise.all([
@@ -319,6 +348,63 @@ if (getCompiler.isWebpack4()) {
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
       expect(cacachePutSpy).toHaveBeenCalledTimes(1);
+
+      cacacheGetSpy.mockRestore();
+      cacachePutSpy.mockRestore();
+      getCacheDirectorySpy.mockRestore();
+    });
+
+    it('should match snapshot when sourcemap enable', async () => {
+      const cacacheGetSpy = jest.spyOn(cacache, 'get');
+      const cacachePutSpy = jest.spyOn(cacache, 'put');
+
+      const getCacheDirectorySpy = jest
+        .spyOn(Webpack4Cache, 'getCacheDirectory')
+        .mockImplementation(() => uniqueCacheDirectory);
+
+      new CssMinimizerPlugin({ sourceMap: true }).apply(sourceMapCompiler);
+
+      const stats = await compile(sourceMapCompiler);
+
+      expect(readAssets(sourceMapCompiler, stats, '.css')).toMatchSnapshot(
+        'assets'
+      );
+      expect(getErrors(stats)).toMatchSnapshot('errors');
+      expect(getWarnings(stats)).toMatchSnapshot('warnings');
+
+      const countAssets = Object.keys(
+        readAssets(sourceMapCompiler, stats, '.css')
+      ).length;
+
+      // Try to found cached files, but we don't have their in cache
+      expect(cacacheGetSpy).toHaveBeenCalledTimes(countAssets);
+      // Put files in cache
+      expect(cacachePutSpy).toHaveBeenCalledTimes(countAssets);
+
+      cacache.get.mockClear();
+      cacache.put.mockClear();
+
+      const newStats = await compile(sourceMapCompiler);
+
+      expect(readAssets(sourceMapCompiler, newStats, '.css')).toMatchSnapshot(
+        'assets'
+      );
+      expect(getErrors(stats)).toMatchSnapshot('errors');
+      expect(getWarnings(stats)).toMatchSnapshot('warnings');
+
+      const newCountAssets = Object.keys(
+        readAssets(sourceMapCompiler, newStats, '.css')
+      ).length;
+
+      const maps = readAssets(sourceMapCompiler, newStats, '.css.map');
+
+      Object.keys(maps).forEach((assetKey) => {
+        expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      });
+
+      // Now we have cached files so we get them and don't put new
+      expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
+      expect(cacachePutSpy).toHaveBeenCalledTimes(0);
 
       cacacheGetSpy.mockRestore();
       cacachePutSpy.mockRestore();
