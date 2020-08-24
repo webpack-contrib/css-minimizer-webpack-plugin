@@ -234,9 +234,9 @@ class CssMinimizerPlugin {
     }
 
     const task = {
+      assetName,
       assetSource,
       assetInfo,
-      assetName,
       input,
       inputSourceMap,
       map: this.options.sourceMap,
@@ -323,35 +323,21 @@ class CssMinimizerPlugin {
             SourceMapSource,
           });
 
-          const { inputSourceMap } = task;
-
-          let sourceMap;
-
           if (!resultOutput) {
             try {
               // eslint-disable-next-line no-param-reassign
-              resultOutput = worker
-                ? await worker.transform(serialize(task))
-                : await minifyFn(task);
+              resultOutput = await (worker
+                ? worker.transform(serialize(task))
+                : minifyFn(task));
             } catch (error) {
-              task.error = error;
-            }
-
-            task.error = task.error || resultOutput.error;
-
-            if (task.error) {
-              if (
-                inputSourceMap &&
-                CssMinimizerPlugin.isSourceMap(inputSourceMap)
-              ) {
-                sourceMap = new SourceMapConsumer(inputSourceMap);
-              }
-
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
-                  task.error,
+                  error,
                   assetName,
-                  sourceMap,
+                  task.inputSourceMap &&
+                    CssMinimizerPlugin.isSourceMap(task.inputSourceMap)
+                    ? new SourceMapConsumer(task.inputSourceMap)
+                    : null,
                   new RequestShortener(compiler.context)
                 )
               );
@@ -363,19 +349,17 @@ class CssMinimizerPlugin {
             task.map = resultOutput.map;
             task.warnings = resultOutput.warnings;
 
-            const { css: code, map, input } = task;
-
-            if (map) {
+            if (task.map) {
               task.source = new SourceMapSource(
-                code,
+                task.css,
                 assetName,
-                map,
-                input,
-                inputSourceMap,
+                task.map,
+                task.input,
+                task.inputSourceMap,
                 true
               );
             } else {
-              task.source = new RawSource(code);
+              task.source = new RawSource(task.css);
             }
 
             await cache.store(task);
@@ -385,18 +369,14 @@ class CssMinimizerPlugin {
           }
 
           if (task.warnings && task.warnings.length > 0) {
-            if (
-              inputSourceMap &&
-              CssMinimizerPlugin.isSourceMap(inputSourceMap)
-            ) {
-              sourceMap = new SourceMapConsumer(inputSourceMap);
-            }
-
             task.warnings.forEach((warning) => {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 assetName,
-                sourceMap,
+                task.inputSourceMap &&
+                  CssMinimizerPlugin.isSourceMap(task.inputSourceMap)
+                  ? new SourceMapConsumer(task.inputSourceMap)
+                  : null,
                 new RequestShortener(compiler.context),
                 this.options.warningsFilter
               );

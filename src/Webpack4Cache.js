@@ -75,14 +75,16 @@ export default class Webpack4Cache {
 
     const { cacheIdent, css, assetName, map, input, inputSourceMap } = task;
 
-    const modifyOutput = {
-      css,
-      assetName,
-      map,
-      input,
-      inputSourceMap,
-    };
-
-    return cacache.put(this.cache, cacheIdent, JSON.stringify(modifyOutput));
+    return cacache.put(
+      this.cache,
+      cacheIdent,
+      JSON.stringify({
+        assetName,
+        css,
+        map,
+        input,
+        inputSourceMap,
+      })
+    );
   }
 }

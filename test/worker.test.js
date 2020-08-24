@@ -76,24 +76,4 @@ describe('worker', () => {
       expect(normalizeErrors(normalizeError.message)).toMatchSnapshot('error');
     }
   });
-
-  it('should emit minimizer error', async () => {
-    const options = {
-      assetName: 'entry.css',
-      input: false,
-      minify: () => {
-        return { error: new Error('css minimizer error') };
-      },
-    };
-
-    try {
-      await transform(serialize(options));
-    } catch (error) {
-      const normalizeError = { ...error };
-
-      normalizeError.message = [error.message.split('\n')];
-
-      expect(normalizeErrors(normalizeError.message)).toMatchSnapshot('error');
-    }
-  });
 });
