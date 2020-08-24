@@ -29,7 +29,6 @@ const minify = async (options) => {
     return {
       css: result.css,
       map: result.map,
-      error: result.error,
       warnings: warningsToString(result.warnings || []),
     };
   }
@@ -43,7 +42,6 @@ const minify = async (options) => {
   return {
     css: result.css,
     map: result.map,
-    error: result.error,
     warnings: warningsToString(result.warnings()),
   };
 };

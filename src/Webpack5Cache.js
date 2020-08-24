@@ -1,12 +1,7 @@
 export default class Cache {
   // eslint-disable-next-line no-unused-vars
-  constructor(compilation, ignored) {
+  constructor(compilation) {
     this.cache = compilation.getCache('CssMinimizerWebpackPlugin');
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  isEnabled() {
-    return true;
   }
 
   async get(task) {
@@ -17,6 +12,11 @@ export default class Cache {
   }
 
   async store(task) {
-    return this.cache.storePromise(task.assetName, task.eTag, task.output);
+    const { source, warnings } = task;
+
+    return this.cache.storePromise(task.assetName, task.eTag, {
+      source,
+      warnings,
+    });
   }
 }
