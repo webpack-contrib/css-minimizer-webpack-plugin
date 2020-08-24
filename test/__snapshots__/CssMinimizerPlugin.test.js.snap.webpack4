@@ -32,6 +32,15 @@ exports[`CssMinimizerPlugin buildWarning method 5`] = `"Css Minimizer Plugin: Wa
 
 exports[`CssMinimizerPlugin buildWarning method 6`] = `null`;
 
+exports[`CssMinimizerPlugin should build error from postcss: error 1`] = `
+Array [
+  "Error: foo.css from Css Minimizer 
+error-plugin: /foo.css:2:3: Postcss error [foo.css:2,3]",
+]
+`;
+
+exports[`CssMinimizerPlugin should build error from postcss: warning 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should build error: error 1`] = `
 Array [
   "Error: error.css from Css Minimizer 

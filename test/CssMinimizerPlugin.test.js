@@ -256,6 +256,38 @@ describe('CssMinimizerPlugin', () => {
     });
   });
 
+  it('should build error from postcss', () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/test/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+
+        const plugin = postcss.plugin('error-plugin', () => (css) => {
+          css.walkDecls((decl) => {
+            throw decl.error('Postcss error');
+          });
+        });
+
+        return postcss([plugin])
+          .process(data.input, data.postcssOptions)
+          .then((result) => {
+            return result;
+          });
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(getErrors(stats)).toMatchSnapshot('error');
+      expect(getWarnings(stats)).toMatchSnapshot('warning');
+    });
+  });
+
   it('should build warning', () => {
     const compiler = getCompiler({
       entry: {
