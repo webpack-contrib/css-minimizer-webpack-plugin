@@ -256,7 +256,7 @@ describe('CssMinimizerPlugin', () => {
     });
   });
 
-  it('should build error from postcss', () => {
+  it('should throw error from postcss', () => {
     const compiler = getCompiler({
       entry: {
         foo: `${__dirname}/fixtures/test/foo.css`,
