@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.1.1...v1.1.2) (2020-08-24)
+
+
+### Bug Fixes
+
+* compatibility with webpack 5 ([6232829](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/62328298d6a81f31e773d11ced8811ee41cd0470))
+
 ### [1.1.1](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.1.0...v1.1.1) (2020-08-10)
 
 
