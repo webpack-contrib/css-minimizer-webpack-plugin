@@ -59,6 +59,15 @@ exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `Ar
 
 exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `Array []`;
 
+exports[`CssMinimizerPlugin should throw error from postcss: error 1`] = `
+Array [
+  "Error: foo.css from Css Minimizer 
+error-plugin: /foo.css:2:3: Postcss error [foo.css:2,3]",
+]
+`;
+
+exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should work and show minimized assets in stats: assets 1`] = `
 Object {
   "foo.css": "body{color:red}a{color:#00f}",
