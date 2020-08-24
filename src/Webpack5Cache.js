@@ -12,6 +12,13 @@ export default class Cache {
   }
 
   async store(task) {
-    return this.cache.storePromise(task.assetName, task.eTag, task.output);
+    const { source, warnings } = task;
+
+    const modifyOutput = {
+      source,
+      warnings,
+    };
+
+    return this.cache.storePromise(task.assetName, task.eTag, modifyOutput);
   }
 }

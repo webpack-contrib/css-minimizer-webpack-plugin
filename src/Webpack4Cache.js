@@ -45,14 +45,27 @@ export default class Webpack4Cache {
 
     cachedResult = JSON.parse(cachedResult.data);
 
-    cachedResult.source = new sources.RawSource(cachedResult.source);
+    const { css: code, map, input, assetName, inputSourceMap } = cachedResult;
+
+    if (map) {
+      cachedResult.source = new sources.SourceMapSource(
+        code,
+        assetName,
+        map,
+        input,
+        inputSourceMap,
+        true
+      );
+    } else {
+      cachedResult.source = new sources.RawSource(code);
+    }
 
     return cachedResult;
   }
 
   async store(task) {
     if (!this.weakCache.has(task.assetSource)) {
-      this.weakCache.set(task.assetSource, task.output);
+      this.weakCache.set(task.assetSource, task);
     }
 
     if (!this.cache) {
@@ -60,9 +73,15 @@ export default class Webpack4Cache {
       return undefined;
     }
 
-    const { cacheIdent, output } = task;
+    const { cacheIdent, css, assetName, map, input, inputSourceMap } = task;
 
-    const modifyOutput = { ...output, source: output.source.source() };
+    const modifyOutput = {
+      css,
+      assetName,
+      map,
+      input,
+      inputSourceMap,
+    };
 
     return cacache.put(this.cache, cacheIdent, JSON.stringify(modifyOutput));
   }

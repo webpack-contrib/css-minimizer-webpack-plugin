@@ -263,32 +263,6 @@ class CssMinimizerPlugin {
     yield task;
   }
 
-  afterTask(compiler, compilation, { output }) {
-    const { warnings, source, assetName, assetInfo, sourceMap } = output;
-
-    CssMinimizerPlugin.updateAsset(compilation, assetName, source, {
-      ...assetInfo,
-      minimized: true,
-    });
-
-    // Handling warnings
-    if (warnings && warnings.length > 0) {
-      warnings.forEach((warning) => {
-        const builtWarning = CssMinimizerPlugin.buildWarning(
-          warning,
-          assetName,
-          sourceMap,
-          new RequestShortener(compiler.context),
-          this.options.warningsFilter
-        );
-
-        if (builtWarning) {
-          compilation.warnings.push(builtWarning);
-        }
-      });
-    }
-  }
-
   // eslint-disable-next-line class-methods-use-this
   async runTasks(compiler, compilation, assetNames, CacheEngine, weakCache) {
     const cache = new CacheEngine(
@@ -337,81 +311,99 @@ class CssMinimizerPlugin {
     for (const assetName of assetNames) {
       scheduledTasks.push(
         limit(async () => {
-          const task = this.getTask(compiler, compilation, assetName).next()
+          let task = this.getTask(compiler, compilation, assetName).next()
             .value;
 
           if (!task) {
             return Promise.resolve();
           }
 
-          task.output = await cache.get(task, { RawSource });
+          let resultOutput = await cache.get(task, {
+            RawSource,
+            SourceMapSource,
+          });
 
-          if (task.output) {
-            this.afterTask(compiler, compilation, task);
-
-            return Promise.resolve();
-          }
-
-          try {
-            // eslint-disable-next-line no-param-reassign
-            task.output = worker
-              ? await worker.transform(serialize(task))
-              : await minifyFn(task);
-          } catch (error) {
-            // eslint-disable-next-line no-param-reassign
-            task.error = error;
-          }
-
-          const { error, inputSourceMap, output } = task;
+          const { inputSourceMap } = task;
 
           let sourceMap;
 
-          if (
-            (error ||
-              (output && output.warnings && output.warnings.length > 0)) &&
-            inputSourceMap &&
-            CssMinimizerPlugin.isSourceMap(inputSourceMap)
-          ) {
-            sourceMap = new SourceMapConsumer(inputSourceMap);
-          }
-
-          // Handling results
-          // Error case: add errors, and go to next file
-          if (error) {
-            compilation.errors.push(
-              CssMinimizerPlugin.buildError(
-                error,
-                assetName,
-                sourceMap,
-                new RequestShortener(compiler.context)
-              )
-            );
-
-            return Promise.resolve();
-          }
-
-          output.sourceMap = sourceMap;
-
-          const { css: code, map, input } = output;
-
-          if (map) {
-            output.source = new SourceMapSource(
-              code,
-              assetName,
-              map,
-              input,
-              inputSourceMap,
-              true
-            );
+          if (resultOutput) {
+            task = { ...task, ...resultOutput, map: resultOutput.map || false };
           } else {
-            output.source = new RawSource(code);
-          }
+            try {
+              // eslint-disable-next-line no-param-reassign
+              resultOutput = worker
+                ? await worker.transform(serialize(task))
+                : await minifyFn(task);
+            } catch (error) {
+              if (
+                inputSourceMap &&
+                CssMinimizerPlugin.isSourceMap(inputSourceMap)
+              ) {
+                sourceMap = new SourceMapConsumer(inputSourceMap);
+              }
 
-          if (typeof task.output !== 'undefined') {
+              compilation.errors.push(
+                CssMinimizerPlugin.buildError(
+                  error,
+                  assetName,
+                  sourceMap,
+                  new RequestShortener(compiler.context)
+                )
+              );
+
+              return Promise.resolve();
+            }
+
+            task = { ...task, ...resultOutput, map: resultOutput.map || false };
+
+            const { css: code, map, input } = task;
+
+            if (map) {
+              task.source = new SourceMapSource(
+                code,
+                assetName,
+                map,
+                input,
+                inputSourceMap,
+                true
+              );
+            } else {
+              task.source = new RawSource(code);
+            }
+
             await cache.store(task);
           }
 
-          this.afterTask(compiler, compilation, task);
+          if (task.warnings && task.warnings.length > 0) {
+            if (
+              inputSourceMap &&
+              CssMinimizerPlugin.isSourceMap(inputSourceMap)
+            ) {
+              sourceMap = new SourceMapConsumer(inputSourceMap);
+            }
+
+            task.warnings.forEach((warning) => {
+              const builtWarning = CssMinimizerPlugin.buildWarning(
+                warning,
+                assetName,
+                sourceMap,
+                new RequestShortener(compiler.context),
+                this.options.warningsFilter
+              );
+
+              if (builtWarning) {
+                compilation.warnings.push(builtWarning);
+              }
+            });
+          }
+
+          const { source, assetInfo } = task;
+
+          CssMinimizerPlugin.updateAsset(compilation, assetName, source, {
+            ...assetInfo,
+            minimized: true,
+          });
 
           return Promise.resolve();
         })
