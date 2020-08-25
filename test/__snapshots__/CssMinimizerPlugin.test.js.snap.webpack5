@@ -149,6 +149,32 @@ exports[`CssMinimizerPlugin should work with child compilation: errors 1`] = `Ar
 
 exports[`CssMinimizerPlugin should work with child compilation: warnings 1`] = `Array []`;
 
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: assets 1`] = `
+Object {
+  "foo.css": "body{color:red}a{color:#00f}
+/*# sourceMappingURL=foo.css.map*/",
+}
+`;
+
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: error 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"sourceRoot\\":\\"\\",\\"file\\":\\"foo.css\\"}"`;
+
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: warning 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with custom csso minifier: assets 1`] = `
+Object {
+  "foo.css": "body{color:red}a{color:#00f}
+/*# sourceMappingURL=foo.css.map*/",
+}
+`;
+
+exports[`CssMinimizerPlugin should work with custom csso minifier: error 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with custom csso minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,S,CAEF,C,CACE,U\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`CssMinimizerPlugin should work with custom csso minifier: warning 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: assets 1`] = `
 Object {
   "one.css": ".minify {};",
