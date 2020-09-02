@@ -284,4 +284,87 @@ describe('when applied with "sourceMap" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
+
+  it('should emit warning when valid sourcemap and minimizer error', async () => {
+    const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
+      apply(pluginCompiler) {
+        pluginCompiler.hooks.compilation.tap(
+          { name: this.constructor.name },
+          (compilation) => {
+            compilation.hooks.additionalChunkAssets.tap(
+              { name: this.constructor.name },
+              () => {
+                compilation.additionalChunkAssets.push('broken-source-map.css');
+
+                const assetContent = '.bar {color: red};';
+
+                // eslint-disable-next-line no-param-reassign
+                compilation.assets['broken-source-map.css'] = {
+                  size() {
+                    return assetContent.length;
+                  },
+                  source() {
+                    return assetContent;
+                  },
+                  sourceAndMap() {
+                    return {
+                      source: this.source(),
+                      map: {
+                        version: 3,
+                        sources: ['test', 'test2'],
+                        names: [],
+                        mappings: 'AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO',
+                        file: 'x',
+                        sourcesContent: [],
+                      },
+                    };
+                  },
+                };
+              }
+            );
+          }
+        );
+      }
+    })();
+
+    const config = Object.assign(baseConfig, {
+      devtool: false,
+      entry: {
+        entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
+      },
+      plugins: [
+        emitBrokenSourceMapPlugin,
+        new MiniCssExtractPlugin({
+          filename: 'dist/[name].css',
+          chunkFilename: 'dist/[id].[name].css',
+        }),
+      ],
+    });
+
+    const compiler = getCompiler(config);
+    new CssMinimizerPlugin({
+      sourceMap: true,
+      minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+
+        const plugin = postcss.plugin('error-plugin', () => (css) => {
+          css.walkDecls((decl) => {
+            throw decl.error('Postcss error');
+          });
+        });
+
+        return postcss([plugin])
+          .process(data.input, data.postcssOptions)
+          .then((result) => {
+            return result;
+          });
+      },
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
 });

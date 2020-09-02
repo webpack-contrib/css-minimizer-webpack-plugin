@@ -87,3 +87,14 @@ Array [
   "Error: broken-source-map.css contains invalid source map",
 ]
 `;
+
+exports[`when applied with "sourceMap" option should emit warning when valid sourcemap and minimizer error: errors 1`] = `
+Array [
+  "Error: broken-source-map.css from Css Minimizer Webpack Plugin
+error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
+  "ModuleBuildError: Module build failed (from ../../node_modules/mini-css-extract-plugin/dist/loader.js):
+Error: broken-source-map.css from Css Minimizer Webpack Plugin",
+]
+`;
+
+exports[`when applied with "sourceMap" option should emit warning when valid sourcemap and minimizer error: warnings 1`] = `Array []`;
