@@ -193,7 +193,6 @@ class CssMinimizerPlugin {
     compilation.assets[name] = newSource;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async optimize(compiler, compilation, assets, CacheEngine, weakCache) {
     const matchObject = ModuleFilenameHelpers.matchObject.bind(
       // eslint-disable-next-line no-undefined
@@ -294,16 +293,7 @@ class CssMinimizerPlugin {
             input = input.toString();
           }
 
-          const cacheData = {
-            assetName,
-            assetSource,
-            info,
-            input,
-            inputSourceMap,
-            map: this.options.sourceMap,
-            minimizerOptions: this.options.minimizerOptions,
-            minify: this.options.minify,
-          };
+          const cacheData = { assetName, assetSource };
 
           if (CssMinimizerPlugin.isWebpack4()) {
             if (this.options.cache) {
@@ -328,10 +318,6 @@ class CssMinimizerPlugin {
             }
           }
 
-          if (!cacheData) {
-            return;
-          }
-
           let output = await cache.get(cacheData, {
             RawSource,
             SourceMapSource,
@@ -339,18 +325,27 @@ class CssMinimizerPlugin {
 
           if (!output) {
             try {
-              // eslint-disable-next-line no-param-reassign
+              const optimizeOptions = {
+                ...cacheData,
+                info,
+                input,
+                inputSourceMap,
+                map: this.options.sourceMap,
+                minimizerOptions: this.options.minimizerOptions,
+                minify: this.options.minify,
+              };
+
               output = await (worker
-                ? worker.transform(serialize(cacheData))
-                : minifyFn(cacheData));
+                ? worker.transform(serialize(optimizeOptions))
+                : minifyFn(optimizeOptions));
             } catch (error) {
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
                   error,
                   assetName,
-                  cacheData.inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(cacheData.inputSourceMap)
-                    ? new SourceMapConsumer(cacheData.inputSourceMap)
+                  inputSourceMap &&
+                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                    ? new SourceMapConsumer(inputSourceMap)
                     : null,
                   new RequestShortener(compiler.context)
                 )
@@ -368,8 +363,8 @@ class CssMinimizerPlugin {
                 cacheData.css,
                 assetName,
                 cacheData.map,
-                cacheData.input,
-                cacheData.inputSourceMap,
+                input,
+                inputSourceMap,
                 true
               );
             } else {
@@ -387,9 +382,8 @@ class CssMinimizerPlugin {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 assetName,
-                cacheData.inputSourceMap &&
-                  CssMinimizerPlugin.isSourceMap(cacheData.inputSourceMap)
-                  ? new SourceMapConsumer(cacheData.inputSourceMap)
+                inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                  ? new SourceMapConsumer(inputSourceMap)
                   : null,
                 new RequestShortener(compiler.context),
                 this.options.warningsFilter
