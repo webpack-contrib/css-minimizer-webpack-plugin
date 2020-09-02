@@ -4,17 +4,18 @@ export default class Cache {
     this.cache = compilation.getCache('CssMinimizerWebpackPlugin');
   }
 
-  async get(task) {
+  async get(cacheData) {
     // eslint-disable-next-line no-param-reassign
-    task.eTag = task.eTag || this.cache.getLazyHashedEtag(task.assetSource);
+    cacheData.eTag =
+      cacheData.eTag || this.cache.getLazyHashedEtag(cacheData.assetSource);
 
-    return this.cache.getPromise(task.assetName, task.eTag);
+    return this.cache.getPromise(cacheData.assetName, cacheData.eTag);
   }
 
-  async store(task) {
-    const { source, warnings } = task;
+  async store(cacheData) {
+    const { source, warnings } = cacheData;
 
-    return this.cache.storePromise(task.assetName, task.eTag, {
+    return this.cache.storePromise(cacheData.assetName, cacheData.eTag, {
       source,
       warnings,
     });

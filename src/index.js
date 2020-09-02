@@ -193,78 +193,21 @@ class CssMinimizerPlugin {
     compilation.assets[name] = newSource;
   }
 
-  *getTask(compiler, compilation, assetName) {
-    const {
-      info: assetInfo,
-      source: assetSource,
-    } = CssMinimizerPlugin.getAsset(compilation, assetName);
+  async optimize(compiler, compilation, assets, CacheEngine, weakCache) {
+    const matchObject = ModuleFilenameHelpers.matchObject.bind(
+      // eslint-disable-next-line no-undefined
+      undefined,
+      this.options
+    );
 
-    // Skip double minimize assets from child compilation
-    if (assetInfo.minimized) {
-      yield false;
+    const assetNames = Object.keys(
+      typeof assets === 'undefined' ? compilation.assets : assets
+    ).filter((assetName) => matchObject(assetName));
+
+    if (assetNames.length === 0) {
+      return Promise.resolve();
     }
 
-    let input;
-    let inputSourceMap;
-
-    // TODO refactor after drop webpack@4, webpack@5 always has `sourceAndMap` on sources
-    if (this.options.sourceMap && assetSource.sourceAndMap) {
-      const { source, map } = assetSource.sourceAndMap();
-
-      input = source;
-
-      if (map) {
-        if (CssMinimizerPlugin.isSourceMap(map)) {
-          inputSourceMap = map;
-        } else {
-          inputSourceMap = map;
-
-          compilation.warnings.push(
-            new Error(`${assetName} contains invalid source map`)
-          );
-        }
-      }
-    } else {
-      input = assetSource.source();
-      inputSourceMap = null;
-    }
-
-    if (Buffer.isBuffer(input)) {
-      input = input.toString();
-    }
-
-    const task = {
-      assetName,
-      assetSource,
-      assetInfo,
-      input,
-      inputSourceMap,
-      map: this.options.sourceMap,
-      minimizerOptions: this.options.minimizerOptions,
-      minify: this.options.minify,
-    };
-
-    if (CssMinimizerPlugin.isWebpack4()) {
-      if (this.options.cache) {
-        const defaultCacheKeys = {
-          nodeVersion: process.version,
-          // eslint-disable-next-line global-require
-          'css-minimizer-webpack-plugin': require('../package.json').version,
-          cssMinimizer: CssMinimizerPackageJson.version,
-          'css-minimizer-webpack-plugin-options': this.options,
-          assetName,
-          contentHash: crypto.createHash('md4').update(input).digest('hex'),
-        };
-
-        task.cacheKeys = this.options.cacheKeys(defaultCacheKeys, assetName);
-      }
-    }
-
-    yield task;
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async runTasks(compiler, compilation, assetNames, CacheEngine, weakCache) {
     const cache = new CacheEngine(
       compilation,
       {
@@ -311,71 +254,136 @@ class CssMinimizerPlugin {
     for (const assetName of assetNames) {
       scheduledTasks.push(
         limit(async () => {
-          const task = this.getTask(compiler, compilation, assetName).next()
-            .value;
+          const { source: assetSource, info } = CssMinimizerPlugin.getAsset(
+            compilation,
+            assetName
+          );
 
-          if (!task) {
-            return Promise.resolve();
+          // Skip double minimize assets from child compilation
+          if (info.minimized) {
+            return;
           }
 
-          let resultOutput = await cache.get(task, {
+          let input;
+          let inputSourceMap;
+
+          // TODO refactor after drop webpack@4, webpack@5 always has `sourceAndMap` on sources
+          if (this.options.sourceMap && assetSource.sourceAndMap) {
+            const { source, map } = assetSource.sourceAndMap();
+
+            input = source;
+
+            if (map) {
+              if (CssMinimizerPlugin.isSourceMap(map)) {
+                inputSourceMap = map;
+              } else {
+                inputSourceMap = map;
+
+                compilation.warnings.push(
+                  new Error(`${assetName} contains invalid source map`)
+                );
+              }
+            }
+          } else {
+            input = assetSource.source();
+            inputSourceMap = null;
+          }
+
+          if (Buffer.isBuffer(input)) {
+            input = input.toString();
+          }
+
+          const cacheData = { assetName, assetSource };
+
+          if (CssMinimizerPlugin.isWebpack4()) {
+            if (this.options.cache) {
+              const defaultCacheKeys = {
+                nodeVersion: process.version,
+                // eslint-disable-next-line global-require
+                'css-minimizer-webpack-plugin': require('../package.json')
+                  .version,
+                cssMinimizer: CssMinimizerPackageJson.version,
+                'css-minimizer-webpack-plugin-options': this.options,
+                assetName,
+                contentHash: crypto
+                  .createHash('md4')
+                  .update(input)
+                  .digest('hex'),
+              };
+
+              cacheData.cacheKeys = this.options.cacheKeys(
+                defaultCacheKeys,
+                assetName
+              );
+            }
+          }
+
+          let output = await cache.get(cacheData, {
             RawSource,
             SourceMapSource,
           });
 
-          if (!resultOutput) {
+          if (!output) {
             try {
-              // eslint-disable-next-line no-param-reassign
-              resultOutput = await (worker
-                ? worker.transform(serialize(task))
-                : minifyFn(task));
+              const optimizeOptions = {
+                ...cacheData,
+                info,
+                input,
+                inputSourceMap,
+                map: this.options.sourceMap,
+                minimizerOptions: this.options.minimizerOptions,
+                minify: this.options.minify,
+              };
+
+              output = await (worker
+                ? worker.transform(serialize(optimizeOptions))
+                : minifyFn(optimizeOptions));
             } catch (error) {
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
                   error,
                   assetName,
-                  task.inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(task.inputSourceMap)
-                    ? new SourceMapConsumer(task.inputSourceMap)
+                  inputSourceMap &&
+                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                    ? new SourceMapConsumer(inputSourceMap)
                     : null,
                   new RequestShortener(compiler.context)
                 )
               );
 
-              return Promise.resolve();
+              return;
             }
 
-            task.css = resultOutput.css;
-            task.map = resultOutput.map;
-            task.warnings = resultOutput.warnings;
+            cacheData.css = output.css;
+            cacheData.map = output.map;
+            cacheData.warnings = output.warnings;
 
-            if (task.map) {
-              task.source = new SourceMapSource(
-                task.css,
+            if (cacheData.map) {
+              cacheData.source = new SourceMapSource(
+                cacheData.css,
                 assetName,
-                task.map,
-                task.input,
-                task.inputSourceMap,
+                cacheData.map,
+                input,
+                inputSourceMap,
                 true
               );
             } else {
-              task.source = new RawSource(task.css);
+              cacheData.source = new RawSource(cacheData.css);
             }
 
-            await cache.store(task);
+            await cache.store(cacheData);
           } else {
-            task.source = resultOutput.source;
-            task.warnings = resultOutput.warnings;
+            cacheData.source = output.source;
+            cacheData.warnings = output.warnings;
           }
 
-          if (task.warnings && task.warnings.length > 0) {
-            task.warnings.forEach((warning) => {
+          if (cacheData.warnings && cacheData.warnings.length > 0) {
+            cacheData.warnings.forEach((warning) => {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 assetName,
-                task.inputSourceMap &&
-                  CssMinimizerPlugin.isSourceMap(task.inputSourceMap)
-                  ? new SourceMapConsumer(task.inputSourceMap)
+                inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                  ? new SourceMapConsumer(inputSourceMap)
                   : null,
                 new RequestShortener(compiler.context),
                 this.options.warningsFilter
@@ -387,23 +395,23 @@ class CssMinimizerPlugin {
             });
           }
 
-          const { source, assetInfo } = task;
+          const { source } = cacheData;
 
           CssMinimizerPlugin.updateAsset(compilation, assetName, source, {
-            ...assetInfo,
+            ...cacheData.info,
             minimized: true,
           });
-
-          return Promise.resolve();
         })
       );
     }
 
-    await Promise.all(scheduledTasks);
+    const result = await Promise.all(scheduledTasks);
 
     if (worker) {
       await worker.end();
     }
+
+    return result;
   }
 
   static isWebpack4() {
@@ -431,33 +439,7 @@ class CssMinimizerPlugin {
             ))
         : this.options.sourceMap;
 
-    const matchObject = ModuleFilenameHelpers.matchObject.bind(
-      // eslint-disable-next-line no-undefined
-      undefined,
-      this.options
-    );
-
     const weakCache = new WeakMap();
-
-    const optimizeFn = async (compilation, CacheEngine, assets) => {
-      const assetNames = Object.keys(
-        typeof assets === 'undefined' ? compilation.assets : assets
-      ).filter((assetName) => matchObject(assetName));
-
-      if (assetNames.length === 0) {
-        return Promise.resolve();
-      }
-
-      await this.runTasks(
-        compiler,
-        compilation,
-        assetNames,
-        CacheEngine,
-        weakCache
-      );
-
-      return Promise.resolve();
-    };
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
       if (this.options.sourceMap) {
@@ -473,8 +455,14 @@ class CssMinimizerPlugin {
         const CacheEngine = require('./Webpack4Cache').default;
 
         compilation.hooks.optimizeChunkAssets.tapPromise(pluginName, () =>
-          // eslint-disable-next-line no-undefined
-          optimizeFn(compilation, CacheEngine, undefined, weakCache)
+          this.optimize(
+            compiler,
+            compilation,
+            // eslint-disable-next-line no-undefined
+            undefined,
+            CacheEngine,
+            weakCache
+          )
         );
       } else {
         if (this.options.sourceMap) {
@@ -496,7 +484,7 @@ class CssMinimizerPlugin {
             name: pluginName,
             stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
           },
-          (assets) => optimizeFn(compilation, CacheEngine, assets)
+          (assets) => this.optimize(compiler, compilation, assets, CacheEngine)
         );
 
         compilation.hooks.statsPrinter.tap(pluginName, (stats) => {

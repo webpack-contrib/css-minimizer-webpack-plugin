@@ -82,7 +82,7 @@ if (getCompiler.isWebpack4()) {
       ]);
     });
 
-    afterEach(() => {
+    afterAll(() => {
       return Promise.all([
         removeCache(),
         removeCache(uniqueCacheDirectory),

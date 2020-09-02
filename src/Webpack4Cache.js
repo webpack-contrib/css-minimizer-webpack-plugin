@@ -19,8 +19,8 @@ export default class Webpack4Cache {
     );
   }
 
-  async get(task, sources) {
-    const weakOutput = this.weakCache.get(task.assetSource);
+  async get(cacheData, sources) {
+    const weakOutput = this.weakCache.get(cacheData.assetSource);
 
     if (weakOutput) {
       return weakOutput;
@@ -32,12 +32,13 @@ export default class Webpack4Cache {
     }
 
     // eslint-disable-next-line no-param-reassign
-    task.cacheIdent = task.cacheIdent || serialize(task.cacheKeys);
+    cacheData.cacheIdent =
+      cacheData.cacheIdent || serialize(cacheData.cacheKeys);
 
     let cachedResult;
 
     try {
-      cachedResult = await cacache.get(this.cache, task.cacheIdent);
+      cachedResult = await cacache.get(this.cache, cacheData.cacheIdent);
     } catch (ignoreError) {
       // eslint-disable-next-line no-undefined
       return undefined;
@@ -63,9 +64,9 @@ export default class Webpack4Cache {
     return cachedResult;
   }
 
-  async store(task) {
-    if (!this.weakCache.has(task.assetSource)) {
-      this.weakCache.set(task.assetSource, task);
+  async store(cacheData) {
+    if (!this.weakCache.has(cacheData.assetSource)) {
+      this.weakCache.set(cacheData.assetSource, cacheData);
     }
 
     if (!this.cache) {
@@ -73,7 +74,14 @@ export default class Webpack4Cache {
       return undefined;
     }
 
-    const { cacheIdent, css, assetName, map, input, inputSourceMap } = task;
+    const {
+      cacheIdent,
+      css,
+      assetName,
+      map,
+      input,
+      inputSourceMap,
+    } = cacheData;
 
     return cacache.put(
       this.cache,
