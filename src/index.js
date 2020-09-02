@@ -297,22 +297,22 @@ class CssMinimizerPlugin {
 
           if (CssMinimizerPlugin.isWebpack4()) {
             if (this.options.cache) {
-              const defaultCacheKeys = {
-                nodeVersion: process.version,
-                // eslint-disable-next-line global-require
-                'css-minimizer-webpack-plugin': require('../package.json')
-                  .version,
-                cssMinimizer: CssMinimizerPackageJson.version,
-                'css-minimizer-webpack-plugin-options': this.options,
-                assetName,
-                contentHash: crypto
-                  .createHash('md4')
-                  .update(input)
-                  .digest('hex'),
-              };
-
+              cacheData.input = input;
+              cacheData.inputSourceMap = inputSourceMap;
               cacheData.cacheKeys = this.options.cacheKeys(
-                defaultCacheKeys,
+                {
+                  nodeVersion: process.version,
+                  // eslint-disable-next-line global-require
+                  'css-minimizer-webpack-plugin': require('../package.json')
+                    .version,
+                  cssMinimizer: CssMinimizerPackageJson.version,
+                  'css-minimizer-webpack-plugin-options': this.options,
+                  assetName,
+                  contentHash: crypto
+                    .createHash('md4')
+                    .update(input)
+                    .digest('hex'),
+                },
                 assetName
               );
             }
@@ -325,9 +325,8 @@ class CssMinimizerPlugin {
 
           if (!output) {
             try {
-              const optimizeOptions = {
-                ...cacheData,
-                info,
+              const minimizerOptions = {
+                assetName,
                 input,
                 inputSourceMap,
                 map: this.options.sourceMap,
@@ -336,8 +335,8 @@ class CssMinimizerPlugin {
               };
 
               output = await (worker
-                ? worker.transform(serialize(optimizeOptions))
-                : minifyFn(optimizeOptions));
+                ? worker.transform(serialize(minimizerOptions))
+                : minifyFn(minimizerOptions));
             } catch (error) {
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
@@ -354,31 +353,24 @@ class CssMinimizerPlugin {
               return;
             }
 
-            cacheData.css = output.css;
-            cacheData.map = output.map;
-            cacheData.warnings = output.warnings;
-
-            if (cacheData.map) {
-              cacheData.source = new SourceMapSource(
-                cacheData.css,
+            if (output.map) {
+              output.source = new SourceMapSource(
+                output.css,
                 assetName,
-                cacheData.map,
+                output.map,
                 input,
                 inputSourceMap,
                 true
               );
             } else {
-              cacheData.source = new RawSource(cacheData.css);
+              output.source = new RawSource(output.css);
             }
 
-            await cache.store(cacheData);
-          } else {
-            cacheData.source = output.source;
-            cacheData.warnings = output.warnings;
+            await cache.store({ ...output, ...cacheData });
           }
 
-          if (cacheData.warnings && cacheData.warnings.length > 0) {
-            cacheData.warnings.forEach((warning) => {
+          if (output.warnings && output.warnings.length > 0) {
+            output.warnings.forEach((warning) => {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 assetName,
@@ -395,12 +387,15 @@ class CssMinimizerPlugin {
             });
           }
 
-          const { source } = cacheData;
-
-          CssMinimizerPlugin.updateAsset(compilation, assetName, source, {
-            ...cacheData.info,
-            minimized: true,
-          });
+          CssMinimizerPlugin.updateAsset(
+            compilation,
+            assetName,
+            output.source,
+            {
+              ...info,
+              minimized: true,
+            }
+          );
         })
       );
     }

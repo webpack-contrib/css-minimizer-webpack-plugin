@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: /foo.css:2:5: Warning ",
+  "Css Minimizer Plugin: warning-plugin:: Warning webpack://test/foo.css:2:2",
 ]
 `;
 

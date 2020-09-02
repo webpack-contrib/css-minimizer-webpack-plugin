@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: /foo.css:2:5: Warning ",
+  "Css Minimizer Plugin: warning-plugin:: Warning webpack://test/foo.css:2:2",
 ]
 `;
 
@@ -70,7 +70,7 @@ exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `Arra
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.19e4764f9c1d9fe130e2.2d6ce991710d63180e35.87eaf84ce322e15b3c17.css": "body{color:red}a{color:#00f}",
+  "entry.19e4764f9c1d9fe130e2.1d050b3e0c36a8b02615.32b75d248edf4111453d.css": "body{color:red}a{color:#00f}",
 }
 `;
 
