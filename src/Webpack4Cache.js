@@ -46,11 +46,11 @@ export default class Webpack4Cache {
 
     cachedResult = JSON.parse(cachedResult.data);
 
-    const { css: code, map, input, assetName, inputSourceMap } = cachedResult;
+    const { css, map, input, assetName, inputSourceMap } = cachedResult;
 
     if (map) {
       cachedResult.source = new sources.SourceMapSource(
-        code,
+        css,
         assetName,
         map,
         input,
@@ -58,7 +58,7 @@ export default class Webpack4Cache {
         true
       );
     } else {
-      cachedResult.source = new sources.RawSource(code);
+      cachedResult.source = new sources.RawSource(css);
     }
 
     return cachedResult;
