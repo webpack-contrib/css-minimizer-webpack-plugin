@@ -311,7 +311,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: ({ data, inputMap }) => {
+        minify: (data, inputMap) => {
           const postcss = require('postcss');
 
           const plugin = postcss.plugin(
@@ -321,11 +321,11 @@ module.exports = {
             }
           );
 
-          const [[fileName, input]] = Object.entries(data);
+          const [[filename, input]] = Object.entries(data);
 
           const postcssOptions = {
-            from: fileName,
-            to: fileName,
+            from: filename,
+            to: filename,
             map: {
               prev: inputMap,
             },
@@ -488,16 +488,16 @@ module.exports = {
           const csso = require('csso');
           const sourcemap = require('source-map');
 
-          const [[fileName, input]] = Object.entries(data);
+          const [[filename, input]] = Object.entries(data);
           const minifiedCss = csso.minify(input, {
-            filename: fileName,
+            filename: filename,
             sourceMap: true,
           });
 
           if (inputMap) {
             minifiedCss.map.applySourceMap(
               new sourcemap.SourceMapConsumer(inputMap),
-              fileName
+              filename
             );
           }
 
@@ -532,9 +532,9 @@ module.exports = {
           // eslint-disable-next-line global-require
           const CleanCSS = require('clean-css');
 
-          const [[fileName, input]] = Object.entries(data);
+          const [[filename, input]] = Object.entries(data);
           const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-            [fileName]: {
+            [filename]: {
               styles: input,
               sourceMap: inputMap,
             },

@@ -274,10 +274,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
-        const [[fileName, input]] = Object.entries(data);
+        const [[filename, input]] = Object.entries(data);
 
         return postcss([plugin])
-          .process(input, { from: fileName, to: fileName })
+          .process(input, { from: filename, to: filename })
           .then((result) => {
             return result;
           });
@@ -317,10 +317,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
-        const [[fileName, input]] = Object.entries(data);
+        const [[filename, input]] = Object.entries(data);
 
         return postcss([plugin])
-          .process(input, { from: fileName, to: fileName })
+          .process(input, { from: filename, to: filename })
           .then((result) => {
             return {
               css: result.css,
@@ -640,16 +640,16 @@ describe('CssMinimizerPlugin', () => {
         // eslint-disable-next-line global-require
         const sourcemap = require('source-map');
 
-        const [[fileName, input]] = Object.entries(data);
+        const [[filename, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
-          filename: fileName,
+          filename,
           sourceMap: true,
         });
 
         if (inputMap) {
           minifiedCss.map.applySourceMap(
             new sourcemap.SourceMapConsumer(inputMap),
-            fileName
+            filename
           );
         }
 
@@ -686,9 +686,9 @@ describe('CssMinimizerPlugin', () => {
         // eslint-disable-next-line global-require
         const CleanCSS = require('clean-css');
 
-        const [[fileName, input]] = Object.entries(data);
+        const [[filename, input]] = Object.entries(data);
         const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-          [fileName]: {
+          [filename]: {
             styles: input,
             sourceMap: inputMap,
           },
