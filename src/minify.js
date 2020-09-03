@@ -22,8 +22,9 @@ const minify = async (options) => {
 
   if (minifyFn) {
     const result = await minifyFn(
-      { input, postcssOptions, minimizerOptions },
-      inputSourceMap
+      { [assetName]: input },
+      inputSourceMap,
+      minimizerOptions
     );
 
     return {

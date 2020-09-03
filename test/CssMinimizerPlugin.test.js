@@ -274,8 +274,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
+        const [[fileName, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return result;
           });
@@ -315,8 +317,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
+        const [[fileName, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
               css: result.css,
@@ -612,19 +616,42 @@ describe('CssMinimizerPlugin', () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
       },
     });
 
     new CssMinimizerPlugin({
-      minify: ({ input, postcssOptions }) => {
+      sourceMap: true,
+      minify: async (data, inputMap) => {
         // eslint-disable-next-line global-require
         const csso = require('csso');
+        // eslint-disable-next-line no-shadow
+        const { SourceMapConsumer } = require('source-map');
 
+        const [[fileName, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
-          filename: postcssOptions.from,
+          filename: fileName,
           sourceMap: true,
         });
+
+        if (inputMap) {
+          minifiedCss.map.applySourceMap(
+            new SourceMapConsumer(inputMap),
+            fileName
+          );
+        }
 
         return {
           css: minifiedCss.css,
@@ -655,13 +682,15 @@ describe('CssMinimizerPlugin', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async ({ input, postcssOptions }) => {
+      minify: async (data, inputMap) => {
         // eslint-disable-next-line global-require
         const CleanCSS = require('clean-css');
 
+        const [[fileName, input]] = Object.entries(data);
         const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-          [postcssOptions.from]: {
+          [fileName]: {
             styles: input,
+            sourceMap: inputMap,
           },
         });
 

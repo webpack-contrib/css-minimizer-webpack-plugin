@@ -354,8 +354,10 @@ describe('when applied with "sourceMap" option', () => {
           });
         });
 
+        const [[fileName, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return result;
           });
