@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: /foo.css:2:5: Warning ",
+  "Css Minimizer Plugin: warning-plugin:: Warning webpack://test/foo.css:2:2",
 ]
 `;
 
@@ -148,7 +148,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work with custom clean-css minifier: error 1`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with custom clean-css minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with custom clean-css minifier: warning 1`] = `Array []`;
 
@@ -161,7 +161,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work with custom csso minifier: error 1`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with custom csso minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with custom csso minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with custom csso minifier: warning 1`] = `Array []`;
 
