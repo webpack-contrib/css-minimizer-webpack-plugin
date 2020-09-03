@@ -311,7 +311,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: (data, inputMap) => {
+        minify: (data, inputMap, minimizerOptions) => {
           const postcss = require('postcss');
 
           const plugin = postcss.plugin(
