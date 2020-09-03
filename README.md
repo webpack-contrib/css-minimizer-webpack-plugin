@@ -311,9 +311,8 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: (data) => {
+        minify: ({ data, inputMap }) => {
           const postcss = require('postcss');
-          const { input, postcssOptions, minimizerOptions } = data;
 
           const plugin = postcss.plugin(
             'custom-plugin',
@@ -321,6 +320,16 @@ module.exports = {
               // custom code
             }
           );
+
+          const [[fileName, input]] = Object.entries(data);
+
+          const postcssOptions = {
+            from: fileName,
+            to: fileName,
+            map: {
+              prev: inputMap,
+            },
+          };
 
           return postcss([plugin])
             .process(input, postcssOptions)
@@ -475,14 +484,22 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: ({ input, postcssOptions }) => {
-          // eslint-disable-next-line global-require
+        minify: async (data, inputMap) => {
           const csso = require('csso');
+          const sourcemap = require('source-map');
 
+          const [[fileName, input]] = Object.entries(data);
           const minifiedCss = csso.minify(input, {
-            filename: postcssOptions.from,
+            filename: fileName,
             sourceMap: true,
           });
+
+          if (inputMap) {
+            minifiedCss.map.applySourceMap(
+              new sourcemap.SourceMapConsumer(inputMap),
+              fileName
+            );
+          }
 
           return {
             css: minifiedCss.css,
@@ -511,13 +528,15 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: async ({ input, postcssOptions }) => {
+        minify: async (data, inputMap) => {
           // eslint-disable-next-line global-require
           const CleanCSS = require('clean-css');
 
+          const [[fileName, input]] = Object.entries(data);
           const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-            [postcssOptions.from]: {
+            [fileName]: {
               styles: input,
+              sourceMap: inputMap,
             },
           });
 
