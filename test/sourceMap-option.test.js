@@ -354,8 +354,10 @@ describe('when applied with "sourceMap" option', () => {
           });
         });
 
+        const [[filename, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: filename, to: filename })
           .then((result) => {
             return result;
           });
@@ -366,5 +368,26 @@ describe('when applied with "sourceMap" option', () => {
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
+
+  it('should do not contain sourcemap link in minified source', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      sourceMap: false,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    const assets = readAssets(compiler, stats, '.css');
+
+    const [[, input]] = Object.entries(assets);
+
+    expect(/sourceMappingURL/i.test(input)).toBe(false);
   });
 });

@@ -274,8 +274,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
+        const [[filename, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: filename, to: filename })
           .then((result) => {
             return result;
           });
@@ -315,8 +317,10 @@ describe('CssMinimizerPlugin', () => {
           });
         });
 
+        const [[filename, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: filename, to: filename })
           .then((result) => {
             return {
               css: result.css,
@@ -612,19 +616,42 @@ describe('CssMinimizerPlugin', () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
       },
     });
 
     new CssMinimizerPlugin({
-      minify: ({ input, postcssOptions }) => {
+      sourceMap: true,
+      minify: async (data, inputMap) => {
         // eslint-disable-next-line global-require
         const csso = require('csso');
+        // eslint-disable-next-line global-require
+        const sourcemap = require('source-map');
 
+        const [[filename, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
-          filename: postcssOptions.from,
+          filename,
           sourceMap: true,
         });
+
+        if (inputMap) {
+          minifiedCss.map.applySourceMap(
+            new sourcemap.SourceMapConsumer(inputMap),
+            filename
+          );
+        }
 
         return {
           css: minifiedCss.css,
@@ -638,7 +665,7 @@ describe('CssMinimizerPlugin', () => {
     const maps = readAssets(compiler, stats, '.css.map');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
 
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
@@ -655,13 +682,15 @@ describe('CssMinimizerPlugin', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async ({ input, postcssOptions }) => {
+      minify: async (data, inputMap) => {
         // eslint-disable-next-line global-require
         const CleanCSS = require('clean-css');
 
+        const [[filename, input]] = Object.entries(data);
         const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-          [postcssOptions.from]: {
+          [filename]: {
             styles: input,
+            sourceMap: inputMap,
           },
         });
 
@@ -678,7 +707,7 @@ describe('CssMinimizerPlugin', () => {
     const maps = readAssets(compiler, stats, '.css.map');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
+      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
     });
 
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');

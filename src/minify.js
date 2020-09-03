@@ -22,8 +22,9 @@ const minify = async (options) => {
 
   if (minifyFn) {
     const result = await minifyFn(
-      { input, postcssOptions, minimizerOptions },
-      inputSourceMap
+      { [assetName]: input },
+      inputSourceMap,
+      minimizerOptions
     );
 
     return {
@@ -34,7 +35,7 @@ const minify = async (options) => {
   }
 
   if (inputSourceMap) {
-    postcssOptions.map = { prev: inputSourceMap, ...map };
+    postcssOptions.map = { annotation: false, prev: inputSourceMap, ...map };
   }
 
   const result = await cssnano.process(input, postcssOptions, minimizerOptions);

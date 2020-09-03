@@ -148,20 +148,20 @@ Object {
 
 exports[`CssMinimizerPlugin should work with custom clean-css minifier: error 1`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with custom clean-css minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with custom clean-css minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with custom clean-css minifier: warning 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should work with custom csso minifier: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}
+  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
 }
 `;
 
 exports[`CssMinimizerPlugin should work with custom csso minifier: error 1`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with custom csso minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,S,CAEF,C,CACE,U\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with custom csso minifier: foo.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with custom csso minifier: warning 1`] = `Array []`;
 

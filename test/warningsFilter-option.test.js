@@ -34,8 +34,10 @@ describe('warningsFilter option', () => {
     new CssMinimizerPlugin({
       parallel: false,
       minify: (data) => {
+        const [[fileName, input]] = Object.entries(data);
+
         return postcss([plugin])
-          .process(data.input, data.postcssOptions)
+          .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
               css: result.css,
