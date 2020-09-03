@@ -311,6 +311,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
+        sourceMap: true,
         minify: (data, inputMap, minimizerOptions) => {
           const postcss = require('postcss');
 
@@ -484,6 +485,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
+        sourceMap: true,
         minify: async (data, inputMap) => {
           const csso = require('csso');
           const sourcemap = require('source-map');
@@ -528,6 +530,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
+        sourceMap: true,
         minify: async (data, inputMap) => {
           // eslint-disable-next-line global-require
           const CleanCSS = require('clean-css');

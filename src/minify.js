@@ -35,7 +35,7 @@ const minify = async (options) => {
   }
 
   if (inputSourceMap) {
-    postcssOptions.map = { prev: inputSourceMap, ...map };
+    postcssOptions.map = { annotation: false, prev: inputSourceMap, ...map };
   }
 
   const result = await cssnano.process(input, postcssOptions, minimizerOptions);
