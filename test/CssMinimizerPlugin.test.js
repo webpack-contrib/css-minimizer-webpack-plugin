@@ -549,8 +549,393 @@ describe('CssMinimizerPlugin', () => {
     });
   });
 
-  it('should work and use cache when the "cache" option is "false"', async () => {
+  it.only('should work and use memory cache when the "cache" option is "true"', async () => {
     const compiler = getCompiler({
+      cache: true,
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    // new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
+      }
+
+      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      entry: {
+        js: path.resolve(__dirname, './fixtures/entry.js'),
+        mjs: path.resolve(__dirname, './fixtures/entry.mjs'),
+        importExport: path.resolve(
+          __dirname,
+          './fixtures/import-export/entry.js'
+        ),
+        AsyncImportExport: path.resolve(
+          __dirname,
+          './fixtures/async-import-export/entry.js'
+        ),
+      },
+      cache: true,
+      output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
+        chunkFilename: '[id].[name].js',
+      },
+    });
+
+    new TerserPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'js.js' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(1);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
+      }
+
+      expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with source map and use memory cache when the "cache" option is "true"', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        js: path.resolve(__dirname, './fixtures/entry.js'),
+        mjs: path.resolve(__dirname, './fixtures/entry.mjs'),
+        importExport: path.resolve(
+          __dirname,
+          './fixtures/import-export/entry.js'
+        ),
+        AsyncImportExport: path.resolve(
+          __dirname,
+          './fixtures/async-import-export/entry.js'
+        ),
+      },
+      cache: true,
+      output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
+        chunkFilename: '[id].[name].js',
+      },
+    });
+
+    new TerserPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(10);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(10);
+    }
+
+    expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(0);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
+      }
+
+      expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        js: path.resolve(__dirname, './fixtures/entry.js'),
+        mjs: path.resolve(__dirname, './fixtures/entry.mjs'),
+        importExport: path.resolve(
+          __dirname,
+          './fixtures/import-export/entry.js'
+        ),
+        AsyncImportExport: path.resolve(
+          __dirname,
+          './fixtures/async-import-export/entry.js'
+        ),
+      },
+      cache: true,
+      output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
+        chunkFilename: '[id].[name].js',
+      },
+    });
+
+    new TerserPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(10);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(10);
+    }
+
+    expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'js.js' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
+      }
+
+      expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with warnings and use memory cache when the "cache" option is "true"', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        js: path.resolve(__dirname, './fixtures/entry.js'),
+        mjs: path.resolve(__dirname, './fixtures/entry.mjs'),
+        importExport: path.resolve(
+          __dirname,
+          './fixtures/import-export/entry.js'
+        ),
+        AsyncImportExport: path.resolve(
+          __dirname,
+          './fixtures/async-import-export/entry.js'
+        ),
+      },
+      cache: true,
+      output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
+        chunkFilename: '[id].[name].js',
+      },
+    });
+
+    new TerserPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(10);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(10);
+    }
+
+    expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(0);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
+      }
+
+      expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        js: path.resolve(__dirname, './fixtures/entry.js'),
+        mjs: path.resolve(__dirname, './fixtures/entry.mjs'),
+        importExport: path.resolve(
+          __dirname,
+          './fixtures/import-export/entry.js'
+        ),
+        AsyncImportExport: path.resolve(
+          __dirname,
+          './fixtures/async-import-export/entry.js'
+        ),
+      },
+      cache: true,
+      output: {
+        path: path.resolve(__dirname, './dist'),
+        filename: '[name].js',
+        chunkFilename: '[id].[name].js',
+      },
+    });
+
+    new TerserPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(10);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(10);
+    }
+
+    expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'js.js' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
+      }
+
+      expect(readsAssets(compiler, stats)).toMatchSnapshot('assets');
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work and do not use memory cache when the "cache" option is "false"', async () => {
+    const compiler = getCompiler({
+      cache: false,
       entry: {
         foo: `${__dirname}/fixtures/simple.js`,
       },
@@ -604,9 +989,9 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(2);
+        ).toBe(5);
       } else {
-        expect(newStats.compilation.emittedAssets.size).toBe(0);
+        expect(newStats.compilation.emittedAssets.size).toBe(5);
       }
 
       expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
@@ -615,170 +1000,5 @@ describe('CssMinimizerPlugin', () => {
 
       resolve();
     });
-  });
-
-  it('should work and use cache when the "cache" option is "true"', async () => {
-    const compiler = getCompiler({
-      entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
-      },
-      plugins: [
-        new MiniCssExtractPlugin({
-          filename: '[name].css',
-          chunkFilename: '[id].[name].css',
-        }),
-      ],
-      module: {
-        rules: [
-          {
-            test: /.s?css$/i,
-            use: [MiniCssExtractPlugin.loader, 'css-loader'],
-          },
-          {
-            test: /simple-emit.js$/i,
-            loader: require.resolve('./helpers/emitAssetLoader.js'),
-          },
-          {
-            test: /simple-emit-2.js$/i,
-            loader: require.resolve('./helpers/emitAssetLoader2.js'),
-          },
-        ],
-      },
-    });
-
-    new CssMinimizerPlugin({ cache: true }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    if (getCompiler.isWebpack4()) {
-      expect(
-        Object.keys(stats.compilation.assets).filter(
-          (assetName) => stats.compilation.assets[assetName].emitted
-        ).length
-      ).toBe(5);
-    } else {
-      expect(stats.compilation.emittedAssets.size).toBe(5);
-    }
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(getWarnings(stats)).toMatchSnapshot('errors');
-    expect(getErrors(stats)).toMatchSnapshot('warnings');
-
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
-
-      if (getCompiler.isWebpack4()) {
-        expect(
-          Object.keys(newStats.compilation.assets).filter(
-            (assetName) => newStats.compilation.assets[assetName].emitted
-          ).length
-        ).toBe(2);
-      } else {
-        expect(newStats.compilation.emittedAssets.size).toBe(0);
-      }
-
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
-      expect(getWarnings(newStats)).toMatchSnapshot('errors');
-      expect(getErrors(newStats)).toMatchSnapshot('warnings');
-
-      resolve();
-    });
-  });
-
-  it('should work with "csso" minifier', async () => {
-    const compiler = getCompiler({
-      devtool: 'source-map',
-      entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
-      },
-      module: {
-        rules: [
-          {
-            test: /.s?css$/i,
-            use: [
-              MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } },
-            ],
-          },
-        ],
-      },
-    });
-
-    new CssMinimizerPlugin({
-      sourceMap: true,
-      minify: async (data, inputMap) => {
-        // eslint-disable-next-line global-require
-        const csso = require('csso');
-        // eslint-disable-next-line global-require
-        const sourcemap = require('source-map');
-
-        const [[filename, input]] = Object.entries(data);
-        const minifiedCss = csso.minify(input, {
-          filename,
-          sourceMap: true,
-        });
-
-        if (inputMap) {
-          minifiedCss.map.applySourceMap(
-            new sourcemap.SourceMapConsumer(inputMap),
-            filename
-          );
-        }
-
-        return {
-          css: minifiedCss.css,
-          map: minifiedCss.map.toJSON(),
-        };
-      },
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
-    );
-    expect(getErrors(stats)).toMatchSnapshot('error');
-    expect(getWarnings(stats)).toMatchSnapshot('warning');
-  });
-
-  it('should work with "clean-css" minifier', async () => {
-    const compiler = getCompiler({
-      devtool: 'source-map',
-      entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
-      },
-    });
-
-    new CssMinimizerPlugin({
-      minify: async (data, inputMap) => {
-        // eslint-disable-next-line global-require
-        const CleanCSS = require('clean-css');
-
-        const [[filename, input]] = Object.entries(data);
-        const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-          [filename]: {
-            styles: input,
-            sourceMap: inputMap,
-          },
-        });
-
-        return {
-          css: minifiedCss.styles,
-          map: minifiedCss.sourceMap.toJSON(),
-          warnings: minifiedCss.warnings,
-        };
-      },
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
-    );
-    expect(getErrors(stats)).toMatchSnapshot('error');
-    expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 });
