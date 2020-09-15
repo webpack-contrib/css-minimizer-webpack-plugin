@@ -19,9 +19,9 @@ describe('worker', () => {
       },
       minimizerOptions: { discardComments: false },
     };
-    const { css, map } = await transform(serialize(options));
+    const { code, map } = await transform(serialize(options));
 
-    expect(css).toMatchSnapshot('css');
+    expect(code).toMatchSnapshot('css');
     expect(map).toMatchSnapshot('map');
   });
 
@@ -39,9 +39,9 @@ describe('worker', () => {
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
     };
-    const { css, map } = await transform(serialize(options));
+    const { code, map } = await transform(serialize(options));
 
-    expect(css).toMatchSnapshot('css');
+    expect(code).toMatchSnapshot('css');
     expect(map).toMatchSnapshot('map');
   });
 
@@ -54,9 +54,9 @@ describe('worker', () => {
         return { css: '.minify {};' };
       },
     };
-    const { css, map } = await transform(serialize(options));
+    const { code, map } = await transform(serialize(options));
 
-    expect(css).toMatchSnapshot('css');
+    expect(code).toMatchSnapshot('css');
     expect(map).toMatchSnapshot('map');
   });
 

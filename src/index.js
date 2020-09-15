@@ -194,27 +194,20 @@ class CssMinimizerPlugin {
   }
 
   async optimize(compiler, compilation, assets, CacheEngine, weakCache) {
-    const matchObject = ModuleFilenameHelpers.matchObject.bind(
-      // eslint-disable-next-line no-undefined
-      undefined,
-      this.options
-    );
-
     const assetNames = Object.keys(
       typeof assets === 'undefined' ? compilation.assets : assets
-    ).filter((assetName) => matchObject(assetName));
+    ).filter((assetName) =>
+      ModuleFilenameHelpers.matchObject.bind(
+        // eslint-disable-next-line no-undefined
+        undefined,
+        this.options
+      )(assetName)
+    );
 
     if (assetNames.length === 0) {
       return Promise.resolve();
     }
 
-    const cache = new CacheEngine(
-      compilation,
-      {
-        cache: this.options.cache,
-      },
-      weakCache
-    );
     const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
       this.options.parallel
     );
@@ -249,14 +242,19 @@ class CssMinimizerPlugin {
     }
 
     const limit = pLimit(concurrency);
+    const cache = new CacheEngine(
+      compilation,
+      { cache: this.options.cache },
+      weakCache
+    );
     const scheduledTasks = [];
 
-    for (const assetName of assetNames) {
+    for (const name of assetNames) {
       scheduledTasks.push(
         limit(async () => {
-          const { source: assetSource, info } = CssMinimizerPlugin.getAsset(
+          const { source: inputSource, info } = CssMinimizerPlugin.getAsset(
             compilation,
-            assetName
+            name
           );
 
           // Skip double minimize assets from child compilation
@@ -268,8 +266,8 @@ class CssMinimizerPlugin {
           let inputSourceMap;
 
           // TODO refactor after drop webpack@4, webpack@5 always has `sourceAndMap` on sources
-          if (this.options.sourceMap && assetSource.sourceAndMap) {
-            const { source, map } = assetSource.sourceAndMap();
+          if (this.options.sourceMap && inputSource.sourceAndMap) {
+            const { source, map } = inputSource.sourceAndMap();
 
             input = source;
 
@@ -280,12 +278,12 @@ class CssMinimizerPlugin {
                 inputSourceMap = map;
 
                 compilation.warnings.push(
-                  new Error(`${assetName} contains invalid source map`)
+                  new Error(`${name} contains invalid source map`)
                 );
               }
             }
           } else {
-            input = assetSource.source();
+            input = inputSource.source();
             inputSourceMap = null;
           }
 
@@ -293,7 +291,7 @@ class CssMinimizerPlugin {
             input = input.toString();
           }
 
-          const cacheData = { assetName, assetSource };
+          const cacheData = { name, inputSource };
 
           if (CssMinimizerPlugin.isWebpack4()) {
             if (this.options.cache) {
@@ -301,19 +299,18 @@ class CssMinimizerPlugin {
               cacheData.inputSourceMap = inputSourceMap;
               cacheData.cacheKeys = this.options.cacheKeys(
                 {
-                  nodeVersion: process.version,
                   // eslint-disable-next-line global-require
                   'css-minimizer-webpack-plugin': require('../package.json')
                     .version,
                   cssMinimizer: CssMinimizerPackageJson.version,
                   'css-minimizer-webpack-plugin-options': this.options,
-                  assetName,
+                  name,
                   contentHash: crypto
                     .createHash('md4')
                     .update(input)
                     .digest('hex'),
                 },
-                assetName
+                name
               );
             }
           }
@@ -326,7 +323,7 @@ class CssMinimizerPlugin {
           if (!output) {
             try {
               const minimizerOptions = {
-                assetName,
+                name,
                 input,
                 inputSourceMap,
                 map: this.options.sourceMap,
@@ -341,7 +338,7 @@ class CssMinimizerPlugin {
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
                   error,
-                  assetName,
+                  name,
                   inputSourceMap &&
                     CssMinimizerPlugin.isSourceMap(inputSourceMap)
                     ? new SourceMapConsumer(inputSourceMap)
@@ -355,15 +352,15 @@ class CssMinimizerPlugin {
 
             if (output.map) {
               output.source = new SourceMapSource(
-                output.css,
-                assetName,
+                output.code,
+                name,
                 output.map,
                 input,
                 inputSourceMap,
                 true
               );
             } else {
-              output.source = new RawSource(output.css);
+              output.source = new RawSource(output.code);
             }
 
             await cache.store({ ...output, ...cacheData });
@@ -373,7 +370,7 @@ class CssMinimizerPlugin {
             output.warnings.forEach((warning) => {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
-                assetName,
+                name,
                 inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap)
                   ? new SourceMapConsumer(inputSourceMap)
                   : null,
@@ -387,15 +384,11 @@ class CssMinimizerPlugin {
             });
           }
 
-          CssMinimizerPlugin.updateAsset(
-            compilation,
-            assetName,
-            output.source,
-            {
-              ...info,
-              minimized: true,
-            }
-          );
+          // TODO `...` required only for webpack@4
+          const newInfo = { ...info, minimized: true };
+          const { source } = output;
+
+          CssMinimizerPlugin.updateAsset(compilation, name, source, newInfo);
         })
       );
     }

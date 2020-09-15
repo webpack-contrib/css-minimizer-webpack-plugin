@@ -10,7 +10,7 @@ function warningsToString(warnings) {
 
 const minify = async (options) => {
   const {
-    assetName,
+    name,
     input,
     minimizerOptions,
     map,
@@ -18,30 +18,32 @@ const minify = async (options) => {
     minify: minifyFn,
   } = options;
 
-  const postcssOptions = { to: assetName, from: assetName };
+  const postcssOptions = { to: name, from: name };
 
   if (minifyFn) {
     const result = await minifyFn(
-      { [assetName]: input },
+      { [name]: input },
       inputSourceMap,
       minimizerOptions
     );
 
     return {
-      css: result.css,
+      // TODO remove `css` in future major release
+      code: result.code || result.css,
       map: result.map,
       warnings: warningsToString(result.warnings || []),
     };
   }
 
   if (inputSourceMap) {
+    // TODO remove `inline` value for the `sourceMap` option
     postcssOptions.map = { annotation: false, prev: inputSourceMap, ...map };
   }
 
   const result = await cssnano.process(input, postcssOptions, minimizerOptions);
 
   return {
-    css: result.css,
+    code: result.css,
     map: result.map,
     warnings: warningsToString(result.warnings()),
   };

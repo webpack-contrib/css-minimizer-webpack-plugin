@@ -7,17 +7,15 @@ export default class Cache {
   async get(cacheData) {
     // eslint-disable-next-line no-param-reassign
     cacheData.eTag =
-      cacheData.eTag || this.cache.getLazyHashedEtag(cacheData.assetSource);
+      cacheData.eTag || this.cache.getLazyHashedEtag(cacheData.inputSource);
 
-    return this.cache.getPromise(cacheData.assetName, cacheData.eTag);
+    return this.cache.getPromise(cacheData.name, cacheData.eTag);
   }
 
   async store(cacheData) {
     const { source, warnings } = cacheData;
+    const data = { source, warnings };
 
-    return this.cache.storePromise(cacheData.assetName, cacheData.eTag, {
-      source,
-      warnings,
-    });
+    return this.cache.storePromise(cacheData.name, cacheData.eTag, data);
   }
 }

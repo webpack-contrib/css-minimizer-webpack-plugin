@@ -2,7 +2,7 @@
 
 exports[`worker should emit error: error 1`] = `
 Array [
-  "/entry.css:1:1: Unknown word",
+  "<css input>:1:1: Unknown word",
 ]
 `;
 
@@ -10,12 +10,12 @@ exports[`worker should minify css: css 1`] = `".foo{color:red}.bar{color:coral}"
 
 exports[`worker should minify css: map 1`] = `
 Object {
-  "file": "entry.css",
+  "file": "to.css",
   "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
   "names": Array [],
   "sources": Array [
     "foo.css",
-    "entry.css",
+    "x",
   ],
   "sourcesContent": Array [
     ".foo{color:red;}",
@@ -30,12 +30,12 @@ exports[`worker should work inputSourceMap as prev: css 1`] = `".foo{color:red}.
 
 exports[`worker should work inputSourceMap as prev: map 1`] = `
 Object {
-  "file": "entry.css",
+  "file": "to.css",
   "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
   "names": Array [],
   "sources": Array [
     "foo.css",
-    "entry.css",
+    "x",
   ],
   "sourcesContent": Array [
     ".foo{color:red;}",

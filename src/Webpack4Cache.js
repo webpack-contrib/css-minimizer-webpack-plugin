@@ -20,15 +20,15 @@ export default class Webpack4Cache {
   }
 
   async get(cacheData, sources) {
-    const weakOutput = this.weakCache.get(cacheData.assetSource);
-
-    if (weakOutput) {
-      return weakOutput;
-    }
-
     if (!this.cache) {
       // eslint-disable-next-line no-undefined
       return undefined;
+    }
+
+    const weakOutput = this.weakCache.get(cacheData.inputSource);
+
+    if (weakOutput) {
+      return weakOutput;
     }
 
     // eslint-disable-next-line no-param-reassign
@@ -46,53 +46,53 @@ export default class Webpack4Cache {
 
     cachedResult = JSON.parse(cachedResult.data);
 
-    const { css, map, input, assetName, inputSourceMap } = cachedResult;
+    const { code, map, input, name, inputSourceMap } = cachedResult;
 
     if (map) {
       cachedResult.source = new sources.SourceMapSource(
-        css,
-        assetName,
+        code,
+        name,
         map,
         input,
         inputSourceMap,
         true
       );
     } else {
-      cachedResult.source = new sources.RawSource(css);
+      cachedResult.source = new sources.RawSource(code);
     }
 
     return cachedResult;
   }
 
   async store(cacheData) {
-    if (!this.weakCache.has(cacheData.assetSource)) {
-      this.weakCache.set(cacheData.assetSource, cacheData);
-    }
-
     if (!this.cache) {
       // eslint-disable-next-line no-undefined
       return undefined;
     }
 
+    if (!this.weakCache.has(cacheData.inputSource)) {
+      this.weakCache.set(cacheData.inputSource, cacheData);
+    }
+
     const {
       cacheIdent,
-      css,
-      assetName,
+      code,
+      name,
       map,
       input,
       inputSourceMap,
+      warnings,
     } = cacheData;
 
-    return cacache.put(
-      this.cache,
-      cacheIdent,
-      JSON.stringify({
-        assetName,
-        css,
-        map,
-        input,
-        inputSourceMap,
-      })
-    );
+    const data = {
+      name,
+      code,
+      map,
+      input,
+      inputSourceMap,
+      warnings,
+    };
+
+    return cacache.put(this.cache, cacheIdent, JSON.stringify(data));
   }
 }
