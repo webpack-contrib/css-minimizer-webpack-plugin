@@ -39,7 +39,7 @@ class CssMinimizerPlugin {
       },
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
-      sourceMap = false,
+      sourceMap,
       cache = true,
       cacheKeys = (defaultCacheKeys) => defaultCacheKeys,
       parallel = true,
@@ -59,10 +59,6 @@ class CssMinimizerPlugin {
       minify,
       minimizerOptions,
     };
-
-    if (this.options.sourceMap === true) {
-      this.options.sourceMap = { inline: false };
-    }
   }
 
   static isSourceMap(input) {

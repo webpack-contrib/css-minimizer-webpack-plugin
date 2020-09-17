@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`"minify" option should work with "clean-css" minifier: assets 1`] = `
+Object {
+  "foo.css": "body{color:red}a{color:#00f}
+/*# sourceMappingURL=foo.css.map*/",
+}
+`;
+
+exports[`"minify" option should work with "clean-css" minifier: error 1`] = `Array []`;
+
+exports[`"minify" option should work with "clean-css" minifier: source maps 1`] = `
+Object {
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,MAAO,IAET,EACE,MAAO\\",\\"sourceRoot\\":\\"\\",\\"file\\":\\"foo.css\\"}",
+}
+`;
+
+exports[`"minify" option should work with "clean-css" minifier: warning 1`] = `Array []`;
+
+exports[`"minify" option should work with "csso" minifier: assets 1`] = `
+Object {
+  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=foo.css.map*/",
+}
+`;
+
+exports[`"minify" option should work with "csso" minifier: error 1`] = `Array []`;
+
+exports[`"minify" option should work with "csso" minifier: source maps 1`] = `
+Object {
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///sourcemap/bar.scss\\",\\"webpack:///sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"minify" option should work with "csso" minifier: warning 1`] = `Array []`;

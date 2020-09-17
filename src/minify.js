@@ -37,7 +37,12 @@ const minify = async (options) => {
 
   if (inputSourceMap) {
     // TODO remove `inline` value for the `sourceMap` option
-    postcssOptions.map = { annotation: false, prev: inputSourceMap, ...map };
+    postcssOptions.map = {
+      annotation: false,
+      inline: false,
+      prev: inputSourceMap,
+      ...map,
+    };
   }
 
   const result = await cssnano.process(input, postcssOptions, minimizerOptions);
