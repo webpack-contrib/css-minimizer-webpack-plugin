@@ -680,7 +680,7 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(1);
+        ).toBe(2);
       } else {
         // TODO regression in beta
         expect(newStats.compilation.emittedAssets.size).toBe(2);
@@ -733,7 +733,7 @@ describe('CssMinimizerPlugin', () => {
         Object.keys(stats.compilation.assets).filter(
           (assetName) => stats.compilation.assets[assetName].emitted
         ).length
-      ).toBe(10);
+      ).toBe(8);
     } else {
       expect(stats.compilation.emittedAssets.size).toBe(8);
     }
@@ -750,7 +750,7 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(0);
+        ).toBe(4);
       } else {
         // TODO regression in beta
         expect(newStats.compilation.emittedAssets.size).toBe(2);
@@ -822,7 +822,7 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(2);
+        ).toBe(4);
       } else {
         // TODO regression in beta
         expect(newStats.compilation.emittedAssets.size).toBe(4);
@@ -897,7 +897,7 @@ describe('CssMinimizerPlugin', () => {
         Object.keys(stats.compilation.assets).filter(
           (assetName) => stats.compilation.assets[assetName].emitted
         ).length
-      ).toBe(10);
+      ).toBe(5);
     } else {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
@@ -914,8 +914,9 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(0);
+        ).toBe(2);
       } else {
+        // TODO regression in beta
         expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
@@ -1009,6 +1010,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
+        // TODO regression in beta
         expect(newStats.compilation.emittedAssets.size).toBe(2);
       }
 
