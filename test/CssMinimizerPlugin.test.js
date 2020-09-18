@@ -64,7 +64,7 @@ describe('CssMinimizerPlugin', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -107,7 +107,7 @@ describe('CssMinimizerPlugin', () => {
 
     expect(stdoutOutput).toMatchSnapshot('process stdout output');
     expect(stderrOutput).toMatchSnapshot('process stderr output');
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -352,6 +352,7 @@ describe('CssMinimizerPlugin', () => {
     };
 
     const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -362,15 +363,13 @@ describe('CssMinimizerPlugin', () => {
 
       // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-
         if (/\.css\?/.test(file)) {
           expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
         }
 
-        // eslint-disable-next-line no-continue
-        if (!/\.css.map/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        if (/\.css.map/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
       }
     });
   });
@@ -404,7 +403,7 @@ describe('CssMinimizerPlugin', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -425,7 +424,7 @@ describe('CssMinimizerPlugin', () => {
     expect(printedCompressed ? printedCompressed.length : 0).toBe(
       getCompiler.isWebpack4() ? 0 : 1
     );
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -478,7 +477,7 @@ describe('CssMinimizerPlugin', () => {
         expect(webpackHash).toBe(cryptoHash);
       }
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
     }
@@ -528,7 +527,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -546,7 +545,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -598,7 +599,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -616,7 +617,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -668,7 +671,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -688,7 +691,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(2);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -740,7 +745,9 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(8);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -758,7 +765,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(2);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -810,7 +819,9 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(8);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -830,7 +841,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(4);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -904,7 +917,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -922,7 +935,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -996,7 +1011,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -1016,7 +1031,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(2);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -1068,7 +1085,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -1085,7 +1102,9 @@ describe('CssMinimizerPlugin', () => {
         expect(newStats.compilation.emittedAssets.size).toBe(5);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 

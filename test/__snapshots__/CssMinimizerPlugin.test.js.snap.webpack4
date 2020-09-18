@@ -195,6 +195,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -204,6 +205,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "a,body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -221,6 +223,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -230,6 +233,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }

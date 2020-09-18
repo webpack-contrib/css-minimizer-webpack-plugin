@@ -31,7 +31,7 @@ describe('when applied with "test" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -43,7 +43,7 @@ describe('when applied with "test" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -55,7 +55,7 @@ describe('when applied with "test" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });

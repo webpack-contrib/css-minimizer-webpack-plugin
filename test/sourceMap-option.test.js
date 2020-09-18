@@ -13,6 +13,22 @@ import {
   getWarnings,
 } from './helpers';
 
+expect.addSnapshotSerializer({
+  test: (value) => {
+    // For string that are valid JSON
+    if (typeof value !== 'string') {
+      return false;
+    }
+
+    try {
+      return typeof JSON.parse(value) === 'object';
+    } catch (e) {
+      return false;
+    }
+  },
+  print: (value) => JSON.stringify(JSON.parse(value), null, 4),
+});
+
 describe('when applied with "sourceMap" option', () => {
   const baseConfig = {
     devtool: 'source-map',
@@ -40,45 +56,21 @@ describe('when applied with "sourceMap" option', () => {
 
   afterEach(() => Promise.all([removeCache()]));
 
-  it('matches snapshot for "false" value, without previous sourcemap', async () => {
+  it('should work with the "devtool" option', async () => {
     const compiler = getCompiler(baseConfig);
+
     new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
 
-    const maps = readAssets(compiler, stats, '.css.map');
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-
-    Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
-    });
-
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for "true" value, without previous sourcemap', async () => {
-    const compiler = getCompiler(baseConfig);
-    new CssMinimizerPlugin({
-      sourceMap: true,
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    const maps = readAssets(compiler, stats, '.css.map');
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-
-    Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
-    });
-
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
-  });
-
-  it('matches snapshot for "false" value, using previous sourcemap', async () => {
+  it('should work with the "true" value', async () => {
     const config = Object.assign(baseConfig, {
       module: {
         rules: [
@@ -95,61 +87,54 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
+
+    new CssMinimizerPlugin({
+      sourceMap: true,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
+
+  it('should work with the "false" value', async () => {
+    const config = Object.assign(baseConfig, {
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: false,
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    const maps = readAssets(compiler, stats, '.css.map');
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-
-    Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
-    });
-
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('matches snapshot for "true" value, using previous sourcemap', async () => {
-    const config = Object.assign(baseConfig, {
-      module: {
-        rules: [
-          {
-            test: /.s?css$/i,
-            use: [
-              MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } },
-            ],
-          },
-        ],
-      },
-    });
-
-    const compiler = getCompiler(config);
-    new CssMinimizerPlugin({
-      sourceMap: true,
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    const maps = readAssets(compiler, stats, '.css.map');
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-
-    Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
-    });
-
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
-  });
-
-  it('matches snapshot for "inline" value', () => {
+  it('should for with the "inline" value', () => {
     const compiler = getCompiler(baseConfig);
+
     new CssMinimizerPlugin({
       sourceMap: { inline: true },
     }).apply(compiler);
@@ -159,11 +144,15 @@ describe('when applied with "sourceMap" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-        if (/\.js/.test(file)) continue;
+        if (/\.js/.test(file)) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
+
         const map = Object.keys(stats.compilation.assets).filter((i) =>
           i.includes('css.map')
         );
+
         expect(map.length).toBe(0);
         expect(readAsset(file, compiler, stats)).toMatch(
           /\/\*# sourceMappingURL=data:application\/json;base64,.*\*\//
@@ -172,7 +161,7 @@ describe('when applied with "sourceMap" option', () => {
     });
   });
 
-  it('matches snapshot when using SourceMapDevToolPlugin (with filename, publicPath and fileContext options)', async () => {
+  it('should work with SourceMapDevToolPlugin plugin)', async () => {
     const config = Object.assign(baseConfig, {
       devtool: false,
       module: {
@@ -201,25 +190,21 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    const maps = readAssets(compiler, stats, '.css.map');
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-
-    Object.keys(maps).forEach((assetKey) => {
-      expect(maps[assetKey]).toMatchSnapshot(assetKey);
-    });
-
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('should emit warning when broken sourcemap', async () => {
+  it('should work and emit warnings on broken sourcemaps', async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -274,6 +259,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -284,7 +270,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('should emit warning when valid sourcemap and minimizer error', async () => {
+  it('should work and emit warning on valid sourcemap and minimizer error', async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -341,6 +327,7 @@ describe('when applied with "sourceMap" option', () => {
     });
 
     const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: true,
       minify: (data) => {
@@ -369,7 +356,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
-  it('should do not contain sourcemap link in minified source', async () => {
+  it('should work and do not contain sourcemap link in minified source', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -377,14 +364,10 @@ describe('when applied with "sourceMap" option', () => {
       },
     });
 
-    new CssMinimizerPlugin({
-      sourceMap: false,
-    }).apply(compiler);
+    new CssMinimizerPlugin({ sourceMap: false }).apply(compiler);
 
     const stats = await compile(compiler);
-
-    const assets = readAssets(compiler, stats, '.css');
-
+    const assets = readAssets(compiler, stats, /\.css$/);
     const [[, input]] = Object.entries(assets);
 
     expect(/sourceMappingURL/i.test(input)).toBe(false);

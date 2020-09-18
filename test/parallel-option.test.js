@@ -74,11 +74,11 @@ describe('parallel option', () => {
       numWorkers: os.cpus().length - 1,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -90,7 +90,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(0);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -105,11 +105,11 @@ describe('parallel option', () => {
       numWorkers: Math.min(4, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -124,11 +124,11 @@ describe('parallel option', () => {
       numWorkers: 2,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -147,11 +147,11 @@ describe('parallel option', () => {
       numWorkers: Math.min(1, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -174,11 +174,11 @@ describe('parallel option', () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -201,11 +201,11 @@ describe('parallel option', () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -239,11 +239,11 @@ describe('parallel option', () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, '.css')).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });

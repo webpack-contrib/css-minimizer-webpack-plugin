@@ -73,11 +73,11 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -90,12 +90,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -124,7 +127,7 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -160,11 +163,11 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -177,12 +180,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -230,11 +236,13 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -247,18 +255,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
-
-      const maps = readAssets(compiler, newStats, '.css.map');
-
-      Object.keys(maps).forEach((assetKey) => {
-        expect(maps[assetKey]).toMatchSnapshot(assetKey);
-      });
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -329,11 +334,13 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -346,18 +353,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
-
-      const maps = readAssets(compiler, newStats, '.css.map');
-
-      Object.keys(maps).forEach((assetKey) => {
-        expect(maps[assetKey]).toMatchSnapshot(assetKey);
-      });
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -386,11 +390,11 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -403,12 +407,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -446,11 +453,11 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -463,12 +470,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -502,11 +512,11 @@ if (getCompiler.isWebpack4()) {
 
       const stats = await compile(compiler);
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const countAssets = Object.keys(readAssets(compiler, stats, '.css'))
+      const countAssets = Object.keys(readAssets(compiler, stats, /\.css$/))
         .length;
 
       // Try to found cached files, but we don't have their in cache
@@ -531,12 +541,15 @@ if (getCompiler.isWebpack4()) {
 
       const newStats = await compile(compiler);
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
-      const newCountAssets = Object.keys(readAssets(compiler, newStats, '.css'))
-        .length;
+      const newCountAssets = Object.keys(
+        readAssets(compiler, newStats, /\.css$/)
+      ).length;
 
       // Now we have cached files so we get them and don't put new
       expect(cacacheGetSpy).toHaveBeenCalledTimes(newCountAssets);
@@ -617,7 +630,7 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Without cache webpack always try to store
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -630,7 +643,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Without cache webpack always try to store
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(newStats)).toMatchSnapshot('errors');
       expect(getWarnings(newStats)).toMatchSnapshot('warnings');
     });
@@ -679,7 +694,7 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Store cached assets
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -692,7 +707,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // No need to store, we got cached assets
       expect(storeCounter).toBe(0);
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(newStats)).toMatchSnapshot('errors');
       expect(getWarnings(newStats)).toMatchSnapshot('warnings');
     });
@@ -742,7 +759,7 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Store cached assets
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -755,7 +772,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // No need to store, we got cached assets
       expect(storeCounter).toBe(0);
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(newStats)).toMatchSnapshot('errors');
       expect(getWarnings(newStats)).toMatchSnapshot('warnings');
     });
@@ -806,7 +825,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Store cached assets
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -819,7 +840,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // No need to store, we got cached assets
       expect(storeCounter).toBe(0);
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(newStats)).toMatchSnapshot('errors');
       expect(getWarnings(newStats)).toMatchSnapshot('warnings');
 
@@ -832,7 +855,6 @@ if (getCompiler.isWebpack4()) {
 
     it('should work with the "filesystem" value for the "cache.type" option and output warnings', async () => {
       const compiler = getCompiler({
-        devtool: 'source-map',
         entry: {
           one: path.resolve(__dirname, './fixtures/cache.js'),
           two: path.resolve(__dirname, './fixtures/cache-1.js'),
@@ -899,7 +921,7 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // Store cached assets
       expect(storeCounter).toBe(5);
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -912,7 +934,9 @@ if (getCompiler.isWebpack4()) {
       expect(getCounter).toBe(5);
       // No need to store, we got cached assets
       expect(storeCounter).toBe(0);
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getErrors(newStats)).toMatchSnapshot('errors');
       expect(getWarnings(newStats)).toMatchSnapshot('warnings');
 

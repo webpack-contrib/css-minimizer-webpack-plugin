@@ -6,7 +6,7 @@ export default function readAssets(compiler, stats, extension) {
   Object.keys(stats.compilation.assets).forEach((asset) => {
     if (typeof extension === 'undefined') {
       assets[asset] = readAsset(asset, compiler, stats);
-    } else if (asset.endsWith(extension)) {
+    } else if (extension.test(asset)) {
       assets[asset] = readAsset(asset, compiler, stats);
     }
   });

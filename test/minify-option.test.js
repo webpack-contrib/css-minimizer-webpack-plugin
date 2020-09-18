@@ -61,9 +61,8 @@ describe('"minify" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
     );
     expect(getErrors(stats)).toMatchSnapshot('error');
     expect(getWarnings(stats)).toMatchSnapshot('warning');
@@ -100,9 +99,8 @@ describe('"minify" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
     );
     expect(getErrors(stats)).toMatchSnapshot('error');
     expect(getWarnings(stats)).toMatchSnapshot('warning');
