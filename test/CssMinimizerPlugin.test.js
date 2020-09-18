@@ -419,9 +419,11 @@ describe('CssMinimizerPlugin', () => {
     new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
+    const stringStats = stats.toString();
+    const printedCompressed = stringStats.match(/\[minimized]/g);
 
-    expect(stats.toString().indexOf('[minimized]') !== -1).toBe(
-      !getCompiler.isWebpack4()
+    expect(printedCompressed ? printedCompressed.length : 0).toBe(
+      getCompiler.isWebpack4() ? 0 : 1
     );
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
