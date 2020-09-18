@@ -70,6 +70,162 @@ exports[`cache option should match snapshot for the "other-cache-directory" valu
 
 exports[`cache option should match snapshot for the "other-cache-directory" value: warnings 2`] = `Array []`;
 
+exports[`cache option should match snapshot for the "true" value and source maps: assets 1`] = `
+Object {
+  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=five.css.map*/",
+  "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "four.css": "h1{color:green}h2{color:#ff0}
+/*# sourceMappingURL=four.css.map*/",
+  "four.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar2.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,GACE,WAAY,CAEd,GACE,UAAa\\",\\"file\\":\\"four.css\\",\\"sourcesContent\\":[\\"h1 {\\\\n  color: green;\\\\n}\\\\nh2 {\\\\n  color: yellow;\\\\n}\\\\nh3 {\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "one.css": "a{text-align:center}
+/*# sourceMappingURL=one.css.map*/",
+  "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=three.css.map*/",
+  "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "two.css": "a{text-align:center}
+/*# sourceMappingURL=two.css.map*/",
+  "two.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"two.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`cache option should match snapshot for the "true" value and source maps: assets 2`] = `
+Object {
+  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=five.css.map*/",
+  "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "four.css": "h1{color:green}h2{color:#ff0}
+/*# sourceMappingURL=four.css.map*/",
+  "four.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar2.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,GACE,WAAY,CAEd,GACE,UAAa\\",\\"file\\":\\"four.css\\",\\"sourcesContent\\":[\\"h1 {\\\\n  color: green;\\\\n}\\\\nh2 {\\\\n  color: yellow;\\\\n}\\\\nh3 {\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "one.css": "a{text-align:center}
+/*# sourceMappingURL=one.css.map*/",
+  "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=three.css.map*/",
+  "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "two.css": "a{text-align:center}
+/*# sourceMappingURL=two.css.map*/",
+  "two.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"two.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`cache option should match snapshot for the "true" value and source maps: errors 1`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and source maps: errors 2`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and source maps: warnings 1`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and source maps: warnings 2`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: assets 1`] = `
+Object {
+  "five.css": "body {
+  color: red; }
+
+body {
+  color: red;
+  font-size: 20px; }
+
+a {
+  color: blue; }
+
+",
+  "four.css": "h1 {
+  color: green; }
+
+h2 {
+  color: yellow; }
+
+",
+  "one.css": "a {
+  text-align: center; }
+
+",
+  "three.css": "body {
+  color: red; }
+
+body {
+  color: red;
+  font-size: 20px; }
+
+a {
+  color: blue; }
+
+",
+  "two.css": "a {
+  text-align: center; }
+
+",
+}
+`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: assets 2`] = `
+Object {
+  "five.css": "body {
+  color: red; }
+
+body {
+  color: red;
+  font-size: 20px; }
+
+a {
+  color: blue; }
+
+",
+  "four.css": "h1 {
+  color: green; }
+
+h2 {
+  color: yellow; }
+
+",
+  "one.css": "a {
+  text-align: center; }
+
+",
+  "three.css": "body {
+  color: red; }
+
+body {
+  color: red;
+  font-size: 20px; }
+
+a {
+  color: blue; }
+
+",
+  "two.css": "a {
+  text-align: center; }
+
+",
+}
+`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: errors 1`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: errors 2`] = `Array []`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: warnings 1`] = `
+Array [
+  "Css Minimizer Plugin: warning-plugin: Warning from five.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from four.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from one.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from three.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from two.css ",
+]
+`;
+
+exports[`cache option should match snapshot for the "true" value and warnings: warnings 2`] = `
+Array [
+  "Css Minimizer Plugin: warning-plugin: Warning from five.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from four.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from one.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from three.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from two.css ",
+]
+`;
+
 exports[`cache option should match snapshot for the "true" value: assets 1`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
@@ -153,51 +309,3 @@ exports[`cache option should match snapshot when a value is not specify: errors 
 exports[`cache option should match snapshot when a value is not specify: warnings 1`] = `Array []`;
 
 exports[`cache option should match snapshot when a value is not specify: warnings 2`] = `Array []`;
-
-exports[`cache option should match snapshot when sourcemap enable: assets 1`] = `
-Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}
-/*# sourceMappingURL=five.css.map*/",
-  "four.css": "h1{color:green}h2{color:#ff0}
-/*# sourceMappingURL=four.css.map*/",
-  "one.css": "a{text-align:center}
-/*# sourceMappingURL=one.css.map*/",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}
-/*# sourceMappingURL=three.css.map*/",
-  "two.css": "a{text-align:center}
-/*# sourceMappingURL=two.css.map*/",
-}
-`;
-
-exports[`cache option should match snapshot when sourcemap enable: assets 2`] = `
-Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}
-/*# sourceMappingURL=five.css.map*/",
-  "four.css": "h1{color:green}h2{color:#ff0}
-/*# sourceMappingURL=four.css.map*/",
-  "one.css": "a{text-align:center}
-/*# sourceMappingURL=one.css.map*/",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}
-/*# sourceMappingURL=three.css.map*/",
-  "two.css": "a{text-align:center}
-/*# sourceMappingURL=two.css.map*/",
-}
-`;
-
-exports[`cache option should match snapshot when sourcemap enable: errors 1`] = `Array []`;
-
-exports[`cache option should match snapshot when sourcemap enable: errors 2`] = `Array []`;
-
-exports[`cache option should match snapshot when sourcemap enable: five.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
-
-exports[`cache option should match snapshot when sourcemap enable: four.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,GACE,WAAY,CAEd,GACE,UAAa\\",\\"file\\":\\"four.css\\",\\"sourcesContent\\":[\\"h1 {\\\\n  color: green;\\\\n}\\\\nh2 {\\\\n  color: yellow;\\\\n}\\\\nh3 {\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
-
-exports[`cache option should match snapshot when sourcemap enable: one.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
-
-exports[`cache option should match snapshot when sourcemap enable: three.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cAAe,CAEjB,EACE,UAAW\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
-
-exports[`cache option should match snapshot when sourcemap enable: two.css.map 1`] = `"{\\"version\\":3,\\"sources\\": [replaced for tests], \\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBAAkB\\",\\"file\\":\\"two.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
-
-exports[`cache option should match snapshot when sourcemap enable: warnings 1`] = `Array []`;
-
-exports[`cache option should match snapshot when sourcemap enable: warnings 2`] = `Array []`;

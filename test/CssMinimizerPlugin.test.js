@@ -16,6 +16,7 @@ import {
   readAssets,
   readAsset,
   removeCache,
+  ModifyExistingAsset,
 } from './helpers';
 
 describe('CssMinimizerPlugin', () => {
@@ -63,7 +64,7 @@ describe('CssMinimizerPlugin', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -106,7 +107,7 @@ describe('CssMinimizerPlugin', () => {
 
     expect(stdoutOutput).toMatchSnapshot('process stdout output');
     expect(stderrOutput).toMatchSnapshot('process stderr output');
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
 
@@ -351,6 +352,7 @@ describe('CssMinimizerPlugin', () => {
     };
 
     const compiler = getCompiler(config);
+
     new CssMinimizerPlugin({
       sourceMap: true,
     }).apply(compiler);
@@ -361,15 +363,13 @@ describe('CssMinimizerPlugin', () => {
 
       // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
-
         if (/\.css\?/.test(file)) {
           expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
         }
 
-        // eslint-disable-next-line no-continue
-        if (!/\.css.map/.test(file)) continue;
-        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        if (/\.css.map/.test(file)) {
+          expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+        }
       }
     });
   });
@@ -403,7 +403,7 @@ describe('CssMinimizerPlugin', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -418,11 +418,13 @@ describe('CssMinimizerPlugin', () => {
     new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
+    const stringStats = stats.toString();
+    const printedCompressed = stringStats.match(/\[minimized]/g);
 
-    expect(stats.toString().indexOf('[minimized]') !== -1).toBe(
-      !getCompiler.isWebpack4()
+    expect(printedCompressed ? printedCompressed.length : 0).toBe(
+      getCompiler.isWebpack4() ? 0 : 1
     );
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getErrors(stats)).toMatchSnapshot('errors');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
@@ -475,14 +477,15 @@ describe('CssMinimizerPlugin', () => {
         expect(webpackHash).toBe(cryptoHash);
       }
 
-      expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
       expect(getErrors(stats)).toMatchSnapshot('errors');
       expect(getWarnings(stats)).toMatchSnapshot('warnings');
     }
   });
 
-  it('should work and use cache by default', async () => {
+  it('should work and use memory cache out of box', async () => {
     const compiler = getCompiler({
+      ...(getCompiler.isWebpack4() ? { cache: true } : {}),
       entry: {
         foo: `${__dirname}/fixtures/simple.js`,
       },
@@ -524,7 +527,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -538,10 +541,13 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        expect(newStats.compilation.emittedAssets.size).toBe(0);
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
@@ -549,8 +555,495 @@ describe('CssMinimizerPlugin', () => {
     });
   });
 
-  it('should work and use cache when the "cache" option is "false"', async () => {
+  it('should work and use memory cache when the "cache" option is "true"', async () => {
     const compiler = getCompiler({
+      cache: true,
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      cache: true,
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'foo.css' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with source map and use memory cache when the "cache" option is "true"', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(8);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(8);
+    }
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(4);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin().apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(8);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(8);
+    }
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'foo.css' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(4);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(4);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with warnings and use memory cache when the "cache" option is "true"', async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+        const [[fileName, input]] = Object.entries(data);
+
+        return postcss([
+          postcss.plugin('warning-plugin', () => (css, result) => {
+            result.warn(`Warning from ${result.opts.from}`, {
+              plugin: 'warning-plugin',
+            });
+          }),
+        ])
+          .process(input, { from: fileName, to: fileName })
+          .then((result) => {
+            return {
+              css: result.css,
+              map: result.map,
+              error: result.error,
+              warnings: result.warnings(),
+            };
+          });
+      },
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/simple.js`,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+          chunkFilename: '[id].[name].css',
+        }),
+      ],
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          },
+          {
+            test: /simple-emit.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader.js'),
+          },
+          {
+            test: /simple-emit-2.js$/i,
+            loader: require.resolve('./helpers/emitAssetLoader2.js'),
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: (data) => {
+        // eslint-disable-next-line global-require
+        const postcss = require('postcss');
+        const [[fileName, input]] = Object.entries(data);
+
+        return postcss([
+          postcss.plugin('warning-plugin', () => (css, result) => {
+            result.warn(`Warning from ${result.opts.from}`, {
+              plugin: 'warning-plugin',
+            });
+          }),
+        ])
+          .process(input, { from: fileName, to: fileName })
+          .then((result) => {
+            return {
+              css: result.css,
+              map: result.map,
+              error: result.error,
+              warnings: result.warnings(),
+            };
+          });
+      },
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    if (getCompiler.isWebpack4()) {
+      expect(
+        Object.keys(stats.compilation.assets).filter(
+          (assetName) => stats.compilation.assets[assetName].emitted
+        ).length
+      ).toBe(5);
+    } else {
+      expect(stats.compilation.emittedAssets.size).toBe(5);
+    }
+
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
+    expect(getWarnings(stats)).toMatchSnapshot('errors');
+    expect(getErrors(stats)).toMatchSnapshot('warnings');
+
+    new ModifyExistingAsset({ name: 'foo.css' }).apply(compiler);
+
+    await new Promise(async (resolve) => {
+      const newStats = await compile(compiler);
+
+      if (getCompiler.isWebpack4()) {
+        expect(
+          Object.keys(newStats.compilation.assets).filter(
+            (assetName) => newStats.compilation.assets[assetName].emitted
+          ).length
+        ).toBe(2);
+      } else {
+        // TODO regression in beta
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
+      }
+
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
+      expect(getWarnings(newStats)).toMatchSnapshot('errors');
+      expect(getErrors(newStats)).toMatchSnapshot('warnings');
+
+      resolve();
+    });
+  });
+
+  it('should work and do not use memory cache when the "cache" option is "false"', async () => {
+    const compiler = getCompiler({
+      cache: false,
       entry: {
         foo: `${__dirname}/fixtures/simple.js`,
       },
@@ -592,7 +1085,7 @@ describe('CssMinimizerPlugin', () => {
       expect(stats.compilation.emittedAssets.size).toBe(5);
     }
 
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
     expect(getWarnings(stats)).toMatchSnapshot('errors');
     expect(getErrors(stats)).toMatchSnapshot('warnings');
 
@@ -604,181 +1097,18 @@ describe('CssMinimizerPlugin', () => {
           Object.keys(newStats.compilation.assets).filter(
             (assetName) => newStats.compilation.assets[assetName].emitted
           ).length
-        ).toBe(2);
+        ).toBe(5);
       } else {
-        expect(newStats.compilation.emittedAssets.size).toBe(0);
+        expect(newStats.compilation.emittedAssets.size).toBe(5);
       }
 
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
+      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
+        'assets'
+      );
       expect(getWarnings(newStats)).toMatchSnapshot('errors');
       expect(getErrors(newStats)).toMatchSnapshot('warnings');
 
       resolve();
     });
-  });
-
-  it('should work and use cache when the "cache" option is "true"', async () => {
-    const compiler = getCompiler({
-      entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
-      },
-      plugins: [
-        new MiniCssExtractPlugin({
-          filename: '[name].css',
-          chunkFilename: '[id].[name].css',
-        }),
-      ],
-      module: {
-        rules: [
-          {
-            test: /.s?css$/i,
-            use: [MiniCssExtractPlugin.loader, 'css-loader'],
-          },
-          {
-            test: /simple-emit.js$/i,
-            loader: require.resolve('./helpers/emitAssetLoader.js'),
-          },
-          {
-            test: /simple-emit-2.js$/i,
-            loader: require.resolve('./helpers/emitAssetLoader2.js'),
-          },
-        ],
-      },
-    });
-
-    new CssMinimizerPlugin({ cache: true }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    if (getCompiler.isWebpack4()) {
-      expect(
-        Object.keys(stats.compilation.assets).filter(
-          (assetName) => stats.compilation.assets[assetName].emitted
-        ).length
-      ).toBe(5);
-    } else {
-      expect(stats.compilation.emittedAssets.size).toBe(5);
-    }
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(getWarnings(stats)).toMatchSnapshot('errors');
-    expect(getErrors(stats)).toMatchSnapshot('warnings');
-
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
-
-      if (getCompiler.isWebpack4()) {
-        expect(
-          Object.keys(newStats.compilation.assets).filter(
-            (assetName) => newStats.compilation.assets[assetName].emitted
-          ).length
-        ).toBe(2);
-      } else {
-        expect(newStats.compilation.emittedAssets.size).toBe(0);
-      }
-
-      expect(readAssets(compiler, newStats, '.css')).toMatchSnapshot('assets');
-      expect(getWarnings(newStats)).toMatchSnapshot('errors');
-      expect(getErrors(newStats)).toMatchSnapshot('warnings');
-
-      resolve();
-    });
-  });
-
-  it('should work with "csso" minifier', async () => {
-    const compiler = getCompiler({
-      devtool: 'source-map',
-      entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
-      },
-      module: {
-        rules: [
-          {
-            test: /.s?css$/i,
-            use: [
-              MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } },
-            ],
-          },
-        ],
-      },
-    });
-
-    new CssMinimizerPlugin({
-      sourceMap: true,
-      minify: async (data, inputMap) => {
-        // eslint-disable-next-line global-require
-        const csso = require('csso');
-        // eslint-disable-next-line global-require
-        const sourcemap = require('source-map');
-
-        const [[filename, input]] = Object.entries(data);
-        const minifiedCss = csso.minify(input, {
-          filename,
-          sourceMap: true,
-        });
-
-        if (inputMap) {
-          minifiedCss.map.applySourceMap(
-            new sourcemap.SourceMapConsumer(inputMap),
-            filename
-          );
-        }
-
-        return {
-          css: minifiedCss.css,
-          map: minifiedCss.map.toJSON(),
-        };
-      },
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
-    );
-    expect(getErrors(stats)).toMatchSnapshot('error');
-    expect(getWarnings(stats)).toMatchSnapshot('warning');
-  });
-
-  it('should work with "clean-css" minifier', async () => {
-    const compiler = getCompiler({
-      devtool: 'source-map',
-      entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
-      },
-    });
-
-    new CssMinimizerPlugin({
-      minify: async (data, inputMap) => {
-        // eslint-disable-next-line global-require
-        const CleanCSS = require('clean-css');
-
-        const [[filename, input]] = Object.entries(data);
-        const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-          [filename]: {
-            styles: input,
-            sourceMap: inputMap,
-          },
-        });
-
-        return {
-          css: minifiedCss.styles,
-          map: minifiedCss.sourceMap.toJSON(),
-          warnings: minifiedCss.warnings,
-        };
-      },
-    }).apply(compiler);
-
-    const stats = await compile(compiler);
-
-    expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
-    expect(readAssets(compiler, stats, '.css.map')).toMatchSnapshot(
-      'source maps'
-    );
-    expect(getErrors(stats)).toMatchSnapshot('error');
-    expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 });

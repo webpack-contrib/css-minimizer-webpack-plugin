@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`"cache" option should work with "false" value for the "cache" option: assets 1`] = `
+exports[`"cache" option should work with the "false" value for the "cache" option: assets 1`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -10,7 +10,7 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "false" value for the "cache" option: assets 2`] = `
+exports[`"cache" option should work with the "false" value for the "cache" option: assets 2`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -20,15 +20,185 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "false" value for the "cache" option: errors 1`] = `Array []`;
+exports[`"cache" option should work with the "false" value for the "cache" option: errors 1`] = `Array []`;
 
-exports[`"cache" option should work with "false" value for the "cache" option: errors 2`] = `Array []`;
+exports[`"cache" option should work with the "false" value for the "cache" option: errors 2`] = `Array []`;
 
-exports[`"cache" option should work with "false" value for the "cache" option: warnings 1`] = `Array []`;
+exports[`"cache" option should work with the "false" value for the "cache" option: warnings 1`] = `Array []`;
 
-exports[`"cache" option should work with "false" value for the "cache" option: warnings 2`] = `Array []`;
+exports[`"cache" option should work with the "false" value for the "cache" option: warnings 2`] = `Array []`;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: assets 1`] = `
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: assets 1`] = `
+Object {
+  "five.css": "body {
+  color: red;
+}
+body {
+  color: red;
+  font-size: 20px;
+}
+a {
+  color: blue;
+}
+
+",
+  "four.css": "h1 {
+  color: green;
+}
+h2 {
+  color: yellow;
+}
+h3 {
+}
+
+",
+  "one.css": "a {
+  text-align: center;
+}
+
+",
+  "three.css": "body {
+  color: red;
+}
+body {
+  color: red;
+  font-size: 20px;
+}
+a {
+  color: blue;
+}
+
+",
+  "two.css": "a {
+  text-align: center;
+}
+
+",
+}
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: assets 2`] = `
+Object {
+  "five.css": "body {
+  color: red;
+}
+body {
+  color: red;
+  font-size: 20px;
+}
+a {
+  color: blue;
+}
+
+",
+  "four.css": "h1 {
+  color: green;
+}
+h2 {
+  color: yellow;
+}
+h3 {
+}
+
+",
+  "one.css": "a {
+  text-align: center;
+}
+
+",
+  "three.css": "body {
+  color: red;
+}
+body {
+  color: red;
+  font-size: 20px;
+}
+a {
+  color: blue;
+}
+
+",
+  "two.css": "a {
+  text-align: center;
+}
+
+",
+}
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: errors 1`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: errors 2`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: warnings 1`] = `
+Array [
+  "Css Minimizer Plugin: warning-plugin: Warning from five.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from four.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from one.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from three.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from two.css ",
+]
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: warnings 2`] = `
+Array [
+  "Css Minimizer Plugin: warning-plugin: Warning from five.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from four.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from one.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from three.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from two.css ",
+]
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: assets 1`] = `
+Object {
+  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=five.css.map*/",
+  "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "four.css": "h1{color:green}h2{color:#ff0}
+/*# sourceMappingURL=four.css.map*/",
+  "four.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar2.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,GACE,WACF,CACA,GACE,UACF\\",\\"file\\":\\"four.css\\",\\"sourcesContent\\":[\\"h1 {\\\\n  color: green;\\\\n}\\\\nh2 {\\\\n  color: yellow;\\\\n}\\\\nh3 {\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "one.css": "a{text-align:center}
+/*# sourceMappingURL=one.css.map*/",
+  "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=three.css.map*/",
+  "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "two.css": "a{text-align:center}
+/*# sourceMappingURL=two.css.map*/",
+  "two.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"two.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: assets 2`] = `
+Object {
+  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=five.css.map*/",
+  "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "four.css": "h1{color:green}h2{color:#ff0}
+/*# sourceMappingURL=four.css.map*/",
+  "four.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar2.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,GACE,WACF,CACA,GACE,UACF\\",\\"file\\":\\"four.css\\",\\"sourcesContent\\":[\\"h1 {\\\\n  color: green;\\\\n}\\\\nh2 {\\\\n  color: yellow;\\\\n}\\\\nh3 {\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "one.css": "a{text-align:center}
+/*# sourceMappingURL=one.css.map*/",
+  "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+/*# sourceMappingURL=three.css.map*/",
+  "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+  "two.css": "a{text-align:center}
+/*# sourceMappingURL=two.css.map*/",
+  "two.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"two.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: errors 1`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: errors 2`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: warnings 1`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: warnings 2`] = `Array []`;
+
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: assets 1`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -38,7 +208,7 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: assets 2`] = `
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: assets 2`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -48,15 +218,15 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: errors 1`] = `Array []`;
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: errors 1`] = `Array []`;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: errors 2`] = `Array []`;
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: errors 2`] = `Array []`;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: warnings 1`] = `Array []`;
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: warnings 1`] = `Array []`;
 
-exports[`"cache" option should work with "filesystem" value for the "cache.type" option: warnings 2`] = `Array []`;
+exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: warnings 2`] = `Array []`;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: assets 1`] = `
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: assets 1`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -66,7 +236,7 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: assets 2`] = `
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: assets 2`] = `
 Object {
   "five.css": "body{color:red;font-size:20px}a{color:#00f}",
   "four.css": "h1{color:green}h2{color:#ff0}",
@@ -76,10 +246,10 @@ Object {
 }
 `;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: errors 1`] = `Array []`;
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: errors 1`] = `Array []`;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: errors 2`] = `Array []`;
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: errors 2`] = `Array []`;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: warnings 1`] = `Array []`;
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: warnings 1`] = `Array []`;
 
-exports[`"cache" option should work with "memory" value for the "cache.type" option: warnings 2`] = `Array []`;
+exports[`"cache" option should work with the "memory" value for the "cache.type" option: warnings 2`] = `Array []`;
