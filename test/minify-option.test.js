@@ -77,21 +77,23 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async (data, inputMap) => {
+      minify: async (data) => {
         // eslint-disable-next-line global-require
         const CleanCSS = require('clean-css');
-
         const [[filename, input]] = Object.entries(data);
-        const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
+
+        // Bug in `clean-css`
+        // `clean-css` doesn't work with URLs in `sources`
+        const minifiedCss = await new CleanCSS().minify({
           [filename]: {
             styles: input,
-            sourceMap: inputMap,
+            // sourceMap: inputMap,
           },
         });
 
         return {
           css: minifiedCss.styles,
-          map: minifiedCss.sourceMap.toJSON(),
+          // map: minifiedCss.sourceMap.toJSON(),
           warnings: minifiedCss.warnings,
         };
       },

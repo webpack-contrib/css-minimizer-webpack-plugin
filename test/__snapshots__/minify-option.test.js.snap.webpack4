@@ -2,9 +2,7 @@
 
 exports[`"minify" option should work with "clean-css" minifier: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}
-/*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///webpack:/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,UAEF,EACE\\",\\"file\\":\\"foo.css\\",\\"sourceRoot\\":\\"\\"}",
+  "foo.css": "body{color:red}a{color:#00f}",
 }
 `;
 
