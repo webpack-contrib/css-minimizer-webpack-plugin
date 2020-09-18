@@ -8,7 +8,6 @@ import {
   compile,
   readAsset,
   readAssets,
-  normalizedSourceMap,
   removeCache,
   getErrors,
   getWarnings,
@@ -52,7 +51,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      expect(maps[assetKey]).toMatchSnapshot(assetKey);
     });
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -72,7 +71,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      expect(maps[assetKey]).toMatchSnapshot(assetKey);
     });
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -107,7 +106,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      expect(maps[assetKey]).toMatchSnapshot(assetKey);
     });
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -142,7 +141,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      expect(maps[assetKey]).toMatchSnapshot(assetKey);
     });
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -213,7 +212,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(readAssets(compiler, stats, '.css')).toMatchSnapshot('assets');
 
     Object.keys(maps).forEach((assetKey) => {
-      expect(normalizedSourceMap(maps[assetKey])).toMatchSnapshot(assetKey);
+      expect(maps[assetKey]).toMatchSnapshot(assetKey);
     });
 
     expect(getErrors(stats)).toMatchSnapshot('errors');
