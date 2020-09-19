@@ -293,17 +293,17 @@ Array [
 ]
 `;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `
 Array [
   "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
   "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
   "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
-
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `Array []`;
-
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `Array []`;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": assets 1`] = `
 Object {
@@ -341,17 +341,17 @@ Array [
 ]
 `;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 2`] = `
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 2`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 2`] = `
 Array [
   "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
   "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
   "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
-
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 1`] = `Array []`;
-
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 2`] = `Array []`;
 
 exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: assets 1`] = `
 Object {
