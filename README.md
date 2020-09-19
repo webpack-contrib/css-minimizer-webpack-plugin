@@ -44,13 +44,17 @@ module.exports = {
   },
   optimization: {
     minimize: true,
-    minimizer: [new CssMinimizerPlugin()],
+    minimizer: [
+      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
+      // `...`
+      new CssMinimizerPlugin(),
+    ],
   },
 };
 ```
 
 This will enable CSS optimization only in production mode.
-If you want to run it also in development, put the plugin configuration in the `plugins` option array.
+If you want to run it also in development set the `optimization.minimize` option to `true`.
 
 And run `webpack` via your preferred method.
 
