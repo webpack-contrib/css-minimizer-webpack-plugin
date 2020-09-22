@@ -357,7 +357,7 @@ module.exports = {
 Type: `Object`
 Default: `{ preset: 'default' }`
 
-Cssnano optimisations [options](https://cssnano.co/guides/optimisations).
+Cssnano optimisations [options](https://cssnano.co/docs/optimisations).
 
 ```js
 module.exports = {
