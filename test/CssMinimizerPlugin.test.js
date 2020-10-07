@@ -541,8 +541,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(1);
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
       }
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
@@ -613,8 +612,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(1);
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
       }
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
@@ -687,8 +685,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(2);
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
@@ -761,8 +758,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(4);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(2);
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
       }
 
       expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
@@ -837,8 +833,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(4);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(4);
+        expect(newStats.compilation.emittedAssets.size).toBe(2);
       }
 
       expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
@@ -931,8 +926,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(1);
+        expect(newStats.compilation.emittedAssets.size).toBe(0);
       }
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
@@ -1027,8 +1021,7 @@ describe('CssMinimizerPlugin', () => {
           ).length
         ).toBe(2);
       } else {
-        // TODO regression in beta
-        expect(newStats.compilation.emittedAssets.size).toBe(2);
+        expect(newStats.compilation.emittedAssets.size).toBe(1);
       }
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
