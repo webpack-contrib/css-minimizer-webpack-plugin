@@ -8,7 +8,7 @@ import webpack, {
   SourceMapDevToolPlugin,
   version as webpackVersion,
 } from 'webpack';
-import validateOptions from 'schema-utils';
+import { validate } from 'schema-utils';
 import serialize from 'serialize-javascript';
 import CssMinimizerPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
@@ -27,7 +27,7 @@ const { SourceMapSource, RawSource } =
 
 class CssMinimizerPlugin {
   constructor(options = {}) {
-    validateOptions(schema, options, {
+    validate(schema, options, {
       name: 'Css Minimizer Plugin',
       baseDataPath: 'options',
     });
