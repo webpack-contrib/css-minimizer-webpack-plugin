@@ -31,6 +31,7 @@ Then add the plugin to your `webpack` configuration. For example:
 **webpack.config.js**
 
 ```js
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
@@ -38,7 +39,7 @@ module.exports = {
     loaders: [
       {
         test: /.s?css$/,
-        use: [CssMinimizerPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
     ],
   },
