@@ -1,16 +1,9 @@
 import os from 'os';
-import crypto from 'crypto';
 
 import { SourceMapConsumer } from 'source-map';
-import RequestShortener from 'webpack/lib/RequestShortener';
-import webpack, {
-  ModuleFilenameHelpers,
-  SourceMapDevToolPlugin,
-  version as webpackVersion,
-} from 'webpack';
 import { validate } from 'schema-utils';
 import serialize from 'serialize-javascript';
-import CssMinimizerPackageJson from 'cssnano/package.json';
+import cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
@@ -19,11 +12,6 @@ import schema from './options.json';
 import { minify as minifyFn } from './minify';
 
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
-
-// webpack 5 exposes the sources property to ensure the right version of webpack-sources is used
-const { SourceMapSource, RawSource } =
-  // eslint-disable-next-line global-require
-  webpack.sources || require('webpack-sources');
 
 class CssMinimizerPlugin {
   constructor(options = {}) {
@@ -39,9 +27,6 @@ class CssMinimizerPlugin {
       },
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
-      sourceMap,
-      cache = true,
-      cacheKeys = (defaultCacheKeys) => defaultCacheKeys,
       parallel = true,
       include,
       exclude,
@@ -50,9 +35,6 @@ class CssMinimizerPlugin {
     this.options = {
       test,
       warningsFilter,
-      sourceMap,
-      cache,
-      cacheKeys,
       parallel,
       include,
       exclude,
@@ -167,33 +149,11 @@ class CssMinimizerPlugin {
       : Math.min(Number(parallel) || 0, cpus.length - 1);
   }
 
-  // eslint-disable-next-line consistent-return
-  static getAsset(compilation, name) {
-    // New API
-    if (compilation.getAsset) {
-      return compilation.getAsset(name);
-    }
-
-    if (compilation.assets[name]) {
-      return { name, source: compilation.assets[name], info: {} };
-    }
-  }
-
-  static updateAsset(compilation, name, newSource, assetInfo) {
-    // New API
-    if (compilation.updateAsset) {
-      compilation.updateAsset(name, newSource, assetInfo);
-    }
-
-    // eslint-disable-next-line no-param-reassign
-    compilation.assets[name] = newSource;
-  }
-
-  async optimize(compiler, compilation, assets, CacheEngine, weakCache) {
+  async optimize(compiler, compilation, assets) {
     const assetNames = Object.keys(
       typeof assets === 'undefined' ? compilation.assets : assets
     ).filter((assetName) =>
-      ModuleFilenameHelpers.matchObject.bind(
+      compiler.webpack.ModuleFilenameHelpers.matchObject.bind(
         // eslint-disable-next-line no-undefined
         undefined,
         this.options
@@ -238,20 +198,14 @@ class CssMinimizerPlugin {
     }
 
     const limit = pLimit(concurrency);
-    const cache = new CacheEngine(
-      compilation,
-      { cache: this.options.cache },
-      weakCache
-    );
+    const { SourceMapSource, RawSource } = compiler.webpack.sources;
+    const cache = compilation.getCache('CssMinimizerWebpackPlugin');
     const scheduledTasks = [];
 
     for (const name of assetNames) {
       scheduledTasks.push(
         limit(async () => {
-          const { source: inputSource, info } = CssMinimizerPlugin.getAsset(
-            compilation,
-            name
-          );
+          const { source: inputSource, info } = compilation.getAsset(name);
 
           // Skip double minimize assets from child compilation
           if (info.minimized) {
@@ -261,60 +215,32 @@ class CssMinimizerPlugin {
           let input;
           let inputSourceMap;
 
-          // TODO refactor after drop webpack@4, webpack@5 always has `sourceAndMap` on sources
-          if (this.options.sourceMap && inputSource.sourceAndMap) {
-            const { source, map } = inputSource.sourceAndMap();
+          const {
+            source: sourceFromInputSource,
+            map,
+          } = inputSource.sourceAndMap();
 
-            input = source;
+          input = sourceFromInputSource;
 
-            if (map) {
-              if (CssMinimizerPlugin.isSourceMap(map)) {
-                inputSourceMap = map;
-              } else {
-                inputSourceMap = map;
+          if (map) {
+            if (CssMinimizerPlugin.isSourceMap(map)) {
+              inputSourceMap = map;
+            } else {
+              inputSourceMap = map;
 
-                compilation.warnings.push(
-                  new Error(`${name} contains invalid source map`)
-                );
-              }
+              compilation.warnings.push(
+                new Error(`${name} contains invalid source map`)
+              );
             }
-          } else {
-            input = inputSource.source();
-            inputSourceMap = null;
           }
 
           if (Buffer.isBuffer(input)) {
             input = input.toString();
           }
 
-          const cacheData = { name, inputSource };
+          const eTag = cache.getLazyHashedEtag(inputSource);
 
-          if (CssMinimizerPlugin.isWebpack4()) {
-            if (this.options.cache) {
-              cacheData.input = input;
-              cacheData.inputSourceMap = inputSourceMap;
-              cacheData.cacheKeys = this.options.cacheKeys(
-                {
-                  // eslint-disable-next-line global-require
-                  'css-minimizer-webpack-plugin': require('../package.json')
-                    .version,
-                  cssMinimizer: CssMinimizerPackageJson.version,
-                  'css-minimizer-webpack-plugin-options': this.options,
-                  name,
-                  contentHash: crypto
-                    .createHash('md4')
-                    .update(input)
-                    .digest('hex'),
-                },
-                name
-              );
-            }
-          }
-
-          let output = await cache.get(cacheData, {
-            RawSource,
-            SourceMapSource,
-          });
+          let output = await cache.getPromise(name, eTag);
 
           if (!output) {
             try {
@@ -339,7 +265,7 @@ class CssMinimizerPlugin {
                     CssMinimizerPlugin.isSourceMap(inputSourceMap)
                     ? new SourceMapConsumer(inputSourceMap)
                     : null,
-                  new RequestShortener(compiler.context)
+                  compilation.requestShortener
                 )
               );
 
@@ -359,7 +285,9 @@ class CssMinimizerPlugin {
               output.source = new RawSource(output.code);
             }
 
-            await cache.store({ ...output, ...cacheData });
+            const { source, warnings } = output;
+
+            await cache.storePromise(name, eTag, { source, warnings });
           }
 
           if (output.warnings && output.warnings.length > 0) {
@@ -370,7 +298,7 @@ class CssMinimizerPlugin {
                 inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap)
                   ? new SourceMapConsumer(inputSourceMap)
                   : null,
-                new RequestShortener(compiler.context),
+                compilation.requestShortener,
                 this.options.warningsFilter
               );
 
@@ -380,11 +308,10 @@ class CssMinimizerPlugin {
             });
           }
 
-          // TODO `...` required only for webpack@4
-          const newInfo = { ...info, minimized: true };
+          const newInfo = { minimized: true };
           const { source } = output;
 
-          CssMinimizerPlugin.updateAsset(compilation, name, source, newInfo);
+          compilation.updateAsset(name, source, newInfo);
         })
       );
     }
@@ -398,90 +325,43 @@ class CssMinimizerPlugin {
     return result;
   }
 
-  static isWebpack4() {
-    return webpackVersion[0] === '4';
-  }
-
   apply(compiler) {
     const pluginName = this.constructor.name;
-    const { devtool, plugins } = compiler.options;
-
-    this.options.sourceMap =
-      typeof this.options.sourceMap === 'undefined'
-        ? (devtool &&
-            !devtool.includes('eval') &&
-            !devtool.includes('cheap') &&
-            (devtool.includes('source-map') ||
-              // Todo remove when `webpack@4` support will be dropped
-              devtool.includes('sourcemap'))) ||
-          (plugins &&
-            plugins.some(
-              (plugin) =>
-                plugin instanceof SourceMapDevToolPlugin &&
-                plugin.options &&
-                plugin.options.columns
-            ))
-        : this.options.sourceMap;
-
-    const weakCache = new WeakMap();
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
-      if (this.options.sourceMap) {
-        compilation.hooks.buildModule.tap(pluginName, (moduleArg) => {
-          // to get detailed location info about errors
-          // eslint-disable-next-line no-param-reassign
-          moduleArg.useSourceMap = true;
-        });
-      }
+      const hooks = compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(
+        compilation
+      );
 
-      if (CssMinimizerPlugin.isWebpack4()) {
-        // eslint-disable-next-line global-require
-        const CacheEngine = require('./Webpack4Cache').default;
+      const data = serialize({
+        terser: cssNanoPackageJson.version,
+        terserOptions: this.options.terserOptions,
+      });
 
-        compilation.hooks.optimizeChunkAssets.tapPromise(pluginName, () =>
-          this.optimize(
-            compiler,
-            compilation,
-            // eslint-disable-next-line no-undefined
-            undefined,
-            CacheEngine,
-            weakCache
-          )
-        );
-      } else {
-        if (this.options.sourceMap) {
-          compilation.hooks.buildModule.tap(pluginName, (moduleArg) => {
-            // to get detailed location info about errors
-            // eslint-disable-next-line no-param-reassign
-            moduleArg.useSourceMap = true;
-          });
-        }
+      hooks.chunkHash.tap(pluginName, (chunk, hash) => {
+        hash.update('CssMinimizerPlugin');
+        hash.update(data);
+      });
 
-        // eslint-disable-next-line global-require
-        const CacheEngine = require('./Webpack5Cache').default;
+      compilation.hooks.processAssets.tapPromise(
+        {
+          name: pluginName,
+          stage:
+            compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
+        },
+        (assets) => this.optimize(compiler, compilation, assets)
+      );
 
-        // eslint-disable-next-line global-require
-        const Compilation = require('webpack/lib/Compilation');
-
-        compilation.hooks.processAssets.tapPromise(
-          {
-            name: pluginName,
-            stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
-          },
-          (assets) => this.optimize(compiler, compilation, assets, CacheEngine)
-        );
-
-        compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
-          stats.hooks.print
-            .for('asset.info.minimized')
-            .tap(
-              'css-minimizer-webpack-plugin',
-              (minimized, { green, formatFlag }) =>
-                // eslint-disable-next-line no-undefined
-                minimized ? green(formatFlag('minimized')) : undefined
-            );
-        });
-      }
+      compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
+        stats.hooks.print
+          .for('asset.info.minimized')
+          .tap(
+            'css-minimizer-webpack-plugin',
+            (minimized, { green, formatFlag }) =>
+              // eslint-disable-next-line no-undefined
+              minimized ? green(formatFlag('minimized')) : undefined
+          );
+      });
     });
   }
 }

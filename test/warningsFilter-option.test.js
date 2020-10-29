@@ -8,14 +8,9 @@ import {
   getErrors,
   getWarnings,
   readAssets,
-  removeCache,
 } from './helpers';
 
 describe('warningsFilter option', () => {
-  beforeEach(() => Promise.all([removeCache()]));
-
-  afterEach(() => Promise.all([removeCache()]));
-
   it('should match snapshot for a "function" value', async () => {
     const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
       result.warn(`Warning from ${result.opts.from}`, {

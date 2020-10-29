@@ -6,7 +6,6 @@ import {
   getErrors,
   getWarnings,
   readAssets,
-  removeCache,
 } from './helpers';
 
 describe('include option', () => {
@@ -20,11 +19,7 @@ describe('include option', () => {
         entry: `${__dirname}/fixtures/entry.js`,
       },
     });
-
-    return Promise.all([removeCache()]);
   });
-
-  afterEach(() => Promise.all([removeCache()]));
 
   it('should match snapshot for a single RegExp value included1', async () => {
     new CssMinimizerPlugin({

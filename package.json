@@ -38,18 +38,15 @@
     "dist"
   ],
   "peerDependencies": {
-    "webpack": "^4.0.0 || ^5.0.0"
+    "webpack": "^5.3.0"
   },
   "dependencies": {
-    "cacache": "^15.0.5",
     "cssnano": "^4.1.10",
-    "find-cache-dir": "^3.3.1",
     "jest-worker": "^26.3.0",
     "p-limit": "^3.0.2",
     "schema-utils": "^3.0.0",
     "serialize-javascript": "^5.0.1",
-    "source-map": "^0.6.1",
-    "webpack-sources": "^1.4.3"
+    "source-map": "^0.6.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
@@ -81,7 +78,7 @@
     "prettier": "^2.1.2",
     "sass-loader": "^10.0.2",
     "standard-version": "^9.0.0",
-    "webpack": "^4.44.2"
+    "webpack": "^5.3.1"
   },
   "keywords": [
     "cssnano",

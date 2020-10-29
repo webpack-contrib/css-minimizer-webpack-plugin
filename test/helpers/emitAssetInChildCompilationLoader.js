@@ -1,5 +1,3 @@
-import { RawSource } from 'webpack-sources';
-
 class PreCopyPlugin {
   constructor(options = {}) {
     this.options = options.options || {};
@@ -8,6 +6,7 @@ class PreCopyPlugin {
   // eslint-disable-next-line class-methods-use-this
   apply(compiler) {
     const plugin = { name: 'PreCopyPlugin' };
+    const { RawSource } = compiler.webpack.sources;
 
     compiler.hooks.compilation.tap(plugin, (compilation) => {
       compilation.hooks.additionalAssets.tapAsync(plugin, (callback) => {

@@ -99,22 +99,6 @@ it('validation', () => {
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
-    new CssMinimizerPlugin({ sourceMap: true });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ sourceMap: false });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ sourceMap: { inline: true } });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ sourceMap: 'true' });
-  }).toThrowErrorMatchingSnapshot();
-
-  expect(() => {
     new CssMinimizerPlugin({ minimizerOptions: {} });
   }).not.toThrow();
 
@@ -127,30 +111,6 @@ it('validation', () => {
       minimizerOptions: { colormin: true },
     });
   }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cache: true });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cache: false });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cache: 'path/to/cache/directory' });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cache: {} });
-  }).toThrowErrorMatchingSnapshot();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cacheKeys() {} });
-  }).not.toThrow();
-
-  expect(() => {
-    new CssMinimizerPlugin({ cacheKeys: 'test' });
-  }).toThrowErrorMatchingSnapshot();
 
   expect(() => {
     new CssMinimizerPlugin({ parallel: true });

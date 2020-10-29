@@ -35,14 +35,8 @@ export default function getCompiler(config) {
   });
 
   if (!config.outputFileSystem) {
-    const outputFileSystem = createFsFromVolume(new Volume());
-    // Todo remove when we drop webpack@4 support
-    outputFileSystem.join = path.join.bind(path);
-
-    compiler.outputFileSystem = outputFileSystem;
+    compiler.outputFileSystem = createFsFromVolume(new Volume());
   }
 
   return compiler;
 }
-
-getCompiler.isWebpack4 = () => webpack.version[0] === '4';
