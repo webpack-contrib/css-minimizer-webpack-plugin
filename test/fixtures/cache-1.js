@@ -1,3 +1,3 @@
-import css from './test/foo.css';
+import * as css from './test/foo.css';
 
 module.exports = css;
