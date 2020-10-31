@@ -149,69 +149,100 @@ class CssMinimizerPlugin {
       : Math.min(Number(parallel) || 0, cpus.length - 1);
   }
 
-  async optimize(compiler, compilation, assets) {
-    const assetNames = Object.keys(
-      typeof assets === 'undefined' ? compilation.assets : assets
-    ).filter((assetName) =>
-      compiler.webpack.ModuleFilenameHelpers.matchObject.bind(
-        // eslint-disable-next-line no-undefined
-        undefined,
-        this.options
-      )(assetName)
-    );
-
-    if (assetNames.length === 0) {
-      return Promise.resolve();
-    }
-
-    const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
-      this.options.parallel
-    );
-
-    let concurrency = Infinity;
-    let worker;
-
-    if (availableNumberOfCores > 0) {
-      // Do not create unnecessary workers when the number of files is less than the available cores, it saves memory
-      const numWorkers = Math.min(assetNames.length, availableNumberOfCores);
-
-      concurrency = numWorkers;
-
-      worker = new Worker(require.resolve('./minify'), { numWorkers });
-
-      // https://github.com/facebook/jest/issues/8872#issuecomment-524822081
-      const workerStdout = worker.getStdout();
-
-      if (workerStdout) {
-        workerStdout.on('data', (chunk) => {
-          return process.stdout.write(chunk);
-        });
-      }
-
-      const workerStderr = worker.getStderr();
-
-      if (workerStderr) {
-        workerStderr.on('data', (chunk) => {
-          return process.stderr.write(chunk);
-        });
-      }
-    }
-
-    const limit = pLimit(concurrency);
-    const { SourceMapSource, RawSource } = compiler.webpack.sources;
+  async optimize(compiler, compilation, assets, optimizeOptions) {
     const cache = compilation.getCache('CssMinimizerWebpackPlugin');
-    const scheduledTasks = [];
-
-    for (const name of assetNames) {
-      scheduledTasks.push(
-        limit(async () => {
-          const { source: inputSource, info } = compilation.getAsset(name);
+    let numberOfAssetsForMinify = 0;
+    const assetsForMinify = await Promise.all(
+      Object.keys(assets)
+        .filter((name) => {
+          const { info } = compilation.getAsset(name);
 
           // Skip double minimize assets from child compilation
           if (info.minimized) {
-            return;
+            return false;
           }
 
+          if (
+            !compiler.webpack.ModuleFilenameHelpers.matchObject.bind(
+              // eslint-disable-next-line no-undefined
+              undefined,
+              this.options
+            )(name)
+          ) {
+            return false;
+          }
+
+          return true;
+        })
+        .map(async (name) => {
+          const { info, source } = compilation.getAsset(name);
+
+          const eTag = cache.getLazyHashedEtag(source);
+          const cacheItem = cache.getItemCache(name, eTag);
+          const output = await cacheItem.getPromise();
+
+          if (!output) {
+            numberOfAssetsForMinify += 1;
+          }
+
+          return { name, info, inputSource: source, output, cacheItem };
+        })
+    );
+
+    let getWorker;
+    let initializedWorker;
+    let numberOfWorkers;
+
+    if (optimizeOptions.availableNumberOfCores > 0) {
+      // Do not create unnecessary workers when the number of files is less than the available cores, it saves memory
+      numberOfWorkers = Math.min(
+        numberOfAssetsForMinify,
+        optimizeOptions.availableNumberOfCores
+      );
+      // eslint-disable-next-line consistent-return
+      getWorker = () => {
+        if (initializedWorker) {
+          return initializedWorker;
+        }
+
+        initializedWorker = new Worker(require.resolve('./minify'), {
+          numWorkers: numberOfWorkers,
+        });
+
+        // https://github.com/facebook/jest/issues/8872#issuecomment-524822081
+        const workerStdout = initializedWorker.getStdout();
+
+        if (workerStdout) {
+          workerStdout.on('data', (chunk) => {
+            return process.stdout.write(chunk);
+          });
+        }
+
+        const workerStderr = initializedWorker.getStderr();
+
+        if (workerStderr) {
+          workerStderr.on('data', (chunk) => {
+            return process.stderr.write(chunk);
+          });
+        }
+
+        return initializedWorker;
+      };
+    }
+
+    const limit = pLimit(
+      getWorker && numberOfAssetsForMinify > 0 ? numberOfWorkers : Infinity
+    );
+
+    const { SourceMapSource, RawSource } = compiler.webpack.sources;
+
+    const scheduledTasks = [];
+
+    for (const asset of assetsForMinify) {
+      scheduledTasks.push(
+        limit(async () => {
+          const { name, inputSource, cacheItem } = asset;
+          let { output } = asset;
           let input;
           let inputSourceMap;
 
@@ -219,8 +250,6 @@ class CssMinimizerPlugin {
             source: sourceFromInputSource,
             map,
           } = inputSource.sourceAndMap();
-
-          input = sourceFromInputSource;
 
           if (map) {
             if (CssMinimizerPlugin.isSourceMap(map)) {
@@ -234,38 +263,37 @@ class CssMinimizerPlugin {
             }
           }
 
-          if (Buffer.isBuffer(input)) {
-            input = input.toString();
-          }
-
-          const eTag = cache.getLazyHashedEtag(inputSource);
-
-          let output = await cache.getPromise(name, eTag);
+          const hasSourceMap =
+            inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
 
           if (!output) {
-            try {
-              const minimizerOptions = {
-                name,
-                input,
-                inputSourceMap,
-                map: this.options.sourceMap,
-                minimizerOptions: this.options.minimizerOptions,
-                minify: this.options.minify,
-              };
+            input = sourceFromInputSource;
 
-              output = await (worker
-                ? worker.transform(serialize(minimizerOptions))
-                : minifyFn(minimizerOptions));
+            if (Buffer.isBuffer(input)) {
+              input = input.toString();
+            }
+
+            const options = {
+              name,
+              input,
+              inputSourceMap,
+              map: { ...this.options.sourceMap },
+              minify: this.options.minify,
+              minimizerOptions: { ...this.options.minimizerOptions },
+            };
+
+            try {
+              output = await (getWorker
+                ? getWorker().transform(serialize(options))
+                : minifyFn(options));
             } catch (error) {
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
                   error,
                   name,
-                  inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                    ? new SourceMapConsumer(inputSourceMap)
-                    : null,
-                  compilation.requestShortener
+                  hasSourceMap ? new SourceMapConsumer(inputSourceMap) : null,
+                  // eslint-disable-next-line no-undefined
+                  hasSourceMap ? compilation.requestShortener : undefined
                 )
               );
 
@@ -285,9 +313,10 @@ class CssMinimizerPlugin {
               output.source = new RawSource(output.code);
             }
 
-            const { source, warnings } = output;
-
-            await cache.storePromise(name, eTag, { source, warnings });
+            await cacheItem.storePromise({
+              source: output.source,
+              warnings: output.warnings,
+            });
           }
 
           if (output.warnings && output.warnings.length > 0) {
@@ -295,10 +324,9 @@ class CssMinimizerPlugin {
               const builtWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 name,
-                inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                  ? new SourceMapConsumer(inputSourceMap)
-                  : null,
-                compilation.requestShortener,
+                hasSourceMap ? new SourceMapConsumer(inputSourceMap) : null,
+                // eslint-disable-next-line no-undefined
+                hasSourceMap ? compilation.requestShortener : undefined,
                 this.options.warningsFilter
               );
 
@@ -318,8 +346,8 @@ class CssMinimizerPlugin {
 
     const result = await Promise.all(scheduledTasks);
 
-    if (worker) {
-      await worker.end();
+    if (initializedWorker) {
+      await initializedWorker.end();
     }
 
     return result;
@@ -327,6 +355,9 @@ class CssMinimizerPlugin {
 
   apply(compiler) {
     const pluginName = this.constructor.name;
+    const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
+      this.options.parallel
+    );
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
       const hooks = compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(
@@ -349,7 +380,10 @@ class CssMinimizerPlugin {
           stage:
             compiler.webpack.Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
         },
-        (assets) => this.optimize(compiler, compilation, assets)
+        (assets) =>
+          this.optimize(compiler, compilation, assets, {
+            availableNumberOfCores,
+          })
       );
 
       compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
