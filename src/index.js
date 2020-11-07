@@ -344,13 +344,11 @@ class CssMinimizerPlugin {
       );
     }
 
-    const result = await Promise.all(scheduledTasks);
+    await Promise.all(scheduledTasks);
 
     if (initializedWorker) {
       await initializedWorker.end();
     }
-
-    return result;
   }
 
   apply(compiler) {
@@ -365,8 +363,8 @@ class CssMinimizerPlugin {
       );
 
       const data = serialize({
-        terser: cssNanoPackageJson.version,
-        terserOptions: this.options.terserOptions,
+        cssNano: cssNanoPackageJson.version,
+        cssNanoOptions: this.options.minimizerOptions,
       });
 
       hooks.chunkHash.tap(pluginName, (chunk, hash) => {

@@ -70,7 +70,7 @@ exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `Arra
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.19e4764f9c1d9fe130e2.d83c1458800a0db8915f.0ffa7254aa159dde7994.css": "body{color:red}a{color:#00f}",
+  "entry.19e4764f9c1d9fe130e2.3dfffe1d97062bbef93c.df22749557b2a56485d0.css": "body{color:red}a{color:#00f}",
 }
 `;
 
