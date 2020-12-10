@@ -192,13 +192,25 @@ class CssMinimizerPlugin {
   async optimize(compiler, compilation, assets, CacheEngine, weakCache) {
     const assetNames = Object.keys(
       typeof assets === 'undefined' ? compilation.assets : assets
-    ).filter((assetName) =>
-      ModuleFilenameHelpers.matchObject.bind(
-        // eslint-disable-next-line no-undefined
-        undefined,
-        this.options
-      )(assetName)
-    );
+    ).filter((assetName) => {
+      if (
+        !ModuleFilenameHelpers.matchObject.bind(
+          // eslint-disable-next-line no-undefined
+          undefined,
+          this.options
+        )(assetName)
+      ) {
+        return false;
+      }
+
+      const { info } = CssMinimizerPlugin.getAsset(compilation, assetName);
+
+      if (info.minimized) {
+        return false;
+      }
+
+      return true;
+    });
 
     if (assetNames.length === 0) {
       return Promise.resolve();
@@ -463,6 +475,7 @@ class CssMinimizerPlugin {
           {
             name: pluginName,
             stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_SIZE,
+            additionalAssets: true,
           },
           (assets) => this.optimize(compiler, compilation, assets, CacheEngine)
         );

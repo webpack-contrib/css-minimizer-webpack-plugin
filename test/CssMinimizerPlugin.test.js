@@ -17,6 +17,7 @@ import {
   readAsset,
   removeCache,
   ModifyExistingAsset,
+  EmitNewAsset,
 } from './helpers';
 
 describe('CssMinimizerPlugin', () => {
@@ -1102,4 +1103,41 @@ describe('CssMinimizerPlugin', () => {
       resolve();
     });
   });
+
+  if (!getCompiler.isWebpack4()) {
+    it('should run plugin against assets added later by plugins', async () => {
+      const compiler = getCompiler({
+        output: {
+          pathinfo: false,
+          path: path.resolve(__dirname, 'dist'),
+          filename: '[name].js',
+          chunkFilename: '[id].[name].js',
+        },
+        entry: {
+          entry: `${__dirname}/fixtures/test/foo.css`,
+        },
+        module: {
+          rules: [
+            {
+              test: /.s?css$/i,
+              use: ['css-loader'],
+            },
+          ],
+        },
+      });
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: ['default', { discardEmpty: false }],
+        },
+      }).apply(compiler);
+
+      new EmitNewAsset({ name: 'newFile.css' }).apply(compiler);
+
+      const stats = await compile(compiler);
+
+      expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
+      expect(getErrors(stats)).toMatchSnapshot('errors');
+      expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    });
+  }
 });
