@@ -69,6 +69,92 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
 
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): warnings 1`] = `Array []`;
 
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: assets 1`] = `
+Object {
+  "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry.css.map*/",
+  "entry.css.map": {
+    "version": 3,
+    "sources": [
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
+    ],
+    "names": [],
+    "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCCnB,OAGI,iBAAkB",
+    "file": "entry.css",
+    "sourcesContent": [
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+    ],
+    "sourceRoot": ""
+},
+  "entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry2.css.map*/",
+  "entry2.css.map": {
+    "version": 3,
+    "sources": [
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
+    ],
+    "names": [],
+    "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCKnB,OACE,iBAAkB",
+    "file": "entry2.css",
+    "sourcesContent": [
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+    ],
+    "sourceRoot": ""
+},
+}
+`;
+
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: errors 1`] = `Array []`;
+
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: warnings 1`] = `Array []`;
+
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: assets 1`] = `
+Object {
+  "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry.css.map*/",
+  "entry.css.map": {
+    "version": 3,
+    "sources": [
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
+    ],
+    "names": [],
+    "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCCnB,OAGI,iBAAkB",
+    "file": "entry.css",
+    "sourcesContent": [
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+    ],
+    "sourceRoot": ""
+},
+  "entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=entry2.css.map*/",
+  "entry2.css.map": {
+    "version": 3,
+    "sources": [
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
+    ],
+    "names": [],
+    "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCKnB,OACE,iBAAkB",
+    "file": "entry2.css",
+    "sourcesContent": [
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+    ],
+    "sourceRoot": ""
+},
+}
+`;
+
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: errors 1`] = `Array []`;
+
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: warnings 1`] = `Array []`;
+
 exports[`when applied with "sourceMap" option should work with the "devtool" option: assets 1`] = `
 Object {
   "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
