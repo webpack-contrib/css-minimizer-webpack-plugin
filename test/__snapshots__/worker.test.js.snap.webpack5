@@ -8,43 +8,11 @@ Array [
 
 exports[`worker should minify css: css 1`] = `".foo{color:red}.bar{color:coral}"`;
 
-exports[`worker should minify css: map 1`] = `
-Object {
-  "file": "entry.css",
-  "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
-  "names": Array [],
-  "sources": Array [
-    "foo.css",
-    "entry.css",
-  ],
-  "sourcesContent": Array [
-    ".foo{color:red;}",
-    ".foo{color:red;}
-.bar{color:coral;}",
-  ],
-  "version": 3,
-}
-`;
+exports[`worker should minify css: map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"foo.css\\",\\"entry.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,SAAA,CCCL,KAAK,WAAY\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\".foo{color:red;}\\",\\".foo{color:red;}\\\\n.bar{color:coral;}\\"]}"`;
 
 exports[`worker should work inputSourceMap as prev: css 1`] = `".foo{color:red}.bar{color:coral}"`;
 
-exports[`worker should work inputSourceMap as prev: map 1`] = `
-Object {
-  "file": "entry.css",
-  "mappings": "AAAA,KAAK,SAAA,CCCL,KAAK,WAAY",
-  "names": Array [],
-  "sources": Array [
-    "foo.css",
-    "entry.css",
-  ],
-  "sourcesContent": Array [
-    ".foo{color:red;}",
-    ".foo{color:red;}
-.bar{color:coral;}",
-  ],
-  "version": 3,
-}
-`;
+exports[`worker should work inputSourceMap as prev: map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"foo.css\\",\\"entry.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,SAAA,CCCL,KAAK,WAAY\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\".foo{color:red;}\\",\\".foo{color:red;}\\\\n.bar{color:coral;}\\"]}"`;
 
 exports[`worker should work options.minify function: css 1`] = `".minify {};"`;
 
