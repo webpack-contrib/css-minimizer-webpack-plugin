@@ -59,6 +59,16 @@ exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `Ar
 
 exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `Array []`;
 
+exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: assets 1`] = `
+Object {
+  "newFile.css": ".a{display:block;color:coral}",
+}
+`;
+
+exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: errors 1`] = `Array []`;
+
+exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: warnings 1`] = `Array []`;
+
 exports[`CssMinimizerPlugin should throw error from postcss: error 1`] = `
 Array [
   "Error: foo.css from Css Minimizer 
