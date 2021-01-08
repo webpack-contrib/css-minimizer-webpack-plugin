@@ -1125,12 +1125,12 @@ describe('CssMinimizerPlugin', () => {
           ],
         },
       });
+
       new CssMinimizerPlugin({
         minimizerOptions: {
           preset: ['default', { discardEmpty: false }],
         },
       }).apply(compiler);
-
       new EmitNewAsset({ name: 'newFile.css' }).apply(compiler);
 
       const stats = await compile(compiler);
