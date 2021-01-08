@@ -223,17 +223,13 @@ class CssMinimizerPlugin {
       const workerStdout = worker.getStdout();
 
       if (workerStdout) {
-        workerStdout.on('data', (chunk) => {
-          return process.stdout.write(chunk);
-        });
+        workerStdout.on('data', (chunk) => process.stdout.write(chunk));
       }
 
       const workerStderr = worker.getStderr();
 
       if (workerStderr) {
-        workerStderr.on('data', (chunk) => {
-          return process.stderr.write(chunk);
-        });
+        workerStderr.on('data', (chunk) => process.stderr.write(chunk));
       }
     }
 
