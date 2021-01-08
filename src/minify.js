@@ -49,7 +49,7 @@ const minify = async (options) => {
 
   return {
     code: result.css,
-    map: result.map,
+    map: result.map && result.map.toString(),
     warnings: warningsToString(result.warnings()),
   };
 };

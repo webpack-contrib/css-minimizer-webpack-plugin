@@ -70,6 +70,38 @@ describe('when applied with "sourceMap" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
   });
 
+  it('should work with the "devtool" option and the "parallel" option with "false" value', async () => {
+    const compiler = getCompiler(baseConfig);
+
+    new CssMinimizerPlugin({
+      parallel: false,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
+
+  it('should work with the "devtool" option and the "parallel" option with "true" value', async () => {
+    const compiler = getCompiler(baseConfig);
+
+    new CssMinimizerPlugin({
+      parallel: true,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  });
+
   it('should work with the "true" value', async () => {
     const config = Object.assign(baseConfig, {
       module: {
