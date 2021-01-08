@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.1.5...v1.2.0) (2021-01-08)
+
+
+### Features
+
+* optimize CSS assets added later by plugins (webpack@5 only) ([#47](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/47)) ([bdb3f52](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/bdb3f524289a2c131e2ec3728cf10b4c9a0010c7))
+
+
+### Bug Fixes
+
+* crash with source maps when the `parallel` option is `false` ([#53](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/53)) ([4fe95f9](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/4fe95f9b63764d06ffc4e6d6d77a45ba2dd1b76b))
+
 ### [1.1.5](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.1.4...v1.1.5) (2020-10-07)
 
 ### Chore
