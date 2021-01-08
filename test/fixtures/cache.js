@@ -1,3 +1,1 @@
-import css from './test/foo.css';
-
-module.exports = css;
+import './test/foo.css';

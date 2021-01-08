@@ -278,9 +278,7 @@ describe('CssMinimizerPlugin', () => {
 
         return postcss([plugin])
           .process(input, { from: filename, to: filename })
-          .then((result) => {
-            return result;
-          });
+          .then((result) => result);
       },
     }).apply(compiler);
 

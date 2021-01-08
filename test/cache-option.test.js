@@ -38,8 +38,8 @@ const otherOtherOtherCacheDir = findCacheDir({
 
 if (getCompiler.isWebpack4()) {
   describe('cache option', () => {
-    beforeEach(() => {
-      return Promise.all([
+    beforeEach(() =>
+      Promise.all([
         removeCache(),
         removeCache(uniqueCacheDirectory),
         removeCache(uniqueCacheDirectory1),
@@ -48,8 +48,8 @@ if (getCompiler.isWebpack4()) {
         removeCache(otherCacheDir),
         removeCache(otherOtherCacheDir),
         removeCache(otherOtherOtherCacheDir),
-      ]);
-    });
+      ])
+    );
 
     it('should match snapshot when a value is not specify', async () => {
       const compiler = getCompiler({
@@ -155,9 +155,7 @@ if (getCompiler.isWebpack4()) {
 
       const getCacheDirectorySpy = jest
         .spyOn(Webpack4Cache, 'getCacheDirectory')
-        .mockImplementation(() => {
-          return uniqueOtherDirectory;
-        });
+        .mockImplementation(() => uniqueOtherDirectory);
 
       new CssMinimizerPlugin({ cache: true }).apply(compiler);
 
@@ -504,9 +502,7 @@ if (getCompiler.isWebpack4()) {
 
       const getCacheDirectorySpy = jest
         .spyOn(Webpack4Cache, 'getCacheDirectory')
-        .mockImplementation(() => {
-          return otherOtherOtherCacheDir;
-        });
+        .mockImplementation(() => otherOtherOtherCacheDir);
 
       new CssMinimizerPlugin({ cache: true }).apply(compiler);
 
@@ -579,14 +575,14 @@ if (getCompiler.isWebpack4()) {
       './outputs/type-filesystem-3'
     );
 
-    beforeAll(() => {
-      return Promise.all([
+    beforeAll(() =>
+      Promise.all([
         del(fileSystemCacheDirectory),
         del(fileSystemCacheDirectory1),
         del(fileSystemCacheDirectory2),
         del(fileSystemCacheDirectory3),
-      ]);
-    });
+      ])
+    );
 
     it('should work with the "false" value for the "cache" option', async () => {
       const compiler = getCompiler({

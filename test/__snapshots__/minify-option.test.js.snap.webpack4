@@ -14,7 +14,7 @@ exports[`"minify" option should work with "csso" minifier: assets 1`] = `
 Object {
   "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///sourcemap/bar.scss\\",\\"webpack:///sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,I,CACE,e,CCEA,S,CADF,M,CAGI,iB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
 }
 `;
 

@@ -27,8 +27,8 @@ jest.mock('os', () => {
 let workerTransform;
 let workerEnd;
 
-jest.mock('jest-worker', () => {
-  return jest.fn().mockImplementation((workerPath) => {
+jest.mock('jest-worker', () =>
+  jest.fn().mockImplementation((workerPath) => {
     return {
       // eslint-disable-next-line global-require, import/no-dynamic-require
       transform: (workerTransform = jest.fn((data) =>
@@ -39,8 +39,8 @@ jest.mock('jest-worker', () => {
       getStderr: jest.fn(),
       getStdout: jest.fn(),
     };
-  });
-});
+  })
+);
 
 const workerPath = require.resolve('../src/minify');
 
