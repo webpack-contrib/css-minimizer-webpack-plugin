@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin:: Warning webpack://test/foo.css:2:2",
+  "Css Minimizer Plugin: warning-plugin:: Warning webpack://./test/foo.css:2:2",
 ]
 `;
 
@@ -174,7 +174,7 @@ exports[`CssMinimizerPlugin should work and use memory cache when the "cache" op
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 2`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css?v=test 1`] = `
 "body{color:red}a{color:#00f}
@@ -195,7 +195,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -205,7 +205,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "a,body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -223,7 +223,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -233,7 +233,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:#00f}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }

@@ -35,8 +35,8 @@ Object {
   "sourcemaps/entry.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.scss"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCCnB,OAGI,iBAAkB",
@@ -50,8 +50,8 @@ Object {
   "sourcemaps/entry2.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCKnB,OACE,iBAAkB",
@@ -76,8 +76,8 @@ Object {
   "entry.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.scss"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCCnB,OAGI,iBAAkB",
@@ -93,8 +93,8 @@ Object {
   "entry2.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCKnB,OACE,iBAAkB",
@@ -130,8 +130,8 @@ Object {
   "entry.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.scss"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCCnB,OAGI,iBAAkB",
@@ -147,8 +147,8 @@ Object {
   "entry2.css.map": {
     "version": 3,
     "sources": [
-        "webpack:///sourcemap/bar.scss",
-        "webpack:///sourcemap/foo.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
     "mappings": "AAAA,KACE,eAAiB,CCEjB,SDFiB,CCKnB,OACE,iBAAkB",
