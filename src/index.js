@@ -34,6 +34,7 @@ class CssMinimizerPlugin {
 
     const {
       minify,
+      processorOptions = {},
       minimizerOptions = {
         preset: 'default',
       },
@@ -57,6 +58,7 @@ class CssMinimizerPlugin {
       include,
       exclude,
       minify,
+      processorOptions,
       minimizerOptions,
     };
   }
@@ -331,6 +333,7 @@ class CssMinimizerPlugin {
                 input,
                 inputSourceMap,
                 map: this.options.sourceMap,
+                processorOptions: this.options.processorOptions,
                 minimizerOptions: this.options.minimizerOptions,
                 minify: this.options.minify,
               };

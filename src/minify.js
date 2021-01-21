@@ -12,19 +12,21 @@ const minify = async (options) => {
   const {
     name,
     input,
+    processorOptions,
     minimizerOptions,
     map,
     inputSourceMap,
     minify: minifyFn,
   } = options;
 
-  const postcssOptions = { to: name, from: name };
+  const postcssOptions = { to: name, from: name, ...processorOptions };
 
   if (minifyFn) {
     const result = await minifyFn(
       { [name]: input },
       inputSourceMap,
-      minimizerOptions
+      minimizerOptions,
+      processorOptions
     );
 
     return {

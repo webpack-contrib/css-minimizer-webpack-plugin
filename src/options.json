@@ -73,6 +73,11 @@
         }
       ]
     },
+    "processorOptions": {
+      "description": "Options for the CSS processor.",
+      "additionalProperties": true,
+      "type": "object"
+    },
     "minimizerOptions": {
       "description": "Options for `cssMinimizerOptions`.",
       "additionalProperties": true,
