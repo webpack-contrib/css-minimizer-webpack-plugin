@@ -43,24 +43,34 @@ const minify = async (options) => {
   minifyFns = typeof minifyFns === 'function' ? [minifyFns] : minifyFns;
 
   if (minifyFns) {
+    let warnings;
     let result = {
       css: input,
       map: inputSourceMap,
     };
 
     for await (const minifyFn of minifyFns) {
-      result = await minifyFn(
+      const minifiedData = await minifyFn(
         { [name]: result.css },
         result.map,
         minimizerOptions
       );
+
+      if (minifiedData && Array.isArray(minifiedData.warnings)) {
+        warnings =
+          typeof warnings === 'undefined'
+            ? minifiedData.warnings
+            : [...warnings, minifiedData.warnings];
+      }
+
+      result = minifiedData && minifiedData.css ? minifiedData : result;
     }
 
     return {
       // TODO remove `css` in future major release
       code: result.code || result.css,
       map: result.map,
-      warnings: warningsToString(result.warnings || []),
+      warnings: warningsToString(warnings || []),
     };
   }
 

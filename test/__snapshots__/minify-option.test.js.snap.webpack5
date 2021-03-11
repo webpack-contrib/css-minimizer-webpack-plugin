@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`"minify" option should work if minify is array and func return "undefined": assets 1`] = `
+Object {
+  "foo.css": "body {
+  font-weight: bold; }
+
+body {
+  color: red; }
+  body a {
+    text-align: center; }
+
+
+.two{color: red;}
+
+.three{color: red;}
+
+/*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA;EACE,iBAAiB;;ACCnB;EACE,UAAU;EADZ;IAGI,kBAAkB\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"minify" option should work if minify is array and func return "undefined": error 1`] = `Array []`;
+
+exports[`"minify" option should work if minify is array and func return "undefined": warning 1`] = `Array []`;
+
 exports[`"minify" option should work if minify is array: assets 1`] = `
 Object {
   "foo.css": "body {
