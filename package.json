@@ -81,6 +81,7 @@
     "prettier": "^2.1.2",
     "sass-loader": "^10.0.2",
     "standard-version": "^9.0.0",
+    "sugarss": "^3.0.3",
     "webpack": "^4.45.0"
   },
   "keywords": [
