@@ -1,4 +1,5 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import postcss from 'postcss';
 
 import CssMinimizerPlugin from '../src';
 
@@ -202,6 +203,76 @@ describe('"minify" option', () => {
             css: `${input}\n.three{color: red;}\n`,
             map: inputMap,
           };
+        },
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work if minify is array and concat warnings', async () => {
+    const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
+      result.warn(`Warning from ${result.opts.from}`, {
+        plugin: 'warning-plugin',
+      });
+    });
+
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      sourceMap: true,
+      parallel: false,
+      minify: [
+        async (data) => {
+          const [[fileName, input]] = Object.entries(data);
+
+          return postcss([plugin])
+            .process(input, { from: fileName, to: fileName })
+            .then((result) => {
+              return {
+                css: result.css,
+                map: result.map,
+                error: result.error,
+                warnings: result.warnings(),
+              };
+            });
+        },
+        async (data) => {
+          const [[fileName, input]] = Object.entries(data);
+
+          return postcss([plugin])
+            .process(input, { from: fileName, to: fileName })
+            .then((result) => {
+              return {
+                css: result.css,
+                map: result.map,
+                error: result.error,
+                warnings: result.warnings(),
+              };
+            });
         },
       ],
     }).apply(compiler);

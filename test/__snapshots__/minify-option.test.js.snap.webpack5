@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`"minify" option should work if minify is array and concat warnings: assets 1`] = `
+Object {
+  "foo.css": "body {
+  font-weight: bold; }
+
+body {
+  color: red; }
+  body a {
+    text-align: center; }
+
+",
+}
+`;
+
+exports[`"minify" option should work if minify is array and concat warnings: error 1`] = `Array []`;
+
+exports[`"minify" option should work if minify is array and concat warnings: warning 1`] = `
+Array [
+  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+]
+`;
+
 exports[`"minify" option should work if minify is array and func return "undefined": assets 1`] = `
 Object {
   "foo.css": "body {
