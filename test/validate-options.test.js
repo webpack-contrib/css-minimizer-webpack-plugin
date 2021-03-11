@@ -177,6 +177,10 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
+    new CssMinimizerPlugin({ minify: [() => {}, () => {}] });
+  }).not.toThrow();
+
+  expect(() => {
     new CssMinimizerPlugin({ minify: true });
   }).toThrowErrorMatchingSnapshot();
 

@@ -110,7 +110,18 @@
     },
     "minify": {
       "description": "Allows you to override default minify function.",
-      "instanceof": "Function"
+      "anyOf": [
+        {
+          "instanceof": "Function"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "instanceof": "Function"
+          }
+        }
+      ]
     }
   },
   "additionalProperties": false

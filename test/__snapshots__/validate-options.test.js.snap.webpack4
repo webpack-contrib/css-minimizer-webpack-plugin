@@ -147,8 +147,13 @@ exports[`validation 12`] = `
 
 exports[`validation 13`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.minify should be an instance of function.
-   -> Allows you to override default minify function."
+ - options.minify should be one of these:
+   function | [function, ...] (should not have fewer than 1 item)
+   -> Allows you to override default minify function.
+   Details:
+    * options.minify should be an instance of function.
+    * options.minify should be an array:
+      [function, ...] (should not have fewer than 1 item)"
 `;
 
 exports[`validation 14`] = `

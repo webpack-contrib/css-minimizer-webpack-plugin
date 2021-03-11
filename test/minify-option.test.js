@@ -107,4 +107,60 @@ describe('"minify" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('error');
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
+
+  it('should work if minify is array', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      sourceMap: true,
+      minify: [
+        async (data, inputMap) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.one{color: red;}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.two{color: red;}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.three{color: red;}\n`,
+            map: inputMap,
+          };
+        },
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
 });

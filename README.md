@@ -299,7 +299,7 @@ module.exports = {
 
 ### `minify`
 
-Type: `Function`
+Type: `Function|Array<Function>`
 Default: `undefined`
 
 Allows you to override default minify function.

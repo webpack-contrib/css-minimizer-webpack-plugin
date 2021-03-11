@@ -1,4 +1,5 @@
 const cssnano = require('cssnano');
+
 /*
  * We bring to the line here, because when passing result from the worker,
  * the warning.toString is replaced with native Object.toString
@@ -36,21 +37,24 @@ async function load(module) {
 }
 
 const minify = async (options) => {
-  const {
-    name,
-    input,
-    minimizerOptions,
-    map,
-    inputSourceMap,
-    minify: minifyFn,
-  } = options;
+  const { name, input, minimizerOptions, map, inputSourceMap } = options;
+  let { minify: minifyFns } = options;
 
-  if (minifyFn) {
-    const result = await minifyFn(
-      { [name]: input },
-      inputSourceMap,
-      minimizerOptions
-    );
+  minifyFns = typeof minifyFns === 'function' ? [minifyFns] : minifyFns;
+
+  if (minifyFns) {
+    let result = {
+      css: input,
+      map: inputSourceMap,
+    };
+
+    for await (const minifyFn of minifyFns) {
+      result = await minifyFn(
+        { [name]: result.css },
+        result.map,
+        minimizerOptions
+      );
+    }
 
     return {
       // TODO remove `css` in future major release
@@ -127,6 +131,7 @@ async function transform(options) {
     '__dirname',
     `'use strict'\nreturn ${options}`
   )(exports, require, module, __filename, __dirname);
+
   const result = await minify(options);
 
   if (result.error) {
