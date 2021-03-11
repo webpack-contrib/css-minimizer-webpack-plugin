@@ -1,3 +1,7 @@
+import CopyPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import sugarss from 'sugarss';
+
 import CssMinimizerPlugin from '../src/index';
 
 import { getCompiler, compile, readAsset, removeCache } from './helpers';
@@ -148,6 +152,225 @@ describe('when applied with "minimizerOptions" option', () => {
     new CssMinimizerPlugin({
       minimizerOptions: {
         preset: ['default', { discardEmpty: false }],
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "parser" option with "Function" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/sugarss.js`,
+      },
+      module: {},
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              context: `${__dirname}/fixtures/sss`,
+              from: `index.sss`,
+            },
+          ],
+        }),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+      ],
+    });
+    new CssMinimizerPlugin({
+      test: /\.(css|sss)$/i,
+      parallel: false,
+      minimizerOptions: {
+        processorOptions: {
+          parser: sugarss,
+        },
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "parser" option with "String" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/sugarss.js`,
+      },
+      module: {},
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              context: `${__dirname}/fixtures/sss`,
+              from: `index.sss`,
+            },
+          ],
+        }),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+      ],
+    });
+    new CssMinimizerPlugin({
+      test: /\.(css|sss)$/i,
+      minimizerOptions: {
+        processorOptions: {
+          parser: 'sugarss',
+        },
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "stringifier" option with "Function" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/entry.js`,
+      },
+    });
+    new CssMinimizerPlugin({
+      parallel: false,
+      minimizerOptions: {
+        processorOptions: {
+          stringifier: sugarss,
+        },
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "stringifier" option with "String" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/entry.js`,
+      },
+    });
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        processorOptions: {
+          stringifier: 'sugarss',
+        },
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "syntax" option with "Function" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/sugarss.js`,
+      },
+      module: {},
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              context: `${__dirname}/fixtures/sss`,
+              from: `index.sss`,
+            },
+          ],
+        }),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+      ],
+    });
+    new CssMinimizerPlugin({
+      test: /\.(css|sss)$/i,
+      parallel: false,
+      minimizerOptions: {
+        processorOptions: {
+          syntax: sugarss,
+        },
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
+  it('matches snapshot for "syntax" option with "String" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/sugarss.js`,
+      },
+      module: {},
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              context: `${__dirname}/fixtures/sss`,
+              from: `index.sss`,
+            },
+          ],
+        }),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+      ],
+    });
+    new CssMinimizerPlugin({
+      test: /\.(css|sss)$/i,
+      minimizerOptions: {
+        processorOptions: {
+          syntax: 'sugarss',
+        },
       },
     }).apply(compiler);
 
