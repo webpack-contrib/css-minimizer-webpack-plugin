@@ -64,6 +64,7 @@ describe('worker', () => {
     const options = {
       name: 'entry.css',
       input: false,
+      minimizerOptions: { preset: 'default' },
     };
 
     try {

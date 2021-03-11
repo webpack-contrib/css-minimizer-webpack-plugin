@@ -45,18 +45,26 @@ const minify = async (options) => {
     minify: minifyFn,
   } = options;
 
-  let postcssOptions;
+  if (minifyFn) {
+    const result = await minifyFn(
+      { [name]: input },
+      inputSourceMap,
+      minimizerOptions
+    );
 
-  if (minimizerOptions && minimizerOptions.processorOptions) {
-    postcssOptions = {
-      to: name,
-      from: name,
-      ...minimizerOptions.processorOptions,
+    return {
+      // TODO remove `css` in future major release
+      code: result.code || result.css,
+      map: result.map,
+      warnings: warningsToString(result.warnings || []),
     };
-    delete minimizerOptions.processorOptions;
-  } else {
-    postcssOptions = { to: name, from: name };
   }
+
+  const postcssOptions = {
+    to: name,
+    from: name,
+    ...minimizerOptions.processorOptions,
+  };
 
   if (typeof postcssOptions.parser === 'string') {
     try {
@@ -86,21 +94,6 @@ const minify = async (options) => {
         `Loading PostCSS "${postcssOptions.syntax}" syntax failed: ${error.message}\n\n(@${name})`
       );
     }
-  }
-
-  if (minifyFn) {
-    const result = await minifyFn(
-      { [name]: input },
-      inputSourceMap,
-      minimizerOptions
-    );
-
-    return {
-      // TODO remove `css` in future major release
-      code: result.code || result.css,
-      map: result.map,
-      warnings: warningsToString(result.warnings || []),
-    };
   }
 
   if (inputSourceMap) {
@@ -134,7 +127,6 @@ async function transform(options) {
     '__dirname',
     `'use strict'\nreturn ${options}`
   )(exports, require, module, __filename, __dirname);
-
   const result = await minify(options);
 
   if (result.error) {
