@@ -28,6 +28,11 @@ jest.mock('os', () => {
 let workerTransform;
 let workerEnd;
 
+const ENABLE_WORKER_THREADS =
+  typeof process.env.ENABLE_WORKER_THREADS !== 'undefined'
+    ? process.env.ENABLE_WORKER_THREADS === 'true'
+    : true;
+
 jest.mock('jest-worker', () =>
   jest.fn().mockImplementation((workerPath) => {
     return {
@@ -68,6 +73,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: os.cpus().length - 1,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -99,6 +105,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: Math.min(4, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -118,6 +125,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: 2,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -141,6 +149,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: Math.min(1, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -168,6 +177,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -195,6 +205,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
@@ -233,6 +244,7 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
