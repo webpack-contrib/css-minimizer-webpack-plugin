@@ -63,7 +63,10 @@ const minify = async (options) => {
             : [...warnings, minifiedData.warnings];
       }
 
-      result = minifiedData && minifiedData.css ? minifiedData : result;
+      result =
+        minifiedData && (minifiedData.css || minifiedData.code)
+          ? minifiedData
+          : result;
     }
 
     return {
