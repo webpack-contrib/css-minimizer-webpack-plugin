@@ -92,67 +92,39 @@ exports[`validation 6`] = `
 
 exports[`validation 7`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.sourceMap should be one of these:
-   object { … } | boolean
-   -> Enables/Disables generation of source maps.
-   Details:
-    * options.sourceMap should be an object:
-      object { … }
-      -> Options for source map.
-    * options.sourceMap should be a boolean."
-`;
-
-exports[`validation 8`] = `
-"Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.minimizerOptions should be an object:
    object { … }
    -> Options for \`cssMinimizerOptions\`."
 `;
 
+exports[`validation 8`] = `
+"Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
+ - options.parallel should be one of these:
+   boolean | integer
+   -> Use multi-process parallel running to improve the build speed.
+   Details:
+    * options.parallel should be a boolean.
+    * options.parallel should be a integer."
+`;
+
 exports[`validation 9`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.cache should be one of these:
-   boolean | string
-   -> Enable file caching. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache.
+ - options.parallel should be one of these:
+   boolean | integer
+   -> Use multi-process parallel running to improve the build speed.
    Details:
-    * options.cache should be a boolean.
-    * options.cache should be a string."
+    * options.parallel should be a boolean.
+    * options.parallel should be a integer."
 `;
 
 exports[`validation 10`] = `
-"Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.cacheKeys should be an instance of function.
-   -> Allows you to override default cache keys. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache."
-`;
-
-exports[`validation 11`] = `
-"Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.parallel should be one of these:
-   boolean | integer
-   -> Use multi-process parallel running to improve the build speed.
-   Details:
-    * options.parallel should be a boolean.
-    * options.parallel should be a integer."
-`;
-
-exports[`validation 12`] = `
-"Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
- - options.parallel should be one of these:
-   boolean | integer
-   -> Use multi-process parallel running to improve the build speed.
-   Details:
-    * options.parallel should be a boolean.
-    * options.parallel should be a integer."
-`;
-
-exports[`validation 13`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.minify should be an instance of function.
    -> Allows you to override default minify function."
 `;
 
-exports[`validation 14`] = `
+exports[`validation 11`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'unknown'. These properties are valid:
-   object { test?, include?, exclude?, sourceMap?, minimizerOptions?, cache?, cacheKeys?, parallel?, warningsFilter?, minify? }"
+   object { test?, include?, exclude?, minimizerOptions?, parallel?, warningsFilter?, minify? }"
 `;

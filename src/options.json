@@ -60,38 +60,10 @@
         }
       ]
     },
-    "sourceMap": {
-      "description": "Enables/Disables generation of source maps.",
-      "anyOf": [
-        {
-          "description": "Options for source map.",
-          "additionalProperties": true,
-          "type": "object"
-        },
-        {
-          "type": "boolean"
-        }
-      ]
-    },
     "minimizerOptions": {
       "description": "Options for `cssMinimizerOptions`.",
       "additionalProperties": true,
       "type": "object"
-    },
-    "cache": {
-      "description": "Enable file caching. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache.",
-      "anyOf": [
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "string"
-        }
-      ]
-    },
-    "cacheKeys": {
-      "description": "Allows you to override default cache keys. Ignored in webpack 5, for webpack 5 please use https://webpack.js.org/configuration/other-options/#cache.",
-      "instanceof": "Function"
     },
     "parallel": {
       "description": "Use multi-process parallel running to improve the build speed.",

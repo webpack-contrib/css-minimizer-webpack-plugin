@@ -32,7 +32,6 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      sourceMap: true,
       minify: async (data, inputMap) => {
         // eslint-disable-next-line global-require
         const csso = require('csso');
