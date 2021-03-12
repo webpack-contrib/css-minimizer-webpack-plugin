@@ -1,13 +1,13 @@
-import os from 'os';
+import * as os from 'os';
 
 import { SourceMapConsumer } from 'source-map';
 import { validate } from 'schema-utils';
 import serialize from 'serialize-javascript';
-import cssNanoPackageJson from 'cssnano/package.json';
+import * as cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
-import schema from './options.json';
+import * as schema from './options.json';
 
 import { minify as minifyFn } from './minify';
 
