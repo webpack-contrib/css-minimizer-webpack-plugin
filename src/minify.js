@@ -40,7 +40,6 @@ const minify = async (options) => {
     name,
     input,
     minimizerOptions,
-    map,
     inputSourceMap,
     minify: minifyFn,
   } = options;
@@ -97,12 +96,9 @@ const minify = async (options) => {
   }
 
   if (inputSourceMap) {
-    // TODO remove `inline` value for the `sourceMap` option
     postcssOptions.map = {
       annotation: false,
-      inline: false,
       prev: inputSourceMap,
-      ...map,
     };
   }
 

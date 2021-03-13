@@ -271,7 +271,6 @@ class CssMinimizerPlugin {
               name,
               input,
               inputSourceMap,
-              map: this.options.sourceMap,
               minimizerOptions: this.options.minimizerOptions,
               minify: this.options.minify,
             };
