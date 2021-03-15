@@ -4,13 +4,9 @@ import sugarss from 'sugarss';
 
 import CssMinimizerPlugin from '../src/index';
 
-import { getCompiler, compile, readAsset, removeCache } from './helpers';
+import { getCompiler, compile, readAsset } from './helpers';
 
 describe('when applied with "minimizerOptions" option', () => {
-  beforeEach(() => Promise.all([removeCache()]));
-
-  afterEach(() => Promise.all([removeCache()]));
-
   it('matches snapshot for "discardComments" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {

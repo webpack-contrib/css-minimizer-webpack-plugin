@@ -4,7 +4,6 @@ import {
   getCompiler,
   compile,
   readAssets,
-  removeCache,
   getErrors,
   getWarnings,
 } from './helpers';
@@ -13,8 +12,6 @@ describe('when applied with "test" option', () => {
   let compiler;
 
   beforeEach(() => {
-    Promise.all([removeCache()]);
-
     compiler = getCompiler({
       entry: {
         bar1: `${__dirname}/fixtures/test/bar1.css`,
@@ -23,8 +20,6 @@ describe('when applied with "test" option', () => {
       },
     });
   });
-
-  afterEach(() => Promise.all([removeCache()]));
 
   it('matches snapshot with empty value', async () => {
     new CssMinimizerPlugin().apply(compiler);

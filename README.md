@@ -59,6 +59,19 @@ If you want to run it also in development set the `optimization.minimize` option
 
 And run `webpack` via your preferred method.
 
+## Note about source maps
+
+**Works only with `source-map`, `inline-source-map`, `hidden-source-map` and `nosources-source-map` values for the [`devtool`](https://webpack.js.org/configuration/devtool/) option.**
+
+Why? Because CSS support only these source map types.
+
+The plugin respect the [`devtool`](https://webpack.js.org/configuration/devtool/) and using the `SourceMapDevToolPlugin` plugin.
+Using supported `devtool` values enable source map generation.
+Using `SourceMapDevToolPlugin` with enabled the `columns` option enables source map generation.
+
+Use source maps to map error message locations to modules (this slows down the compilation).
+If you use your own `minify` function please read the `minify` section for handling source maps correctly.
+
 ## Options
 
 ### `test`
@@ -124,97 +137,6 @@ module.exports = {
 };
 ```
 
-### `cache`
-
-> ⚠ Ignored in webpack 5! Please use https://webpack.js.org/configuration/other-options/#cache.
-
-Type: `Boolean|String`
-Default: `true`
-
-Enable file caching.
-Default path to cache directory: `node_modules/.cache/css-minimizer-webpack-plugin`.
-
-> ℹ️ If you use your own `minify` function please read the `minify` section for cache invalidation correctly.
-
-#### `Boolean`
-
-Enable/disable file caching.
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin({
-        cache: true,
-      }),
-    ],
-  },
-};
-```
-
-#### `String`
-
-Enable file caching and set path to cache directory.
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin({
-        cache: 'path/to/cache',
-      }),
-    ],
-  },
-};
-```
-
-### `cacheKeys`
-
-> ⚠ Ignored in webpack 5! Please use https://webpack.js.org/configuration/other-options/#cache.
-
-Type: `Function<(defaultCacheKeys, file) -> Object>`
-Default: `defaultCacheKeys => defaultCacheKeys`
-
-Allows you to override default cache keys.
-
-Default cache keys:
-
-```js
-({
-  cssMinimizer: require('cssnano/package.json').version, // cssnano version
-  'css-minimizer-webpack-plugin': require('../package.json').version, // plugin version
-  'css-minimizer-webpack-plugin-options': this.options, // plugin options
-  path: compiler.outputPath ? `${compiler.outputPath}/${file}` : file, // asset path
-  hash: crypto.createHash('md4').update(input).digest('hex'), // source file hash
-});
-```
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin({
-        cache: true,
-        cacheKeys: (defaultCacheKeys, file) => {
-          defaultCacheKeys.myCacheKey = 'myCacheKeyValue';
-
-          return defaultCacheKeys;
-        },
-      }),
-    ],
-  },
-};
-```
-
 ### `parallel`
 
 Type: `Boolean|Number`
@@ -263,40 +185,6 @@ module.exports = {
 };
 ```
 
-### `sourceMap`
-
-Type: `Boolean|Object`
-Default: `false` (see below for details around `devtool` value and `SourceMapDevToolPlugin` plugin)
-
-Enable (and configure) source map support. Use [PostCss SourceMap options](https://github.com/postcss/postcss-loader#sourcemap).
-Default configuration when enabled: `{ inline: false }`.
-
-**Works only with `source-map`, `inline-source-map`, `hidden-source-map` and `nosources-source-map` values for the [`devtool`](https://webpack.js.org/configuration/devtool/) option.**
-
-Why? Because CSS support only these source map types.
-
-The plugin respect the [`devtool`](https://webpack.js.org/configuration/devtool/) and using the `SourceMapDevToolPlugin` plugin.
-Using supported `devtool` values enable source map generation.
-Using `SourceMapDevToolPlugin` with enabled the `columns` option enables source map generation.
-
-Use source maps to map error message locations to modules (this slows down the compilation).
-If you use your own `minify` function please read the `minify` section for handling source maps correctly.
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin({
-        sourceMap: true,
-      }),
-    ],
-  },
-};
-```
-
 ### `minify`
 
 Type: `Function`
@@ -316,7 +204,6 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        sourceMap: true,
         minify: (data, inputMap, minimizerOptions) => {
           const postcss = require('postcss');
 
@@ -476,6 +363,7 @@ Don't forget to enable `sourceMap` options for all loaders.
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
+  devtool: 'source-map',
   module: {
     loaders: [
       {
@@ -489,11 +377,7 @@ module.exports = {
     ],
   },
   optimization: {
-    minimizer: [
-      new CssMinimizerPlugin({
-        sourceMap: true,
-      }),
-    ],
+    minimizer: [new CssMinimizerPlugin()],
   },
 };
 ```
@@ -537,7 +421,6 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        sourceMap: true,
         minify: async (data, inputMap) => {
           const csso = require('csso');
           const sourcemap = require('source-map');
@@ -582,7 +465,6 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        sourceMap: true,
         minify: async (data, inputMap) => {
           // eslint-disable-next-line global-require
           const CleanCSS = require('clean-css');
