@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.2.0...v1.3.0) (2021-03-15)
+
+
+### Features
+
+* added support `processorOptions` for `cssnano` ([8865423](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/886542375dc37411e271d151b7060be574fc5898))
+
 ## [1.2.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.1.5...v1.2.0) (2021-01-08)
 
 
