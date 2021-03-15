@@ -54,7 +54,9 @@ class CssMinimizerPlugin {
     );
   }
 
-  static buildError(error, file, requestShortener, sourceMap) {
+  static buildError(error, name, requestShortener, sourceMap) {
+    let builtError;
+
     if (error.line) {
       const original =
         sourceMap &&
@@ -64,33 +66,45 @@ class CssMinimizerPlugin {
         });
 
       if (original && original.source && requestShortener) {
-        return new Error(
-          `${file} from Css Minimizer Webpack Plugin\n${
+        builtError = new Error(
+          `${name} from Css Minimizer Webpack Plugin\n${
             error.message
           } [${requestShortener.shorten(original.source)}:${original.line},${
             original.column
-          }][${file}:${error.line},${error.column}]${
+          }][${name}:${error.line},${error.column}]${
             error.stack
               ? `\n${error.stack.split('\n').slice(1).join('\n')}`
               : ''
           }`
         );
+        builtError.file = name;
+
+        return builtError;
       }
 
-      return new Error(
-        `${file} from Css Minimizer \n${error.message} [${file}:${error.line},${
+      builtError = new Error(
+        `${name} from Css Minimizer \n${error.message} [${name}:${error.line},${
           error.column
         }]${
           error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
         }`
       );
+      builtError.file = name;
+
+      return builtError;
     }
 
     if (error.stack) {
-      return new Error(`${file} from Css Minimizer\n${error.stack}`);
+      builtError = new Error(`${name} from Css Minimizer\n${error.stack}`);
+      builtError.file = name;
+
+      return builtError;
     }
 
-    return new Error(`${file} from Css Minimizer\n${error.message}`);
+    builtError = new Error(`${name} from Css Minimizer\n${error.message}`);
+    builtError.file = name;
+
+    return builtError;
   }
 
   static buildWarning(
@@ -309,27 +323,42 @@ class CssMinimizerPlugin {
             }
 
             if (output.warnings && output.warnings.length > 0) {
-              output.warnings.forEach((warning) => {
-                output.builtWarning = CssMinimizerPlugin.buildWarning(
-                  warning,
-                  name,
-                  inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                    ? new SourceMapConsumer(inputSourceMap)
-                    : null,
-                  compilation.requestShortener,
-                  this.options.warningsFilter
-                );
-              });
+              output.warnings = output.warnings
+                .map((warning) =>
+                  CssMinimizerPlugin.buildWarning(
+                    warning,
+                    name,
+                    inputSourceMap &&
+                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                      ? new SourceMapConsumer(inputSourceMap)
+                      : null,
+                    compilation.requestShortener,
+                    this.options.warningsFilter
+                  )
+                )
+                .filter(Boolean);
             }
 
-            const { source, builtWarning } = output;
-
-            await cacheItem.storePromise({ source, builtWarning });
+            await cacheItem.storePromise({
+              source: output.source,
+              warnings: output.warnings,
+            });
           }
 
-          if (output.builtWarning) {
-            compilation.warnings.push(output.builtWarning);
+          if (output.warnings && output.warnings.length > 0) {
+            output.warnings.forEach((warning) => {
+              const Warning = class Warning extends Error {
+                constructor(message) {
+                  super(message);
+
+                  this.name = 'Warning';
+                  this.hideStack = true;
+                  this.file = name;
+                }
+              };
+
+              compilation.warnings.push(new Warning(warning));
+            });
           }
 
           const newInfo = { minimized: true };
