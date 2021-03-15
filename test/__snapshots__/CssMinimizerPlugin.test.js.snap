@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin:: Warning webpack://./test/foo.css:2:2",
+  "Warning: Css Minimizer Plugin: warning-plugin:: Warning webpack://./test/foo.css:2:2",
 ]
 `;
 
@@ -297,9 +297,9 @@ a {
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
 
@@ -309,9 +309,9 @@ exports[`CssMinimizerPlugin should work with warnings and use memory cache when 
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
 
@@ -345,9 +345,9 @@ a {
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 1`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
 
@@ -357,9 +357,9 @@ exports[`CssMinimizerPlugin should work with warnings and use memory cache when 
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 2`] = `
 Array [
-  "Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
-  "Css Minimizer Plugin: warning-plugin: Warning from style.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css ",
+  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css ",
 ]
 `;
 
