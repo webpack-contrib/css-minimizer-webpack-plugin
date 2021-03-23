@@ -1,4 +1,5 @@
-async function CssMinimizerPluginCssnano(
+/* istanbul ignore next */
+async function cssnanoMinify(
   data,
   inputSourceMap,
   minimizerOptions = { preset: 'default' }
@@ -87,4 +88,4 @@ async function CssMinimizerPluginCssnano(
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { CssMinimizerPluginCssnano };
+export { cssnanoMinify };

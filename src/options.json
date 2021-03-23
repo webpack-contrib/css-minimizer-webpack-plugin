@@ -32,7 +32,7 @@
         }
       ]
     },
-    "minimizerOptions": {
+    "MinimizerOptions": {
       "additionalProperties": true,
       "type": "object"
     }
@@ -68,13 +68,13 @@
       "description": "Options for `cssMinimizerOptions`.",
       "anyOf": [
         {
-          "$ref": "#/definitions/minimizerOptions"
+          "$ref": "#/definitions/MinimizerOptions"
         },
         {
           "type": "array",
           "minItems": 1,
           "items": {
-            "$ref": "#/definitions/minimizerOptions"
+            "$ref": "#/definitions/MinimizerOptions"
           }
         }
       ]

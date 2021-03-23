@@ -7,7 +7,7 @@ import * as cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
-import { CssMinimizerPluginCssnano } from './utils';
+import { cssnanoMinify } from './utils';
 
 import * as schema from './options.json';
 import { minify as minifyFn } from './minify';
@@ -22,7 +22,7 @@ class CssMinimizerPlugin {
     });
 
     const {
-      minify = CssMinimizerPluginCssnano,
+      minify = cssnanoMinify,
       minimizerOptions,
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
@@ -292,7 +292,6 @@ class CssMinimizerPlugin {
             };
 
             let warnings = [];
-            let i = 0;
 
             this.options.minimizerOptions = Array.isArray(
               this.options.minimizerOptions
@@ -300,12 +299,11 @@ class CssMinimizerPlugin {
               ? this.options.minimizerOptions
               : [this.options.minimizerOptions];
 
-            for await (const minifyFunc of minifyFns) {
+            for await (const [i, minifyFunc] of minifyFns.entries()) {
               minimizerOptions.minify = minifyFunc;
               minimizerOptions.minimizerOptions = this.options.minimizerOptions[
                 i
               ];
-              i += 1;
 
               try {
                 output = await (getWorker
@@ -451,6 +449,6 @@ class CssMinimizerPlugin {
   }
 }
 
-CssMinimizerPlugin.cssnano = CssMinimizerPluginCssnano;
+CssMinimizerPlugin.cssnano = cssnanoMinify;
 
 export default CssMinimizerPlugin;
