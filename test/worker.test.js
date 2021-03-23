@@ -20,7 +20,7 @@ describe('worker', () => {
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
       minimizerOptions: { discardComments: false },
-      minify: CssMinimizerPlugin.cssnano,
+      minify: CssMinimizerPlugin.cssnanoMinify,
     };
     const { code, map } = await transform(serialize(options));
 
@@ -41,7 +41,7 @@ describe('worker', () => {
         file: 'x',
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
-      minify: CssMinimizerPlugin.cssnano,
+      minify: CssMinimizerPlugin.cssnanoMinify,
     };
     const { code, map } = await transform(serialize(options));
 
@@ -69,7 +69,7 @@ describe('worker', () => {
       name: 'entry.css',
       input: false,
       minimizerOptions: { preset: 'default' },
-      minify: CssMinimizerPlugin.cssnano,
+      minify: CssMinimizerPlugin.cssnanoMinify,
     };
 
     try {

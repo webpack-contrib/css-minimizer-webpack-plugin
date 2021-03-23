@@ -89,7 +89,7 @@ async function cssnanoMinify(
 
 /* istanbul ignore next */
 async function cssoMinify(data, inputSourceMap, minimizerOptions) {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const csso = require('csso');
   // eslint-disable-next-line global-require
   const sourcemap = require('source-map');
@@ -115,7 +115,7 @@ async function cssoMinify(data, inputSourceMap, minimizerOptions) {
 
 /* istanbul ignore next */
 async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const CleanCSS = require('clean-css');
   const [[name, input]] = Object.entries(data);
   const result = await new CleanCSS({

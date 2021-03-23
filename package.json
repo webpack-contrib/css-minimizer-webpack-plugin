@@ -38,8 +38,6 @@
     "dist"
   ],
   "peerDependencies": {
-    "clean-css": "^5.1.2",
-    "csso": "^4.2.0",
     "webpack": "^5.0.0"
   },
   "peerDependenciesMeta": {

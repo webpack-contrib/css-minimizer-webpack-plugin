@@ -449,8 +449,8 @@ class CssMinimizerPlugin {
   }
 }
 
-CssMinimizerPlugin.cssnano = cssnanoMinify;
-CssMinimizerPlugin.csso = cssoMinify;
-CssMinimizerPlugin.cleanCss = cleanCssMinify;
+CssMinimizerPlugin.cssnanoMinify = cssnanoMinify;
+CssMinimizerPlugin.cssoMinify = cssoMinify;
+CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
 
 export default CssMinimizerPlugin;

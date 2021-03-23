@@ -225,7 +225,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 
-  it('should work with "CssMinimizerPlugin.cssnano"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify"', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -249,7 +249,7 @@ describe('"minify" option', () => {
       minimizerOptions: {
         preset: 'default',
       },
-      minify: [CssMinimizerPlugin.cssnano],
+      minify: [CssMinimizerPlugin.cssnanoMinify],
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -261,7 +261,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 
-  it('should work with "CssMinimizerPlugin.cssnano" and parser option as "String"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" and parser option as "String"', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -290,7 +290,7 @@ describe('"minify" option', () => {
           parser: 'sugarss',
         },
       },
-      minify: [CssMinimizerPlugin.cssnano],
+      minify: [CssMinimizerPlugin.cssnanoMinify],
     }).apply(compiler);
 
     return compile(compiler).then((stats) => {
@@ -305,7 +305,7 @@ describe('"minify" option', () => {
     });
   });
 
-  it('should work with "CssMinimizerPlugin.csso" minifier', async () => {
+  it('should work with "CssMinimizerPlugin.cssoMinify" minifier', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -326,7 +326,7 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: CssMinimizerPlugin.csso,
+      minify: CssMinimizerPlugin.cssoMinify,
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -338,7 +338,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 
-  it('should work with "CssMinimizerPlugin.cleanCss" minifier', async () => {
+  it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -347,7 +347,7 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: CssMinimizerPlugin.cleanCss,
+      minify: CssMinimizerPlugin.cleanCssMinify,
     }).apply(compiler);
 
     const stats = await compile(compiler);
