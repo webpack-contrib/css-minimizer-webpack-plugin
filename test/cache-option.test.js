@@ -329,7 +329,7 @@ describe('"cache" option', () => {
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
-              css: result.css,
+              code: result.css,
               map: result.map,
               error: result.error,
               warnings: result.warnings(),

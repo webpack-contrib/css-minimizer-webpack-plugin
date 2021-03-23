@@ -55,7 +55,7 @@ describe('worker', () => {
       input: '.foo{color:red;}\n.bar{color:coral;}',
       minimizerOptions: { discardComments: false },
       minify: () => {
-        return { css: '.minify {};' };
+        return { code: '.minify {};' };
       },
     };
     const { code, map } = await transform(serialize(options));
