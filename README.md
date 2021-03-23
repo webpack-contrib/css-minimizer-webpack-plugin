@@ -188,11 +188,18 @@ module.exports = {
 ### `minify`
 
 Type: `Function|Array<Function>`
-Default: `undefined`
+Default: `CssMinimizerPlugin.cssnano`
 
-Allows you to override default minify function.
+Allows to override default minify function.
 By default plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
 Useful for using and testing unpublished versions or forks.
+
+Possible options:
+
+- CssMinimizerPlugin.cssnano
+- CssMinimizerPlugin.csso
+- CssMinimizerPlugin.cleanCss
+- async (data, inputMap, minimizerOptions) => {return {code: `a{color: red}`, map: `...`, warnings: []}}
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
 
@@ -246,6 +253,37 @@ module.exports = {
 
 If an array of functions is passed to the `minify` option, the `minimizerOptions` must also be an array.
 The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minimizerOptions: [
+          {}, // Options for the first function (CssMinimizerPlugin.cssnano)
+          {}, // Options for the second function (CssMinimizerPlugin.cssClean)
+          {}, // Options for the third function
+        ],
+        minify: [
+          CssMinimizerPlugin.cssnano,
+          CssMinimizerPlugin.cssClean,
+          async (data, inputMap, minimizerOptions) => {
+            // To do something
+            return {
+              code: `a{color: red}`,
+              map: `{"version": "3", ...}`,
+              warnings: [],
+            };
+          },
+        ],
+      }),
+    ],
+  },
+};
+```
 
 ### `minimizerOptions`
 

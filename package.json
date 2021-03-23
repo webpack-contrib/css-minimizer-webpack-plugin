@@ -38,7 +38,17 @@
     "dist"
   ],
   "peerDependencies": {
+    "clean-css": "^5.1.2",
+    "csso": "^4.2.0",
     "webpack": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "clean-css": {
+      "optional": true
+    },
+    "csso": {
+      "optional": true
+    }
   },
   "dependencies": {
     "cssnano": "^4.1.10",
