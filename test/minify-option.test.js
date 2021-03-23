@@ -54,7 +54,7 @@ describe('"minify" option', () => {
         }
 
         return {
-          css: minifiedCss.css,
+          code: minifiedCss.css,
           map: minifiedCss.map.toJSON(),
         };
       },
@@ -93,7 +93,7 @@ describe('"minify" option', () => {
         });
 
         return {
-          css: minifiedCss.styles,
+          code: minifiedCss.styles,
           // map: minifiedCss.sourceMap.toJSON(),
           warnings: minifiedCss.warnings,
         };
@@ -139,21 +139,21 @@ describe('"minify" option', () => {
         async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
+            code: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
             map: inputMap,
           };
         },
         async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.two{color: red;}\n${minimizerOptions.test}\n`,
+            code: `${input}\n.two{color: red;}\n${minimizerOptions.test}\n`,
             map: inputMap,
           };
         },
         async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.three{color: red;}\n${minimizerOptions.test}\n`,
+            code: `${input}\n.three{color: red;}\n${minimizerOptions.test}\n`,
             map: inputMap,
           };
         },
@@ -195,21 +195,21 @@ describe('"minify" option', () => {
         async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
+            code: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
             map: inputMap,
           };
         },
         async (data, inputMap) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.two{color: red;}\n`,
+            code: `${input}\n.two{color: red;}\n`,
             map: inputMap,
           };
         },
         async (data, inputMap) => {
           const [input] = Object.values(data);
           return {
-            css: `${input}\n.three{color: red;}\n`,
+            code: `${input}\n.three{color: red;}\n`,
             map: inputMap,
           };
         },

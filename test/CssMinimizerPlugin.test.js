@@ -95,7 +95,7 @@ describe('CssMinimizerPlugin', () => {
         // eslint-disable-next-line no-console
         process.stderr.write('stderr\n');
 
-        return { css: '.minify {};' };
+        return { code: '.minify {};' };
       },
     }).apply(compiler);
 
@@ -318,7 +318,7 @@ describe('CssMinimizerPlugin', () => {
           .process(input, { from: filename, to: filename })
           .then((result) => {
             return {
-              css: result.css,
+              code: result.css,
               map: result.map,
               warnings: result.warnings(),
             };
@@ -797,7 +797,7 @@ describe('CssMinimizerPlugin', () => {
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
-              css: result.css,
+              code: result.css,
               map: result.map,
               error: result.error,
               warnings: result.warnings(),
@@ -874,7 +874,7 @@ describe('CssMinimizerPlugin', () => {
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
-              css: result.css,
+              code: result.css,
               map: result.map,
               error: result.error,
               warnings: result.warnings(),

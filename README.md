@@ -230,7 +230,7 @@ module.exports = {
             .process(input, postcssOptions)
             .then((result) => {
               return {
-                css: result.css,
+                code: result.css,
                 map: result.map,
                 warnings: result.warnings(),
               };
@@ -453,7 +453,7 @@ module.exports = {
           }
 
           return {
-            css: minifiedCss.css,
+            code: minifiedCss.css,
             map: minifiedCss.map.toJSON(),
           };
         },
@@ -492,7 +492,7 @@ module.exports = {
           });
 
           return {
-            css: minifiedCss.styles,
+            code: minifiedCss.styles,
             map: minifiedCss.sourceMap.toJSON(),
             warnings: minifiedCss.warnings,
           };

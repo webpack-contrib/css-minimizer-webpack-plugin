@@ -22,8 +22,7 @@ const minify = async (options) => {
   );
 
   return {
-    // TODO remove `css` in future major release
-    code: result.code || result.css,
+    code: result.code,
     map: result.map,
     warnings: warningsToString(result.warnings || []),
   };
