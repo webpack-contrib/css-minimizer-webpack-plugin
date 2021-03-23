@@ -187,7 +187,7 @@ module.exports = {
 
 ### `minify`
 
-Type: `Function`
+Type: `Function|Array<Function>`
 Default: `undefined`
 
 Allows you to override default minify function.
@@ -195,6 +195,8 @@ By default plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
 Useful for using and testing unpublished versions or forks.
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
+
+#### `Function`
 
 **webpack.config.js**
 
@@ -240,12 +242,19 @@ module.exports = {
 };
 ```
 
+#### `Array`
+
+If an array of functions is passed to the `minify` option, the `minimizerOptions` must also be an array.
+The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
+
 ### `minimizerOptions`
 
-Type: `Object`
+Type: `Object|Array<Object>`
 Default: `{ preset: 'default' }`
 
 Cssnano optimisations [options](https://cssnano.co/docs/optimisations).
+
+#### `Object`
 
 ```js
 module.exports = {
@@ -266,6 +275,11 @@ module.exports = {
   },
 };
 ```
+
+#### `Array`
+
+If an array of functions is passed to the `minify` option, the `minimizerOptions` must also be an array.
+The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
 
 #### `processorOptions`
 

@@ -1,5 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`"minify" option should work if minify is array && minimizerOptions is array: assets 1`] = `
+Object {
+  "foo.css": "body {
+  font-weight: bold;
+}
+
+body {
+  color: red;
+}
+body a {
+  text-align: center;
+}
+
+.one{color: red;}
+.one{background: white;}
+
+.two{color: red;}
+.two{background: white;}
+
+.three{color: red;}
+.three{background: white;}
+
+/*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"minify" option should work if minify is array && minimizerOptions is array: error 1`] = `Array []`;
+
+exports[`"minify" option should work if minify is array && minimizerOptions is array: warning 1`] = `Array []`;
+
+exports[`"minify" option should work if minify is array && minimizerOptions is object: assets 1`] = `
+Object {
+  "foo.css": "body {
+  font-weight: bold;
+}
+
+body {
+  color: red;
+}
+body a {
+  text-align: center;
+}
+
+.one{color: red;}
+.one{background: white;}
+
+.two{color: red;}
+
+.three{color: red;}
+
+/*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"minify" option should work if minify is array && minimizerOptions is object: error 1`] = `Array []`;
+
+exports[`"minify" option should work if minify is array && minimizerOptions is object: warning 1`] = `Array []`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.cssnano" and parser option as "String": entry.js.map 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///webpack/bootstrap\\",\\"webpack:///webpack/runtime/define property getters\\",\\"webpack:///webpack/runtime/hasOwnProperty shorthand\\",\\"webpack:///webpack/runtime/make namespace object\\",\\"webpack:///./sugarss.js\\"],\\"names\\":[],\\"mappings\\":\\";;UAAA;UACA;;;;;WCDA;WACA;WACA;WACA;WACA,wCAAwC,yCAAyC;WACjF;WACA;WACA,E;;;;;WCPA,wF;;;;;WCAA;WACA;WACA;WACA,sDAAsD,kBAAkB;WACxE;WACA,+CAA+C,cAAc;WAC7D,E;;;;;;;;;;;;ACNO\\",\\"file\\":\\"entry.js\\",\\"sourcesContent\\":[\\"// The require scope\\\\nvar __webpack_require__ = {};\\\\n\\\\n\\",\\"// define getter functions for harmony exports\\\\n__webpack_require__.d = (exports, definition) => {\\\\n\\\\tfor(var key in definition) {\\\\n\\\\t\\\\tif(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {\\\\n\\\\t\\\\t\\\\tObject.defineProperty(exports, key, { enumerable: true, get: definition[key] });\\\\n\\\\t\\\\t}\\\\n\\\\t}\\\\n};\\",\\"__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))\\",\\"// define __esModule on exports\\\\n__webpack_require__.r = (exports) => {\\\\n\\\\tif(typeof Symbol !== 'undefined' && Symbol.toStringTag) {\\\\n\\\\t\\\\tObject.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });\\\\n\\\\t}\\\\n\\\\tObject.defineProperty(exports, '__esModule', { value: true });\\\\n};\\",\\"export const foo = 'foo';\\\\n\\"],\\"sourceRoot\\":\\"\\"}"`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.cssnano" and parser option as "String": index.sss 1`] = `"a{color:#000}"`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.cssnano": assets 1`] = `
+Object {
+  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
+/*# sourceMappingURL=foo.css.map*/",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+}
+`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.cssnano": error 1`] = `Array []`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.cssnano": warning 1`] = `Array []`;
+
 exports[`"minify" option should work with "clean-css" minifier: assets 1`] = `
 Object {
   "foo.css": "body{color:red}a{color:#00f}",

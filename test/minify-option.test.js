@@ -1,4 +1,5 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 import CssMinimizerPlugin from '../src';
 
@@ -7,6 +8,7 @@ import {
   getCompiler,
   getErrors,
   getWarnings,
+  readAsset,
   readAssets,
 } from './helpers';
 
@@ -105,5 +107,201 @@ describe('"minify" option', () => {
     );
     expect(getErrors(stats)).toMatchSnapshot('error');
     expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work if minify is array && minimizerOptions is array', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minimizerOptions: [
+        { test: '.one{background: white;}' },
+        { test: '.two{background: white;}' },
+        { test: '.three{background: white;}' },
+      ],
+      minify: [
+        async (data, inputMap, minimizerOptions) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap, minimizerOptions) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.two{color: red;}\n${minimizerOptions.test}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap, minimizerOptions) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.three{color: red;}\n${minimizerOptions.test}\n`,
+            map: inputMap,
+          };
+        },
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work if minify is array && minimizerOptions is object', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minimizerOptions: { test: '.one{background: white;}' },
+      minify: [
+        async (data, inputMap, minimizerOptions) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.two{color: red;}\n`,
+            map: inputMap,
+          };
+        },
+        async (data, inputMap) => {
+          const [input] = Object.values(data);
+          return {
+            css: `${input}\n.three{color: red;}\n`,
+            map: inputMap,
+          };
+        },
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnano"', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: 'default',
+      },
+      minify: [CssMinimizerPlugin.cssnano],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnano" and parser option as "String"', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        entry: `${__dirname}/fixtures/sugarss.js`,
+      },
+      module: {},
+      plugins: [
+        new CopyPlugin({
+          patterns: [
+            {
+              context: `${__dirname}/fixtures/sss`,
+              from: `index.sss`,
+            },
+          ],
+        }),
+        new MiniCssExtractPlugin({
+          filename: '[name].css',
+        }),
+      ],
+    });
+
+    new CssMinimizerPlugin({
+      test: /\.(css|sss)$/i,
+      minimizerOptions: {
+        processorOptions: {
+          parser: 'sugarss',
+        },
+      },
+      minify: [CssMinimizerPlugin.cssnano],
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
   });
 });

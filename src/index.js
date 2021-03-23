@@ -7,6 +7,8 @@ import * as cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
+import { CssMinimizerPluginCssnano } from './utils';
+
 import * as schema from './options.json';
 import { minify as minifyFn } from './minify';
 
@@ -20,10 +22,8 @@ class CssMinimizerPlugin {
     });
 
     const {
-      minify,
-      minimizerOptions = {
-        preset: 'default',
-      },
+      minify = CssMinimizerPluginCssnano,
+      minimizerOptions,
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
       parallel = true,
@@ -281,33 +281,58 @@ class CssMinimizerPlugin {
               input = input.toString();
             }
 
+            const minifyFns =
+              typeof this.options.minify === 'function'
+                ? [this.options.minify]
+                : this.options.minify;
             const minimizerOptions = {
               name,
               input,
               inputSourceMap,
-              minimizerOptions: this.options.minimizerOptions,
-              minify: this.options.minify,
             };
 
-            try {
-              output = await (getWorker
-                ? getWorker().transform(serialize(minimizerOptions))
-                : minifyFn(minimizerOptions));
-            } catch (error) {
-              compilation.errors.push(
-                CssMinimizerPlugin.buildError(
-                  error,
-                  name,
-                  compilation.requestShortener,
-                  inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                    ? new SourceMapConsumer(inputSourceMap)
-                    : null
-                )
-              );
+            let warnings = [];
+            let i = 0;
 
-              return;
+            this.options.minimizerOptions = Array.isArray(
+              this.options.minimizerOptions
+            )
+              ? this.options.minimizerOptions
+              : [this.options.minimizerOptions];
+
+            for await (const minifyFunc of minifyFns) {
+              minimizerOptions.minify = minifyFunc;
+              minimizerOptions.minimizerOptions = this.options.minimizerOptions[
+                i
+              ];
+              i += 1;
+
+              try {
+                output = await (getWorker
+                  ? getWorker().transform(serialize(minimizerOptions))
+                  : minifyFn(minimizerOptions));
+              } catch (error) {
+                compilation.errors.push(
+                  CssMinimizerPlugin.buildError(
+                    error,
+                    name,
+                    compilation.requestShortener,
+                    inputSourceMap &&
+                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                      ? new SourceMapConsumer(inputSourceMap)
+                      : null
+                  )
+                );
+
+                return;
+              }
+
+              minimizerOptions.input = output.code;
+              minimizerOptions.inputSourceMap = output.map;
+              warnings = warnings.concat(output.warnings);
             }
+
+            output.warnings = warnings;
 
             if (output.map) {
               output.source = new SourceMapSource(
@@ -425,5 +450,7 @@ class CssMinimizerPlugin {
     });
   }
 }
+
+CssMinimizerPlugin.cssnano = CssMinimizerPluginCssnano;
 
 export default CssMinimizerPlugin;

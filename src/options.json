@@ -31,6 +31,10 @@
           "$ref": "#/definitions/Rule"
         }
       ]
+    },
+    "minimizerOptions": {
+      "additionalProperties": true,
+      "type": "object"
     }
   },
   "title": "CssMinimizerWebpackPluginOptions",
@@ -62,8 +66,18 @@
     },
     "minimizerOptions": {
       "description": "Options for `cssMinimizerOptions`.",
-      "additionalProperties": true,
-      "type": "object"
+      "anyOf": [
+        {
+          "$ref": "#/definitions/minimizerOptions"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/definitions/minimizerOptions"
+          }
+        }
+      ]
     },
     "parallel": {
       "description": "Use multi-process parallel running to improve the build speed.",
@@ -82,7 +96,18 @@
     },
     "minify": {
       "description": "Allows you to override default minify function.",
-      "instanceof": "Function"
+      "anyOf": [
+        {
+          "instanceof": "Function"
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "instanceof": "Function"
+          }
+        }
+      ]
     }
   },
   "additionalProperties": false
