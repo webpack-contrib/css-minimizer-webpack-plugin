@@ -71,8 +71,8 @@ exports[`CssMinimizerPlugin should run plugin against assets added later by plug
 
 exports[`CssMinimizerPlugin should throw error from postcss: error 1`] = `
 Array [
-  "Error: foo.css from Css Minimizer 
-error-plugin: /foo.css:2:3: Postcss error [foo.css:2,3]",
+  "Error: foo.css from Css Minimizer Webpack Plugin
+error-plugin: /foo.css:2:3: Postcss error [webpack://./test/foo.css:2,2][foo.css:2,3]",
 ]
 `;
 

@@ -2,6 +2,8 @@ import serialize from 'serialize-javascript';
 
 import { transform } from '../src/minify';
 
+import CssMinimizerPlugin from '../src';
+
 import { normalizeErrors } from './helpers';
 
 describe('worker', () => {
@@ -18,6 +20,7 @@ describe('worker', () => {
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
       minimizerOptions: { discardComments: false },
+      minify: CssMinimizerPlugin.cssnano,
     };
     const { code, map } = await transform(serialize(options));
 
@@ -38,6 +41,7 @@ describe('worker', () => {
         file: 'x',
         sourcesContent: ['.foo{color:red;}', '.bar{color:coral;}'],
       },
+      minify: CssMinimizerPlugin.cssnano,
     };
     const { code, map } = await transform(serialize(options));
 
@@ -65,6 +69,7 @@ describe('worker', () => {
       name: 'entry.css',
       input: false,
       minimizerOptions: { preset: 'default' },
+      minify: CssMinimizerPlugin.cssnano,
     };
 
     try {

@@ -254,6 +254,7 @@ describe('CssMinimizerPlugin', () => {
 
   it('should throw error from postcss', () => {
     const compiler = getCompiler({
+      devtool: 'source-map',
       entry: {
         foo: `${__dirname}/fixtures/test/foo.css`,
       },

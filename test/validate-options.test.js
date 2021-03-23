@@ -103,6 +103,10 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
+    new CssMinimizerPlugin({ minimizerOptions: [{}] });
+  }).not.toThrow();
+
+  expect(() => {
     new CssMinimizerPlugin({ minimizerOptions: null });
   }).toThrowErrorMatchingSnapshot();
 
@@ -134,6 +138,10 @@ it('validation', () => {
 
   expect(() => {
     new CssMinimizerPlugin({ minify() {} });
+  }).not.toThrow();
+
+  expect(() => {
+    new CssMinimizerPlugin({ minify: [() => {}] });
   }).not.toThrow();
 
   expect(() => {
