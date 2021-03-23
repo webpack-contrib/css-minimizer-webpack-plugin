@@ -7,7 +7,7 @@ import * as cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
-import { cssnanoMinify } from './utils';
+import { cssnanoMinify, cssoMinify, cleanCssMinify } from './utils';
 
 import * as schema from './options.json';
 import { minify as minifyFn } from './minify';
@@ -449,6 +449,8 @@ class CssMinimizerPlugin {
   }
 }
 
-CssMinimizerPlugin.cssnano = cssnanoMinify;
+CssMinimizerPlugin.cssnanoMinify = cssnanoMinify;
+CssMinimizerPlugin.cssoMinify = cssoMinify;
+CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
 
 export default CssMinimizerPlugin;

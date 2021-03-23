@@ -225,7 +225,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 
-  it('should work with "CssMinimizerPlugin.cssnano"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify"', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -249,7 +249,7 @@ describe('"minify" option', () => {
       minimizerOptions: {
         preset: 'default',
       },
-      minify: [CssMinimizerPlugin.cssnano],
+      minify: [CssMinimizerPlugin.cssnanoMinify],
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -261,7 +261,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 
-  it('should work with "CssMinimizerPlugin.cssnano" and parser option as "String"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" and parser option as "String"', async () => {
     const compiler = getCompiler({
       devtool: 'source-map',
       entry: {
@@ -290,7 +290,7 @@ describe('"minify" option', () => {
           parser: 'sugarss',
         },
       },
-      minify: [CssMinimizerPlugin.cssnano],
+      minify: [CssMinimizerPlugin.cssnanoMinify],
     }).apply(compiler);
 
     return compile(compiler).then((stats) => {
@@ -303,5 +303,59 @@ describe('"minify" option', () => {
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
     });
+  });
+
+  it('should work with "CssMinimizerPlugin.cssoMinify" minifier', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: CssMinimizerPlugin.cssoMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
+  });
+
+  it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier', async () => {
+    const compiler = getCompiler({
+      devtool: 'source-map',
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: CssMinimizerPlugin.cleanCssMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      'assets'
+    );
+    expect(getErrors(stats)).toMatchSnapshot('error');
+    expect(getWarnings(stats)).toMatchSnapshot('warning');
   });
 });

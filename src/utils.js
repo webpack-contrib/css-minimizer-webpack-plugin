@@ -87,5 +87,51 @@ async function cssnanoMinify(
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { cssnanoMinify };
+/* istanbul ignore next */
+async function cssoMinify(data, inputSourceMap, minimizerOptions) {
+  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
+  const csso = require('csso');
+  // eslint-disable-next-line global-require
+  const sourcemap = require('source-map');
+  const [[filename, input]] = Object.entries(data);
+  const result = csso.minify(input, {
+    filename,
+    sourceMap: inputSourceMap,
+    ...minimizerOptions,
+  });
+
+  if (inputSourceMap) {
+    result.map.applySourceMap(
+      new sourcemap.SourceMapConsumer(inputSourceMap),
+      filename
+    );
+  }
+
+  return {
+    code: result.css,
+    map: result.map && result.map.toJSON(),
+  };
+}
+
+/* istanbul ignore next */
+async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
+  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
+  const CleanCSS = require('clean-css');
+  const [[name, input]] = Object.entries(data);
+  const result = await new CleanCSS({
+    sourceMap: inputSourceMap,
+    ...minimizerOptions,
+  }).minify({
+    [name]: {
+      styles: input,
+    },
+  });
+
+  return {
+    code: result.styles,
+    map: result.sourceMap && result.sourceMap.toJSON(),
+    warnings: result.warnings,
+  };
+}
+
+export { cssnanoMinify, cssoMinify, cleanCssMinify };

@@ -40,6 +40,14 @@
   "peerDependencies": {
     "webpack": "^5.0.0"
   },
+  "peerDependenciesMeta": {
+    "clean-css": {
+      "optional": true
+    },
+    "csso": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "cssnano": "^4.1.10",
     "jest-worker": "^26.3.0",
