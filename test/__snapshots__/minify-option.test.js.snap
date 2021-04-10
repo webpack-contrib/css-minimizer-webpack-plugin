@@ -78,9 +78,9 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" and
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify": assets 1`] = `
 Object {
-  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
 }
 `;
 

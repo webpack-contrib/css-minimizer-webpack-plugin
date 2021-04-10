@@ -3,7 +3,6 @@ import * as os from 'os';
 import { SourceMapConsumer } from 'source-map';
 import { validate } from 'schema-utils';
 import serialize from 'serialize-javascript';
-import * as cssNanoPackageJson from 'cssnano/package.json';
 import pLimit from 'p-limit';
 import Worker from 'jest-worker';
 
@@ -408,20 +407,6 @@ class CssMinimizerPlugin {
     );
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
-      const hooks = compiler.webpack.javascript.JavascriptModulesPlugin.getCompilationHooks(
-        compilation
-      );
-
-      const data = serialize({
-        terser: cssNanoPackageJson.version,
-        terserOptions: this.options.terserOptions,
-      });
-
-      hooks.chunkHash.tap(pluginName, (chunk, hash) => {
-        hash.update('CssMinimizerPlugin');
-        hash.update(data);
-      });
-
       compilation.hooks.processAssets.tapPromise(
         {
           name: pluginName,
