@@ -195,14 +195,14 @@ describe('"minify" option', () => {
         async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            code: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
+            code: `${input}\n.one{color: red;}\n/*HERE*/${minimizerOptions.test}\n`,
             map: inputMap,
           };
         },
-        async (data, inputMap) => {
+        async (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
-            code: `${input}\n.two{color: red;}\n`,
+            code: `/*HERE*/${minimizerOptions.test}\n${input}\n.two{color: red;}\n`,
             map: inputMap,
           };
         },
