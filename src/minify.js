@@ -1,31 +1,35 @@
-/*
- * We bring to the line here, because when passing result from the worker,
- * the warning.toString is replaced with native Object.toString
- * */
-function warningsToString(warnings) {
-  return warnings.map((i) => i.toString());
-}
-
 const minify = async (options) => {
-  const {
-    name,
-    input,
-    minimizerOptions,
-    inputSourceMap,
-    minify: minifyFn,
-  } = options;
+  const minifyFns =
+    typeof options.minify === 'function' ? [options.minify] : options.minify;
 
-  const result = await minifyFn(
-    { [name]: input },
-    inputSourceMap,
-    minimizerOptions
-  );
-
-  return {
-    code: result.code,
-    map: result.map,
-    warnings: warningsToString(result.warnings || []),
+  const result = {
+    code: options.input,
+    map: options.inputSourceMap,
+    warnings: [],
   };
+
+  for (let i = 0; i <= minifyFns.length - 1; i++) {
+    const minifyFn = minifyFns[i];
+    const minifyOptions = Array.isArray(options.minifyOptions)
+      ? options.minifyOptions[i]
+      : options.minifyOptions;
+    // eslint-disable-next-line no-await-in-loop
+    const minifyResult = await minifyFn(
+      { [options.name]: result.code },
+      result.map,
+      minifyOptions
+    );
+
+    result.code = minifyResult.code;
+    result.map = minifyResult.map;
+    result.warnings = result.warnings.concat(minifyResult.warnings || []);
+  }
+
+  if (result.warnings.length > 0) {
+    result.warnings = result.warnings.map((warning) => warning.toString());
+  }
+
+  return result;
 };
 
 async function transform(options) {

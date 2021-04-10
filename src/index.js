@@ -280,56 +280,33 @@ class CssMinimizerPlugin {
               input = input.toString();
             }
 
-            const minifyFns =
-              typeof this.options.minify === 'function'
-                ? [this.options.minify]
-                : this.options.minify;
-            const minimizerOptions = {
+            const options = {
               name,
               input,
               inputSourceMap,
+              minify: this.options.minify,
+              minifyOptions: this.options.minimizerOptions,
             };
 
-            let warnings = [];
+            try {
+              output = await (getWorker
+                ? getWorker().transform(serialize(options))
+                : minifyFn(options));
+            } catch (error) {
+              compilation.errors.push(
+                CssMinimizerPlugin.buildError(
+                  error,
+                  name,
+                  compilation.requestShortener,
+                  inputSourceMap &&
+                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                    ? new SourceMapConsumer(inputSourceMap)
+                    : null
+                )
+              );
 
-            this.options.minimizerOptions = Array.isArray(
-              this.options.minimizerOptions
-            )
-              ? this.options.minimizerOptions
-              : [this.options.minimizerOptions];
-
-            for await (const [i, minifyFunc] of minifyFns.entries()) {
-              minimizerOptions.minify = minifyFunc;
-              minimizerOptions.minimizerOptions = this.options.minimizerOptions[
-                i
-              ];
-
-              try {
-                output = await (getWorker
-                  ? getWorker().transform(serialize(minimizerOptions))
-                  : minifyFn(minimizerOptions));
-              } catch (error) {
-                compilation.errors.push(
-                  CssMinimizerPlugin.buildError(
-                    error,
-                    name,
-                    compilation.requestShortener,
-                    inputSourceMap &&
-                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                      ? new SourceMapConsumer(inputSourceMap)
-                      : null
-                  )
-                );
-
-                return;
-              }
-
-              minimizerOptions.input = output.code;
-              minimizerOptions.inputSourceMap = output.map;
-              warnings = warnings.concat(output.warnings);
+              return;
             }
-
-            output.warnings = warnings;
 
             if (output.map) {
               output.source = new SourceMapSource(
