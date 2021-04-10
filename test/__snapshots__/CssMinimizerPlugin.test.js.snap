@@ -61,7 +61,7 @@ exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `
 
 exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: assets 1`] = `
 Object {
-  "newFile.css": ".a{display:block;color:coral}",
+  "newFile.css": ".a{color:coral;display:block}",
 }
 `;
 
@@ -104,7 +104,7 @@ exports[`CssMinimizerPlugin should work and do not use memory cache when the "ca
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.19e4764f9c1d9fe130e2.35ca947c3c124b7cfeb9.f2b99089f2d9520948c5.css": "body{color:red}a{color:#00f}",
+  "entry.19e4764f9c1d9fe130e2.3a8d5aac970c41cb40b6.4e0651debb6658533ab9.css": "body{color:red}a{color:#00f}",
 }
 `;
 
