@@ -481,10 +481,25 @@ module.exports = {
 
 ### Using custom minifier [clean-css](https://github.com/jakubpawlowicz/clean-css)
 
-By default plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
-It is possible to use another minify function.
+**webpack.config.js**
 
-> ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
+```js
+module.exports = {
+  devtool: 'source-map',
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minify: CssMinimizerPlugin.cleanCssMinify,
+        // Uncomment this line for options
+        // minimizerOptions: { compatibility: 'ie11,-properties.merging' },
+      }),
+    ],
+  },
+};
+```
+
+### Using custom minifier [csso](https://github.com/css/csso)
 
 **webpack.config.js**
 
@@ -495,24 +510,9 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: async (data, inputMap) => {
-          // eslint-disable-next-line global-require
-          const CleanCSS = require('clean-css');
-
-          const [[filename, input]] = Object.entries(data);
-          const minifiedCss = await new CleanCSS({ sourceMap: true }).minify({
-            [filename]: {
-              styles: input,
-              sourceMap: inputMap,
-            },
-          });
-
-          return {
-            code: minifiedCss.styles,
-            map: minifiedCss.sourceMap.toJSON(),
-            warnings: minifiedCss.warnings,
-          };
-        },
+        minify: CssMinimizerPlugin.cssoMinify,
+        // Uncomment this line for options
+        // minimizerOptions: { restructure: false },
       }),
     ],
   },

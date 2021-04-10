@@ -126,11 +126,7 @@ async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
   const result = await new CleanCSS({
     sourceMap: inputSourceMap,
     ...minimizerOptions,
-  }).minify({
-    [name]: {
-      styles: input,
-    },
-  });
+  }).minify({ [name]: { styles: input } });
 
   return {
     code: result.styles,
