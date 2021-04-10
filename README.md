@@ -294,8 +294,8 @@ module.exports = {
 
 #### `Array`
 
-If an array of functions is passed to the `minify` option, the `minimizerOptions` must also be an array.
 The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
+If you use `minimizerOptions` like object, all `minify` function accept it.
 
 #### `processorOptions`
 
