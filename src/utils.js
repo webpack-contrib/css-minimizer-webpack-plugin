@@ -49,8 +49,13 @@ async function cssnanoMinify(
   }
 
   // eslint-disable-next-line global-require
+  const postcss = require('postcss');
+  // eslint-disable-next-line global-require
   const cssnano = require('cssnano');
-  const result = await cssnano(minimizerOptions).process(input, postcssOptions);
+  const result = await postcss([cssnano(minimizerOptions)]).process(
+    input,
+    postcssOptions
+  );
 
   return {
     code: result.css,
