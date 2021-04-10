@@ -161,6 +161,33 @@ class CssMinimizerPlugin {
       : Math.min(Number(parallel) || 0, cpus.length - 1);
   }
 
+  static updateMinimizerOptions({
+    minimizerOptions,
+    compilation,
+    inputSource,
+  }) {
+    const { source: input, map } = inputSource.sourceAndMap();
+
+    if (map) {
+      if (CssMinimizerPlugin.isSourceMap(map)) {
+        // eslint-disable-next-line no-param-reassign
+        minimizerOptions.inputSourceMap = map;
+      } else {
+        // eslint-disable-next-line no-param-reassign
+        minimizerOptions.inputSourceMap = map;
+
+        compilation.warnings.push(
+          new Error(`${minimizerOptions.name} contains invalid source map`)
+        );
+      }
+    }
+
+    // eslint-disable-next-line no-param-reassign
+    minimizerOptions.input = Buffer.isBuffer(input) ? input.toString() : input;
+
+    return minimizerOptions;
+  }
+
   async optimize(compiler, compilation, assets, optimizeOptions) {
     const cache = compilation.getCache('CssMinimizerWebpackPlugin');
     let numberOfAssetsForMinify = 0;
@@ -191,15 +218,40 @@ class CssMinimizerPlugin {
         .map(async (name) => {
           const { info, source } = compilation.getAsset(name);
 
-          const eTag = cache.getLazyHashedEtag(source);
-          const cacheItem = cache.getItemCache(name, eTag);
-          const output = await cacheItem.getPromise();
+          const minifyFns =
+            typeof this.options.minify === 'function'
+              ? [this.options.minify]
+              : this.options.minify;
 
-          if (!output) {
+          const eTag = cache.getLazyHashedEtag(source);
+          const chainFns = [];
+          const cacheItems = minifyFns.map((fn) => {
+            chainFns.push(fn);
+
+            const cacheKey = serialize({
+              name,
+              minify: chainFns,
+            });
+
+            return cache.getItemCache(cacheKey, eTag);
+          });
+
+          const output = await Promise.all(
+            cacheItems.map((cacheItem) => cacheItem.getPromise())
+          );
+
+          if (output.filter((i) => typeof i === 'undefined').length > 0) {
             numberOfAssetsForMinify += 1;
           }
 
-          return { name, info, inputSource: source, output, cacheItem };
+          return {
+            name,
+            info,
+            inputSource: source,
+            output,
+            cacheItems,
+            minifyFns,
+          };
         })
     );
 
@@ -250,62 +302,33 @@ class CssMinimizerPlugin {
     for (const asset of assetsForMinify) {
       scheduledTasks.push(
         limit(async () => {
-          const { name, inputSource, cacheItem } = asset;
+          const { name, inputSource, cacheItems, minifyFns } = asset;
           let { output } = asset;
+          const minimizerOptions = { name };
 
-          if (!output) {
-            let input;
-            let inputSourceMap;
+          CssMinimizerPlugin.updateMinimizerOptions({
+            minimizerOptions,
+            compilation,
+            inputSource,
+          });
 
-            const {
-              source: sourceFromInputSource,
-              map,
-            } = inputSource.sourceAndMap();
+          let warnings = [];
 
-            input = sourceFromInputSource;
+          this.options.minimizerOptions = Array.isArray(
+            this.options.minimizerOptions
+          )
+            ? this.options.minimizerOptions
+            : [this.options.minimizerOptions];
 
-            if (map) {
-              if (CssMinimizerPlugin.isSourceMap(map)) {
-                inputSourceMap = map;
-              } else {
-                inputSourceMap = map;
-
-                compilation.warnings.push(
-                  new Error(`${name} contains invalid source map`)
-                );
-              }
-            }
-
-            if (Buffer.isBuffer(input)) {
-              input = input.toString();
-            }
-
-            const minifyFns =
-              typeof this.options.minify === 'function'
-                ? [this.options.minify]
-                : this.options.minify;
-            const minimizerOptions = {
-              name,
-              input,
-              inputSourceMap,
-            };
-
-            let warnings = [];
-
-            this.options.minimizerOptions = Array.isArray(
-              this.options.minimizerOptions
-            )
-              ? this.options.minimizerOptions
-              : [this.options.minimizerOptions];
-
-            for await (const [i, minifyFunc] of minifyFns.entries()) {
+          for await (const [i, minifyFunc] of minifyFns.entries()) {
+            if (!output[i]) {
               minimizerOptions.minify = minifyFunc;
               minimizerOptions.minimizerOptions = this.options.minimizerOptions[
                 i
               ];
 
               try {
-                output = await (getWorker
+                output[i] = await (getWorker
                   ? getWorker().transform(serialize(minimizerOptions))
                   : minifyFn(minimizerOptions));
               } catch (error) {
@@ -314,9 +337,11 @@ class CssMinimizerPlugin {
                     error,
                     name,
                     compilation.requestShortener,
-                    inputSourceMap &&
-                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                      ? new SourceMapConsumer(inputSourceMap)
+                    minimizerOptions.inputSourceMap &&
+                      CssMinimizerPlugin.isSourceMap(
+                        minimizerOptions.inputSourceMap
+                      )
+                      ? new SourceMapConsumer(minimizerOptions.inputSourceMap)
                       : null
                   )
                 );
@@ -324,48 +349,55 @@ class CssMinimizerPlugin {
                 return;
               }
 
-              minimizerOptions.input = output.code;
-              minimizerOptions.inputSourceMap = output.map;
-              warnings = warnings.concat(output.warnings);
-            }
-
-            output.warnings = warnings;
-
-            if (output.map) {
-              output.source = new SourceMapSource(
-                output.code,
-                name,
-                output.map,
-                input,
-                inputSourceMap,
-                true
-              );
-            } else {
-              output.source = new RawSource(output.code);
-            }
-
-            if (output.warnings && output.warnings.length > 0) {
-              output.warnings = output.warnings
-                .map((warning) =>
-                  CssMinimizerPlugin.buildWarning(
-                    warning,
-                    name,
-                    inputSourceMap &&
-                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                      ? new SourceMapConsumer(inputSourceMap)
-                      : null,
-                    compilation.requestShortener,
-                    this.options.warningsFilter
+              if (output[i].warnings && output[i].warnings.length > 0) {
+                output[i].warnings = output[i].warnings
+                  .map((warning) =>
+                    CssMinimizerPlugin.buildWarning(
+                      warning,
+                      name,
+                      minimizerOptions.inputSourceMap &&
+                        CssMinimizerPlugin.isSourceMap(
+                          minimizerOptions.inputSourceMap
+                        )
+                        ? new SourceMapConsumer(minimizerOptions.inputSourceMap)
+                        : null,
+                      compilation.requestShortener,
+                      this.options.warningsFilter
+                    )
                   )
-                )
-                .filter(Boolean);
+                  .filter(Boolean);
+              }
+
+              if (output[i].map) {
+                output[i].source = new SourceMapSource(
+                  output[i].code,
+                  name,
+                  output[i].map,
+                  minimizerOptions.input,
+                  minimizerOptions.inputSourceMap,
+                  true
+                );
+              } else {
+                output[i].source = new RawSource(output[i].code);
+              }
+
+              await cacheItems[i].storePromise({
+                source: output[i].source,
+                warnings: output[i].warnings,
+              });
             }
 
-            await cacheItem.storePromise({
-              source: output.source,
-              warnings: output.warnings,
+            CssMinimizerPlugin.updateMinimizerOptions({
+              minimizerOptions,
+              compilation,
+              inputSource: output[i].source,
             });
+
+            warnings = warnings.concat(output[i].warnings);
           }
+
+          output = output[output.length - 1];
+          output.warnings = warnings;
 
           if (output.warnings && output.warnings.length > 0) {
             output.warnings.forEach((warning) => {
