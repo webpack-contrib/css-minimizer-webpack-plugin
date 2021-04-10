@@ -28,9 +28,9 @@ Array [
 
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): assets 1`] = `
 Object {
-  "dist/entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "dist/entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=https://example.com/project/sourcemaps/entry.css.map*/",
-  "dist/entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "dist/entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=https://example.com/project/sourcemaps/entry2.css.map*/",
   "sourcemaps/entry.css.map": {
     "version": 3,
@@ -39,7 +39,7 @@ Object {
         "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "file": "dist/entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -54,7 +54,7 @@ Object {
         "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "file": "dist/entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -71,7 +71,7 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: assets 1`] = `
 Object {
-  "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
@@ -80,7 +80,7 @@ Object {
         "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -88,7 +88,7 @@ Object {
     ],
     "sourceRoot": ""
 },
-  "entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
@@ -97,7 +97,7 @@ Object {
         "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -114,7 +114,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: assets 1`] = `
 Object {
-  "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
@@ -123,7 +123,7 @@ Object {
         "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -131,7 +131,7 @@ Object {
     ],
     "sourceRoot": ""
 },
-  "entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
@@ -140,7 +140,7 @@ Object {
         "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -157,7 +157,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option: assets 1`] = `
 Object {
-  "entry.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
@@ -166,7 +166,7 @@ Object {
         "webpack:///./sourcemap/foo.scss"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAEE,OACE,iBAIJ",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
@@ -174,7 +174,7 @@ Object {
     ],
     "sourceRoot": ""
 },
-  "entry2.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
@@ -183,7 +183,7 @@ Object {
         "webpack:///./sourcemap/foo.css"
     ],
     "names": [],
-    "mappings": "AAAA,KACE,gBCEA,SADF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
