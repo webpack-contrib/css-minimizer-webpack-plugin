@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.3.0...v2.0.0) (2021-04-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* update `cssnano` to `5.0.0` version
+* drop `webpack` v4 support, 
+* removed the `cache` option (respect the [`cache`](https://webpack.js.org/configuration/other-options/#cache) option from `webpack`)
+* removed the `cacheKeys` option respect the [`cache`](https://webpack.js.org/configuration/other-options/#cache) option from `webpack`)
+* removed the sourceMap option (respect the [`devtool`](https://webpack.js.org/configuration/devtool/) option from `webpack`)
+
+### Features
+
+* added defaults functions for `clean-css` and `csso`, please look at [here](https://github.com/webpack-contrib/css-minimizer-webpack-plugin#minify) ([5211eed](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/5211eed3c816212a30715ebf0798393c886343d0))
+* added the ability to pass an array of functions to the minify ([91f9977](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/91f9977e9fdd1447cb45bc6f5d4b56fe7c26fb04))
+* update `cssnano` to `5.0.0` version ([4d2a8fd](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/4d2a8fd275ab17f6d98e4581b6c2adf09c73c91c))
+
 ## [1.3.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v1.2.0...v1.3.0) (2021-03-15)
 
 
