@@ -25,6 +25,8 @@ exports[`when applied with "minimizerOptions" option matches snapshot for "parse
 
 exports[`when applied with "minimizerOptions" option matches snapshot for "parser" option with "String" value: index.sss 1`] = `"a{color:#000}"`;
 
+exports[`when applied with "minimizerOptions" option matches snapshot for "preset" option with require.resolve "String" value: entry.css 1`] = `"p{border-width:1px;border-radius:var(--test);border:0 solid var(--test)}"`;
+
 exports[`when applied with "minimizerOptions" option matches snapshot for "stringifier" option with "Function" value: entry.css 1`] = `"body  color:reda  color:#00f"`;
 
 exports[`when applied with "minimizerOptions" option matches snapshot for "stringifier" option with "String" value: entry.css 1`] = `"body  color:reda  color:#00f"`;

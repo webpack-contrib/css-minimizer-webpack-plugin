@@ -75,6 +75,30 @@ describe('when applied with "minimizerOptions" option', () => {
     });
   });
 
+  it('matches snapshot for "preset" option with require.resolve "String" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/minimizerOptions/order.css`,
+      },
+    });
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: require.resolve('cssnano-preset-simple'),
+      },
+    }).apply(compiler);
+
+    return compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
+      }
+    });
+  });
+
   it('matches snapshot for "mergeRules" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {

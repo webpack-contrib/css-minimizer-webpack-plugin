@@ -69,6 +69,7 @@
     "copy-webpack-plugin": "^8.1.1",
     "cross-env": "^7.0.2",
     "css-loader": "^5.2.1",
+    "cssnano-preset-simple": "^2.0.0",
     "csso": "^4.0.3",
     "del": "^6.0.0",
     "del-cli": "^3.0.1",
