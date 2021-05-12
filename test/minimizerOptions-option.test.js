@@ -75,6 +75,58 @@ describe('when applied with "minimizerOptions" option', () => {
     });
   });
 
+  it('matches snapshot for "preset" option with require.resolve "String" value', () => {
+    const compiler = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/minimizerOptions/order.css`,
+      },
+    });
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: 'default',
+      },
+    }).apply(compiler);
+
+    const compiler2 = getCompiler({
+      entry: {
+        entry: `${__dirname}/fixtures/minimizerOptions/order.css`,
+      },
+    });
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: require.resolve('cssnano-preset-simple'),
+      },
+    }).apply(compiler2);
+
+    const result1 = compile(compiler).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler, stats)).toMatchSnapshot(
+          `default-preset`
+        );
+      }
+    });
+
+    const result2 = compile(compiler2).then((stats) => {
+      expect(stats.compilation.errors).toEqual([]);
+      expect(stats.compilation.warnings).toEqual([]);
+
+      for (const file in stats.compilation.assets) {
+        // eslint-disable-next-line no-continue
+        if (/\.js$/.test(file)) continue;
+        expect(readAsset(file, compiler2, stats)).toMatchSnapshot(
+          `preset-simple`
+        );
+      }
+    });
+
+    return Promise.all([result1, result2]);
+  });
+
   it('matches snapshot for "mergeRules" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {

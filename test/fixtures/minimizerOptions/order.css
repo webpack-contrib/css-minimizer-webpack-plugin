@@ -1,0 +1,5 @@
+p {
+  border: 1px solid var(--test);
+  border-radius: var(--test);
+  border-width: 0;
+}
