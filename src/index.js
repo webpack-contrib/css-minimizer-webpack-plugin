@@ -257,10 +257,8 @@ class CssMinimizerPlugin {
             let input;
             let inputSourceMap;
 
-            const {
-              source: sourceFromInputSource,
-              map,
-            } = inputSource.sourceAndMap();
+            const { source: sourceFromInputSource, map } =
+              inputSource.sourceAndMap();
 
             input = sourceFromInputSource;
 
