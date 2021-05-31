@@ -4,7 +4,7 @@ import { SourceMapConsumer } from 'source-map';
 import { validate } from 'schema-utils';
 import serialize from 'serialize-javascript';
 import pLimit from 'p-limit';
-import Worker from 'jest-worker';
+import { Worker } from 'jest-worker';
 
 import { cssnanoMinify, cssoMinify, cleanCssMinify } from './utils';
 

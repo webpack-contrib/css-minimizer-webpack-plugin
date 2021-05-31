@@ -1,6 +1,6 @@
 import os from 'os';
 
-import Worker from 'jest-worker';
+import { Worker } from 'jest-worker';
 
 import CssMinimizerPlugin from '../src/index';
 
@@ -33,20 +33,22 @@ const ENABLE_WORKER_THREADS =
     ? process.env.ENABLE_WORKER_THREADS === 'true'
     : true;
 
-jest.mock('jest-worker', () =>
-  jest.fn().mockImplementation((workerPath) => {
-    return {
-      // eslint-disable-next-line global-require, import/no-dynamic-require
-      transform: (workerTransform = jest.fn((data) =>
+jest.mock('jest-worker', () => {
+  return {
+    Worker: jest.fn().mockImplementation((workerPath) => {
+      return {
         // eslint-disable-next-line global-require, import/no-dynamic-require
-        require(workerPath).transform(data)
-      )),
-      end: (workerEnd = jest.fn()),
-      getStderr: jest.fn(),
-      getStdout: jest.fn(),
-    };
-  })
-);
+        transform: (workerTransform = jest.fn((data) =>
+          // eslint-disable-next-line global-require, import/no-dynamic-require
+          require(workerPath).transform(data)
+        )),
+        end: (workerEnd = jest.fn()),
+        getStderr: jest.fn(),
+        getStdout: jest.fn(),
+      };
+    }),
+  };
+});
 
 const workerPath = require.resolve('../src/minify');
 
