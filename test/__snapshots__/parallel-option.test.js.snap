@@ -2,10 +2,10 @@
 
 exports[`parallel option should match snapshot for the "2" value: assets 1`] = `
 Object {
-  "four.css": "body{color:red}a{color:#00f}",
-  "one.css": "body{color:red}a{color:#00f}",
-  "three.css": "body{color:red}a{color:#00f}",
-  "two.css": "body{color:red}a{color:#00f}",
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -15,10 +15,10 @@ exports[`parallel option should match snapshot for the "2" value: warnings 1`] =
 
 exports[`parallel option should match snapshot for the "false" value: assets 1`] = `
 Object {
-  "four.css": "body{color:red}a{color:#00f}",
-  "one.css": "body{color:red}a{color:#00f}",
-  "three.css": "body{color:red}a{color:#00f}",
-  "two.css": "body{color:red}a{color:#00f}",
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -28,8 +28,8 @@ exports[`parallel option should match snapshot for the "false" value: warnings 1
 
 exports[`parallel option should match snapshot for the "true" value and the number of files is less than the number of cores: assets 1`] = `
 Object {
-  "entry-0.css": "body{color:red}a{color:#00f}",
-  "entry-1.css": "body{color:red}a{color:#00f}",
+  "entry-0.css": "body{color:red}a{color:blue}",
+  "entry-1.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -39,14 +39,14 @@ exports[`parallel option should match snapshot for the "true" value and the numb
 
 exports[`parallel option should match snapshot for the "true" value and the number of files is more than the number of cores: assets 1`] = `
 Object {
-  "eight.css": "body{color:red}a{color:#00f}",
-  "five.css": "body{color:red}a{color:#00f}",
-  "four.css": "body{color:red}a{color:#00f}",
-  "one.css": "body{color:red}a{color:#00f}",
-  "seven.css": "body{color:red}a{color:#00f}",
-  "six.css": "body{color:red}a{color:#00f}",
-  "three.css": "body{color:red}a{color:#00f}",
-  "two.css": "body{color:red}a{color:#00f}",
+  "eight.css": "body{color:red}a{color:blue}",
+  "five.css": "body{color:red}a{color:blue}",
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "seven.css": "body{color:red}a{color:blue}",
+  "six.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -56,10 +56,10 @@ exports[`parallel option should match snapshot for the "true" value and the numb
 
 exports[`parallel option should match snapshot for the "true" value and the number of files is same than the number of cores: assets 1`] = `
 Object {
-  "entry-0.css": "body{color:red}a{color:#00f}",
-  "entry-1.css": "body{color:red}a{color:#00f}",
-  "entry-2.css": "body{color:red}a{color:#00f}",
-  "entry-3.css": "body{color:red}a{color:#00f}",
+  "entry-0.css": "body{color:red}a{color:blue}",
+  "entry-1.css": "body{color:red}a{color:blue}",
+  "entry-2.css": "body{color:red}a{color:blue}",
+  "entry-3.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -69,7 +69,7 @@ exports[`parallel option should match snapshot for the "true" value and the numb
 
 exports[`parallel option should match snapshot for the "true" value when only one file passed: assets 1`] = `
 Object {
-  "main.css": "body{color:red}a{color:#00f}",
+  "main.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -79,10 +79,10 @@ exports[`parallel option should match snapshot for the "true" value when only on
 
 exports[`parallel option should match snapshot for the "true" value: assets 1`] = `
 Object {
-  "four.css": "body{color:red}a{color:#00f}",
-  "one.css": "body{color:red}a{color:#00f}",
-  "three.css": "body{color:red}a{color:#00f}",
-  "two.css": "body{color:red}a{color:#00f}",
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -92,10 +92,10 @@ exports[`parallel option should match snapshot for the "true" value: warnings 1`
 
 exports[`parallel option should match snapshot when a value is not specify: assets 1`] = `
 Object {
-  "four.css": "body{color:red}a{color:#00f}",
-  "one.css": "body{color:red}a{color:#00f}",
-  "three.css": "body{color:red}a{color:#00f}",
-  "two.css": "body{color:red}a{color:#00f}",
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
 }
 `;
 

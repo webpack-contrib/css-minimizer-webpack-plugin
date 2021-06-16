@@ -2,13 +2,13 @@
 
 exports[`exclude option should match snapshot for a single RegExp value excluded1: assets 1`] = `
 Object {
-  "entry.css": "body{color:red}a{color:#00f}",
+  "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
 }
 
 ",
-  "excluded2.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "excluded2.css": "body{color:red;font-size:20px}a{color:blue}",
 }
 `;
 
@@ -18,13 +18,13 @@ exports[`exclude option should match snapshot for a single RegExp value excluded
 
 exports[`exclude option should match snapshot for a single String value excluded1: assets 1`] = `
 Object {
-  "entry.css": "body{color:red}a{color:#00f}",
+  "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
 }
 
 ",
-  "excluded2.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "excluded2.css": "body{color:red;font-size:20px}a{color:blue}",
 }
 `;
 
@@ -34,7 +34,7 @@ exports[`exclude option should match snapshot for a single String value excluded
 
 exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: assets 1`] = `
 Object {
-  "entry.css": "body{color:red}a{color:#00f}",
+  "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
 }
@@ -61,7 +61,7 @@ exports[`exclude option should match snapshot for multiple RegExp values exclude
 
 exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: assets 1`] = `
 Object {
-  "entry.css": "body{color:red}a{color:#00f}",
+  "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
 }

@@ -2,7 +2,7 @@
 
 exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): assets 1`] = `
 Object {
-  "bar1.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a {
   text-align: center;
@@ -18,7 +18,7 @@ exports[`when applied with "test" option matches snapshot for a single "test" va
 
 exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): assets 1`] = `
 Object {
-  "bar1.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a {
   text-align: center;
@@ -34,7 +34,7 @@ exports[`when applied with "test" option matches snapshot for multiple "test" va
 
 exports[`when applied with "test" option matches snapshot with empty value: assets 1`] = `
 Object {
-  "bar1.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a{text-align:center}",
 }

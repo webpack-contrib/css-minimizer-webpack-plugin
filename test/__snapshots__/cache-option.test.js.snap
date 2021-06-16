@@ -2,20 +2,20 @@
 
 exports[`"cache" option should work with the "false" value for the "cache" option: assets 1`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
 
 exports[`"cache" option should work with the "false" value for the "cache" option: assets 2`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
@@ -152,7 +152,7 @@ Array [
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: assets 1`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+  "five.css": "body{color:red;font-size:20px}a{color:blue}
 /*# sourceMappingURL=five.css.map*/",
   "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
   "four.css": "h1{color:green}h2{color:#ff0}
@@ -161,7 +161,7 @@ Object {
   "one.css": "a{text-align:center}
 /*# sourceMappingURL=one.css.map*/",
   "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+  "three.css": "body{color:red;font-size:20px}a{color:blue}
 /*# sourceMappingURL=three.css.map*/",
   "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
   "two.css": "a{text-align:center}
@@ -172,7 +172,7 @@ Object {
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and source maps: assets 2`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}
+  "five.css": "body{color:red;font-size:20px}a{color:blue}
 /*# sourceMappingURL=five.css.map*/",
   "five.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"five.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
   "four.css": "h1{color:green}h2{color:#ff0}
@@ -181,7 +181,7 @@ Object {
   "one.css": "a{text-align:center}
 /*# sourceMappingURL=one.css.map*/",
   "one.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,EACE,iBACF\\",\\"file\\":\\"one.css\\",\\"sourcesContent\\":[\\"a {\\\\n  text-align: center;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}
+  "three.css": "body{color:red;font-size:20px}a{color:blue}
 /*# sourceMappingURL=three.css.map*/",
   "three.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./test/bar1.css\\"],\\"names\\":[],\\"mappings\\":\\"AAGA,KACE,SAAU,CACV,cACF,CACA,EACE,UACF\\",\\"file\\":\\"three.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\nbody {\\\\n  color: red;\\\\n  font-size: 20px;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"sourceRoot\\":\\"\\"}",
   "two.css": "a{text-align:center}
@@ -200,20 +200,20 @@ exports[`"cache" option should work with the "filesystem" value for the "cache.t
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: assets 1`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option: assets 2`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
@@ -228,20 +228,20 @@ exports[`"cache" option should work with the "filesystem" value for the "cache.t
 
 exports[`"cache" option should work with the "memory" value for the "cache.type" option: assets 1`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
 
 exports[`"cache" option should work with the "memory" value for the "cache.type" option: assets 2`] = `
 Object {
-  "five.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "five.css": "body{color:red;font-size:20px}a{color:blue}",
   "four.css": "h1{color:green}h2{color:#ff0}",
   "one.css": "a{text-align:center}",
-  "three.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "three.css": "body{color:red;font-size:20px}a{color:blue}",
   "two.css": "a{text-align:center}",
 }
 `;
