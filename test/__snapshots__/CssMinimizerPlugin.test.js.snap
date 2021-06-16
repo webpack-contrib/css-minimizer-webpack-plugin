@@ -80,7 +80,7 @@ exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `Arra
 
 exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -88,7 +88,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": assets 2`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -104,7 +104,7 @@ exports[`CssMinimizerPlugin should work and do not use memory cache when the "ca
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.19e4764f9c1d9fe130e2.d801df74e2eeda59439d.74aeb19a113575472da2.css": "body{color:red}a{color:#00f}",
+  "entry.ee68cb428fa1feaa2c48.d801df74e2eeda59439d.74aeb19a113575472da2.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -114,7 +114,7 @@ exports[`CssMinimizerPlugin should work and generate real content hash: warnings
 
 exports[`CssMinimizerPlugin should work and show minimized assets in stats: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -124,7 +124,7 @@ exports[`CssMinimizerPlugin should work and show minimized assets in stats: warn
 
 exports[`CssMinimizerPlugin should work and use memory cache out of box: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -132,7 +132,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work and use memory cache out of box: assets 2`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -148,7 +148,7 @@ exports[`CssMinimizerPlugin should work and use memory cache out of box: warning
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -156,7 +156,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: assets 2`] = `
 Object {
-  "foo.css": "a,body{color:red}a{color:#00f}",
+  "foo.css": "a,body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -172,7 +172,7 @@ exports[`CssMinimizerPlugin should work and use memory cache when the "cache" op
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -180,7 +180,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": assets 2`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}",
+  "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -197,7 +197,7 @@ exports[`CssMinimizerPlugin should work and use memory cache when the "cache" op
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css?v=test 1`] = `
-"body{color:red}a{color:#00f}
+"body{color:red}a{color:blue}
 /*# sourceMappingURL=entry.css.map?v=test*/"
 `;
 
@@ -213,7 +213,7 @@ exports[`CssMinimizerPlugin should work with child compilation: warnings 1`] = `
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}
+  "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
   "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
@@ -223,7 +223,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: assets 2`] = `
 Object {
-  "foo.css": "a,body{color:red}a{color:#00f}
+  "foo.css": "a,body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
   "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
@@ -241,7 +241,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": assets 1`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}
+  "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
   "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
@@ -251,7 +251,7 @@ Object {
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": assets 2`] = `
 Object {
-  "foo.css": "body{color:red}a{color:#00f}
+  "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
   "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",

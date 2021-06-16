@@ -68,7 +68,7 @@ a {
 }
 ",
   "included1.css": "a{text-align:center}",
-  "included2.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "included2.css": "body{color:red;font-size:20px}a{color:blue}",
 }
 `;
 
@@ -86,7 +86,7 @@ a {
 }
 ",
   "included1.css": "a{text-align:center}",
-  "included2.css": "body{color:red;font-size:20px}a{color:#00f}",
+  "included2.css": "body{color:red;font-size:20px}a{color:blue}",
 }
 `;
 
