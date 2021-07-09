@@ -42,6 +42,7 @@
   "properties": {
     "test": {
       "description": "Include all modules that pass test assertion.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#test",
       "oneOf": [
         {
           "$ref": "#/definitions/Rules"
@@ -50,6 +51,7 @@
     },
     "include": {
       "description": "Include all modules matching any of these conditions.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#include",
       "oneOf": [
         {
           "$ref": "#/definitions/Rules"
@@ -58,6 +60,7 @@
     },
     "exclude": {
       "description": "Exclude all modules matching any of these conditions.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#exclude",
       "oneOf": [
         {
           "$ref": "#/definitions/Rules"
@@ -66,6 +69,7 @@
     },
     "minimizerOptions": {
       "description": "Options for `cssMinimizerOptions`.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#minimizeroptions",
       "anyOf": [
         {
           "$ref": "#/definitions/MinimizerOptions"
@@ -81,6 +85,7 @@
     },
     "parallel": {
       "description": "Use multi-process parallel running to improve the build speed.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#parallel",
       "anyOf": [
         {
           "type": "boolean"
@@ -92,10 +97,12 @@
     },
     "warningsFilter": {
       "description": "Allow to filter `css minimizer` warnings.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#warningsfilter",
       "instanceof": "Function"
     },
     "minify": {
       "description": "Allows you to override default minify function.",
+      "link": "https://webpack.js.org/plugins/css-minimizer-webpack-plugin/#minify",
       "anyOf": [
         {
           "instanceof": "Function"
