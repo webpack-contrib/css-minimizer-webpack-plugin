@@ -1,6 +1,6 @@
 const minify = async (options) => {
   const minifyFns =
-    typeof options.minify === 'function' ? [options.minify] : options.minify;
+    typeof options.minify === "function" ? [options.minify] : options.minify;
 
   const result = {
     code: options.input,
@@ -37,11 +37,11 @@ async function transform(options) {
   // Safer for possible security issues, albeit not critical at all here
   // eslint-disable-next-line no-new-func, no-param-reassign
   const evaluatedOptions = new Function(
-    'exports',
-    'require',
-    'module',
-    '__filename',
-    '__dirname',
+    "exports",
+    "require",
+    "module",
+    "__filename",
+    "__dirname",
     `'use strict'\nreturn ${options}`
   )(exports, require, module, __filename, __dirname);
 

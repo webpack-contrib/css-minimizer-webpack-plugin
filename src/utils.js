@@ -2,7 +2,7 @@
 async function cssnanoMinify(
   data,
   inputSourceMap,
-  minimizerOptions = { preset: 'default' }
+  minimizerOptions = { preset: "default" }
 ) {
   const [[name, input]] = Object.entries(data);
   const postcssOptions = {
@@ -11,7 +11,7 @@ async function cssnanoMinify(
     ...minimizerOptions.processorOptions,
   };
 
-  if (typeof postcssOptions.parser === 'string') {
+  if (typeof postcssOptions.parser === "string") {
     try {
       postcssOptions.parser = await load(postcssOptions.parser);
     } catch (error) {
@@ -21,7 +21,7 @@ async function cssnanoMinify(
     }
   }
 
-  if (typeof postcssOptions.stringifier === 'string') {
+  if (typeof postcssOptions.stringifier === "string") {
     try {
       postcssOptions.stringifier = await load(postcssOptions.stringifier);
     } catch (error) {
@@ -31,7 +31,7 @@ async function cssnanoMinify(
     }
   }
 
-  if (typeof postcssOptions.syntax === 'string') {
+  if (typeof postcssOptions.syntax === "string") {
     try {
       postcssOptions.syntax = await load(postcssOptions.syntax);
     } catch (error) {
@@ -49,9 +49,9 @@ async function cssnanoMinify(
   }
 
   // eslint-disable-next-line global-require
-  const postcss = require('postcss');
+  const postcss = require("postcss");
   // eslint-disable-next-line global-require
-  const cssnano = require('cssnano');
+  const cssnano = require("cssnano");
   const result = await postcss([cssnano(minimizerOptions)]).process(
     input,
     postcssOptions
@@ -76,12 +76,12 @@ async function cssnanoMinify(
 
       try {
         // eslint-disable-next-line no-new-func
-        importESM = new Function('id', 'return import(id);');
+        importESM = new Function("id", "return import(id);");
       } catch (e) {
         importESM = null;
       }
 
-      if (requireError.code === 'ERR_REQUIRE_ESM' && importESM) {
+      if (requireError.code === "ERR_REQUIRE_ESM" && importESM) {
         exports = await importESM(module);
 
         return exports.default;
@@ -95,9 +95,9 @@ async function cssnanoMinify(
 /* istanbul ignore next */
 async function cssoMinify(data, inputSourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
-  const csso = require('csso');
+  const csso = require("csso");
   // eslint-disable-next-line global-require
-  const sourcemap = require('source-map');
+  const sourcemap = require("source-map");
   const [[filename, input]] = Object.entries(data);
   const result = csso.minify(input, {
     filename,
@@ -121,7 +121,7 @@ async function cssoMinify(data, inputSourceMap, minimizerOptions) {
 /* istanbul ignore next */
 async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
-  const CleanCSS = require('clean-css');
+  const CleanCSS = require("clean-css");
   const [[name, input]] = Object.entries(data);
   const result = await new CleanCSS({
     sourceMap: inputSourceMap,

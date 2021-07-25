@@ -1,33 +1,33 @@
-import path from 'path';
+import path from "path";
 
-import webpack from 'webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { createFsFromVolume, Volume } from 'memfs';
+import webpack from "webpack";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { createFsFromVolume, Volume } from "memfs";
 
 export default function getCompiler(config) {
   const compiler = webpack({
-    mode: 'development',
+    mode: "development",
     devtool: config.devtool || false,
-    context: path.resolve(__dirname, '../fixtures'),
+    context: path.resolve(__dirname, "../fixtures"),
     optimization: {
       minimize: false,
     },
     output: {
-      path: path.resolve(__dirname, '../outputs'),
-      filename: '[name].js',
-      chunkFilename: '[id].[name].js',
+      path: path.resolve(__dirname, "../outputs"),
+      filename: "[name].js",
+      chunkFilename: "[id].[name].js",
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].[name].css',
+        filename: "[name].css",
+        chunkFilename: "[id].[name].css",
       }),
     ],
     module: {
       rules: [
         {
           test: /.s?css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
+          use: [MiniCssExtractPlugin.loader, "css-loader"],
         },
       ],
     },

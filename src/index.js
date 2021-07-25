@@ -1,23 +1,23 @@
-import * as os from 'os';
+import * as os from "os";
 
-import { SourceMapConsumer } from 'source-map';
-import { validate } from 'schema-utils';
-import serialize from 'serialize-javascript';
-import pLimit from 'p-limit';
-import { Worker } from 'jest-worker';
+import { SourceMapConsumer } from "source-map";
+import { validate } from "schema-utils";
+import serialize from "serialize-javascript";
+import pLimit from "p-limit";
+import { Worker } from "jest-worker";
 
-import { cssnanoMinify, cssoMinify, cleanCssMinify } from './utils';
+import { cssnanoMinify, cssoMinify, cleanCssMinify } from "./utils";
 
-import * as schema from './options.json';
-import { minify as minifyFn } from './minify';
+import * as schema from "./options.json";
+import { minify as minifyFn } from "./minify";
 
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
 class CssMinimizerPlugin {
   constructor(options = {}) {
     validate(schema, options, {
-      name: 'Css Minimizer Plugin',
-      baseDataPath: 'options',
+      name: "Css Minimizer Plugin",
+      baseDataPath: "options",
     });
 
     const {
@@ -49,7 +49,7 @@ class CssMinimizerPlugin {
         input.version &&
         input.sources &&
         Array.isArray(input.sources) &&
-        typeof input.mappings === 'string'
+        typeof input.mappings === "string"
     );
   }
 
@@ -72,8 +72,8 @@ class CssMinimizerPlugin {
             original.column
           }][${name}:${error.line},${error.column}]${
             error.stack
-              ? `\n${error.stack.split('\n').slice(1).join('\n')}`
-              : ''
+              ? `\n${error.stack.split("\n").slice(1).join("\n")}`
+              : ""
           }`
         );
         builtError.file = name;
@@ -85,7 +85,7 @@ class CssMinimizerPlugin {
         `${name} from Css Minimizer \n${error.message} [${name}:${error.line},${
           error.column
         }]${
-          error.stack ? `\n${error.stack.split('\n').slice(1).join('\n')}` : ''
+          error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
         }`
       );
       builtError.file = name;
@@ -114,7 +114,7 @@ class CssMinimizerPlugin {
     warningsFilter
   ) {
     let warningMessage = warning;
-    let locationMessage = '';
+    let locationMessage = "";
     let source;
 
     if (sourceMap) {
@@ -136,7 +136,7 @@ class CssMinimizerPlugin {
         ) {
           ({ source } = original);
 
-          warningMessage = `${warningMessage.replace(warningRegex, '')}`;
+          warningMessage = `${warningMessage.replace(warningRegex, "")}`;
           locationMessage = `${requestShortener.shorten(original.source)}:${
             original.line
           }:${original.column}`;
@@ -162,10 +162,10 @@ class CssMinimizerPlugin {
   }
 
   async optimize(compiler, compilation, assets, optimizeOptions) {
-    const cache = compilation.getCache('CssMinimizerWebpackPlugin');
+    const cache = compilation.getCache("CssMinimizerWebpackPlugin");
     let numberOfAssetsForMinify = 0;
     const assetsForMinify = await Promise.all(
-      Object.keys(typeof assets === 'undefined' ? compilation.assets : assets)
+      Object.keys(typeof assets === "undefined" ? compilation.assets : assets)
         .filter((name) => {
           const { info } = compilation.getAsset(name);
 
@@ -219,7 +219,7 @@ class CssMinimizerPlugin {
           return initializedWorker;
         }
 
-        initializedWorker = new Worker(require.resolve('./minify'), {
+        initializedWorker = new Worker(require.resolve("./minify"), {
           numWorkers: numberOfWorkers,
           enableWorkerThreads: true,
         });
@@ -228,13 +228,13 @@ class CssMinimizerPlugin {
         const workerStdout = initializedWorker.getStdout();
 
         if (workerStdout) {
-          workerStdout.on('data', (chunk) => process.stdout.write(chunk));
+          workerStdout.on("data", (chunk) => process.stdout.write(chunk));
         }
 
         const workerStderr = initializedWorker.getStderr();
 
         if (workerStderr) {
-          workerStderr.on('data', (chunk) => process.stderr.write(chunk));
+          workerStderr.on("data", (chunk) => process.stderr.write(chunk));
         }
 
         return initializedWorker;
@@ -348,7 +348,7 @@ class CssMinimizerPlugin {
                 constructor(message) {
                   super(message);
 
-                  this.name = 'Warning';
+                  this.name = "Warning";
                   this.hideStack = true;
                   this.file = name;
                 }
@@ -397,12 +397,12 @@ class CssMinimizerPlugin {
 
       compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
         stats.hooks.print
-          .for('asset.info.minimized')
+          .for("asset.info.minimized")
           .tap(
-            'css-minimizer-webpack-plugin',
+            "css-minimizer-webpack-plugin",
             (minimized, { green, formatFlag }) =>
               // eslint-disable-next-line no-undefined
-              minimized ? green(formatFlag('minimized')) : ''
+              minimized ? green(formatFlag("minimized")) : ""
           );
       });
     });

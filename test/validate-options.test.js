@@ -1,13 +1,13 @@
-import CssMinimizerPlugin from '../src';
+import CssMinimizerPlugin from "../src";
 
-it('validation', () => {
+it("validation", () => {
   /* eslint-disable no-new */
   expect(() => {
     new CssMinimizerPlugin({ test: /foo/ });
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ test: 'foo' });
+    new CssMinimizerPlugin({ test: "foo" });
   }).not.toThrow();
 
   expect(() => {
@@ -19,11 +19,11 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ test: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ test: ["foo", "bar"] });
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ test: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ test: [/foo/, "bar"] });
   }).not.toThrow();
 
   expect(() => {
@@ -39,7 +39,7 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ include: 'foo' });
+    new CssMinimizerPlugin({ include: "foo" });
   }).not.toThrow();
 
   expect(() => {
@@ -51,11 +51,11 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ include: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ include: ["foo", "bar"] });
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ include: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ include: [/foo/, "bar"] });
   }).not.toThrow();
 
   expect(() => {
@@ -71,7 +71,7 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ exclude: 'foo' });
+    new CssMinimizerPlugin({ exclude: "foo" });
   }).not.toThrow();
 
   expect(() => {
@@ -83,11 +83,11 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ exclude: ['foo', 'bar'] });
+    new CssMinimizerPlugin({ exclude: ["foo", "bar"] });
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ exclude: [/foo/, 'bar'] });
+    new CssMinimizerPlugin({ exclude: [/foo/, "bar"] });
   }).not.toThrow();
 
   expect(() => {
@@ -129,7 +129,7 @@ it('validation', () => {
   }).not.toThrow();
 
   expect(() => {
-    new CssMinimizerPlugin({ parallel: '2' });
+    new CssMinimizerPlugin({ parallel: "2" });
   }).toThrowErrorMatchingSnapshot();
 
   expect(() => {

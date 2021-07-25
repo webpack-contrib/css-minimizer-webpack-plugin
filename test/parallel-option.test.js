@@ -1,8 +1,8 @@
-import os from 'os';
+import os from "os";
 
-import { Worker } from 'jest-worker';
+import { Worker } from "jest-worker";
 
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
 import {
   compile,
@@ -10,10 +10,10 @@ import {
   getErrors,
   getWarnings,
   readAssets,
-} from './helpers';
+} from "./helpers";
 
-jest.mock('os', () => {
-  const actualOs = jest.requireActual('os');
+jest.mock("os", () => {
+  const actualOs = jest.requireActual("os");
 
   const mocked = {
     cpus: jest.fn(() => {
@@ -29,11 +29,11 @@ let workerTransform;
 let workerEnd;
 
 const ENABLE_WORKER_THREADS =
-  typeof process.env.ENABLE_WORKER_THREADS !== 'undefined'
-    ? process.env.ENABLE_WORKER_THREADS === 'true'
+  typeof process.env.ENABLE_WORKER_THREADS !== "undefined"
+    ? process.env.ENABLE_WORKER_THREADS === "true"
     : true;
 
-jest.mock('jest-worker', () => {
+jest.mock("jest-worker", () => {
   return {
     Worker: jest.fn().mockImplementation((workerPath) => {
       return {
@@ -50,9 +50,9 @@ jest.mock('jest-worker', () => {
   };
 });
 
-const workerPath = require.resolve('../src/minify');
+const workerPath = require.resolve("../src/minify");
 
-describe('parallel option', () => {
+describe("parallel option", () => {
   let compiler;
 
   beforeEach(() => {
@@ -68,7 +68,7 @@ describe('parallel option', () => {
     });
   });
 
-  it('should match snapshot when a value is not specify', async () => {
+  it("should match snapshot when a value is not specify", async () => {
     new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
@@ -83,9 +83,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "false" value', async () => {
@@ -95,9 +95,9 @@ describe('parallel option', () => {
 
     expect(Worker).toHaveBeenCalledTimes(0);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "true" value', async () => {
@@ -115,9 +115,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "2" value', async () => {
@@ -135,9 +135,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "true" value when only one file passed', async () => {
@@ -159,9 +159,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "true" value and the number of files is less than the number of cores', async () => {
@@ -187,9 +187,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "true" value and the number of files is same than the number of cores', async () => {
@@ -215,9 +215,9 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should match snapshot for the "true" value and the number of files is more than the number of cores', async () => {
@@ -254,8 +254,8 @@ describe('parallel option', () => {
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 });

@@ -1,7 +1,7 @@
-import webpack from 'webpack';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack from "webpack";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
 import {
   getCompiler,
@@ -9,17 +9,17 @@ import {
   readAssets,
   getErrors,
   getWarnings,
-} from './helpers';
+} from "./helpers";
 
 expect.addSnapshotSerializer({
   test: (value) => {
     // For string that are valid JSON
-    if (typeof value !== 'string') {
+    if (typeof value !== "string") {
       return false;
     }
 
     try {
-      return typeof JSON.parse(value) === 'object';
+      return typeof JSON.parse(value) === "object";
     } catch (e) {
       return false;
     }
@@ -29,7 +29,7 @@ expect.addSnapshotSerializer({
 
 describe('when applied with "sourceMap" option', () => {
   const baseConfig = {
-    devtool: 'source-map',
+    devtool: "source-map",
     entry: {
       entry: `${__dirname}/fixtures/sourcemap/foo.scss`,
       entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
@@ -38,14 +38,14 @@ describe('when applied with "sourceMap" option', () => {
       rules: [
         {
           test: /.s?css$/i,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         },
       ],
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].[name].css',
+        filename: "[name].css",
+        chunkFilename: "[id].[name].css",
       }),
     ],
   };
@@ -58,10 +58,10 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      'assets'
+      "assets"
     );
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should work with the "devtool" option and the "parallel" option with "false" value', async () => {
@@ -74,10 +74,10 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      'assets'
+      "assets"
     );
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('should work with the "devtool" option and the "parallel" option with "true" value', async () => {
@@ -90,13 +90,13 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      'assets'
+      "assets"
     );
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should work with SourceMapDevToolPlugin plugin)', async () => {
+  it("should work with SourceMapDevToolPlugin plugin)", async () => {
     const config = Object.assign(baseConfig, {
       devtool: false,
       module: {
@@ -105,21 +105,21 @@ describe('when applied with "sourceMap" option', () => {
             test: /.s?css$/i,
             use: [
               MiniCssExtractPlugin.loader,
-              { loader: 'css-loader', options: { sourceMap: true } },
-              { loader: 'sass-loader', options: { sourceMap: true } },
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
             ],
           },
         ],
       },
       plugins: [
         new MiniCssExtractPlugin({
-          filename: 'dist/[name].css',
-          chunkFilename: 'dist/[id].[name].css',
+          filename: "dist/[name].css",
+          chunkFilename: "dist/[id].[name].css",
         }),
         new webpack.SourceMapDevToolPlugin({
-          filename: 'sourcemaps/[file].map',
-          publicPath: 'https://example.com/project/',
-          fileContext: 'dist',
+          filename: "sourcemaps/[file].map",
+          publicPath: "https://example.com/project/",
+          fileContext: "dist",
         }),
       ],
     });
@@ -131,13 +131,13 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      'assets'
+      "assets"
     );
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should work and emit warnings on broken sourcemaps', async () => {
+  it("should work and emit warnings on broken sourcemaps", async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -146,12 +146,12 @@ describe('when applied with "sourceMap" option', () => {
             compilation.hooks.additionalChunkAssets.tap(
               { name: this.constructor.name },
               () => {
-                compilation.additionalChunkAssets.push('broken-source-map.css');
+                compilation.additionalChunkAssets.push("broken-source-map.css");
 
-                const assetContent = '.bar {color: red};';
+                const assetContent = ".bar {color: red};";
 
                 // eslint-disable-next-line no-param-reassign
-                compilation.assets['broken-source-map.css'] = {
+                compilation.assets["broken-source-map.css"] = {
                   size() {
                     return assetContent.length;
                   },
@@ -164,8 +164,8 @@ describe('when applied with "sourceMap" option', () => {
                       map: {
                         sources: [],
                         names: [],
-                        mappings: 'AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO',
-                        file: 'x',
+                        mappings: "AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO",
+                        file: "x",
                         sourcesContent: [],
                       },
                     };
@@ -179,15 +179,15 @@ describe('when applied with "sourceMap" option', () => {
     })();
 
     const config = Object.assign(baseConfig, {
-      devtool: 'source-map',
+      devtool: "source-map",
       entry: {
         entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
       },
       plugins: [
         emitBrokenSourceMapPlugin,
         new MiniCssExtractPlugin({
-          filename: 'dist/[name].css',
-          chunkFilename: 'dist/[id].[name].css',
+          filename: "dist/[name].css",
+          chunkFilename: "dist/[id].[name].css",
         }),
       ],
     });
@@ -198,11 +198,11 @@ describe('when applied with "sourceMap" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should work and emit warning on valid sourcemap and minimizer error', async () => {
+  it("should work and emit warning on valid sourcemap and minimizer error", async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -211,12 +211,12 @@ describe('when applied with "sourceMap" option', () => {
             compilation.hooks.additionalChunkAssets.tap(
               { name: this.constructor.name },
               () => {
-                compilation.additionalChunkAssets.push('broken-source-map.css');
+                compilation.additionalChunkAssets.push("broken-source-map.css");
 
-                const assetContent = '.bar {color: red};';
+                const assetContent = ".bar {color: red};";
 
                 // eslint-disable-next-line no-param-reassign
-                compilation.assets['broken-source-map.css'] = {
+                compilation.assets["broken-source-map.css"] = {
                   size() {
                     return assetContent.length;
                   },
@@ -228,10 +228,10 @@ describe('when applied with "sourceMap" option', () => {
                       source: this.source(),
                       map: {
                         version: 3,
-                        sources: ['test', 'test2'],
+                        sources: ["test", "test2"],
                         names: [],
-                        mappings: 'AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO',
-                        file: 'x',
+                        mappings: "AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO",
+                        file: "x",
                         sourcesContent: [],
                       },
                     };
@@ -245,15 +245,15 @@ describe('when applied with "sourceMap" option', () => {
     })();
 
     const config = Object.assign(baseConfig, {
-      devtool: 'source-map',
+      devtool: "source-map",
       entry: {
         entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
       },
       plugins: [
         emitBrokenSourceMapPlugin,
         new MiniCssExtractPlugin({
-          filename: 'dist/[name].css',
-          chunkFilename: 'dist/[id].[name].css',
+          filename: "dist/[name].css",
+          chunkFilename: "dist/[id].[name].css",
         }),
       ],
     });
@@ -263,11 +263,11 @@ describe('when applied with "sourceMap" option', () => {
     new CssMinimizerPlugin({
       minify: (data) => {
         // eslint-disable-next-line global-require
-        const postcss = require('postcss');
+        const postcss = require("postcss");
 
-        const plugin = postcss.plugin('error-plugin', () => (css) => {
+        const plugin = postcss.plugin("error-plugin", () => (css) => {
           css.walkDecls((decl) => {
-            throw decl.error('Postcss error');
+            throw decl.error("Postcss error");
           });
         });
 
@@ -281,11 +281,11 @@ describe('when applied with "sourceMap" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should work and do not contain sourcemap link in minified source', async () => {
+  it("should work and do not contain sourcemap link in minified source", async () => {
     const compiler = getCompiler({
       devtool: false,
       entry: {

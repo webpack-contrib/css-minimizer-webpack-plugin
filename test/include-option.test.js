@@ -1,4 +1,4 @@
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
 import {
   compile,
@@ -6,9 +6,9 @@ import {
   getErrors,
   getWarnings,
   readAssets,
-} from './helpers';
+} from "./helpers";
 
-describe('include option', () => {
+describe("include option", () => {
   let compiler;
 
   beforeEach(() => {
@@ -21,51 +21,51 @@ describe('include option', () => {
     });
   });
 
-  it('should match snapshot for a single RegExp value included1', async () => {
+  it("should match snapshot for a single RegExp value included1", async () => {
     new CssMinimizerPlugin({
       include: /included1/i,
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should match snapshot for a single String value included1', async () => {
+  it("should match snapshot for a single String value included1", async () => {
     new CssMinimizerPlugin({
-      include: 'included1',
+      include: "included1",
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should match snapshot for multiple RegExp values included1 and included2', async () => {
+  it("should match snapshot for multiple RegExp values included1 and included2", async () => {
     new CssMinimizerPlugin({
       include: [/included1/i, /included2/i],
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it('should match snapshot for multiple String values included1 and included2', async () => {
+  it("should match snapshot for multiple String values included1 and included2", async () => {
     new CssMinimizerPlugin({
-      include: ['included1', 'included2'],
+      include: ["included1", "included2"],
     }).apply(compiler);
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 });

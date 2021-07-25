@@ -1,4 +1,4 @@
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
 import {
   getCompiler,
@@ -6,7 +6,7 @@ import {
   readAssets,
   getErrors,
   getWarnings,
-} from './helpers';
+} from "./helpers";
 
 describe('when applied with "test" option', () => {
   let compiler;
@@ -21,14 +21,14 @@ describe('when applied with "test" option', () => {
     });
   });
 
-  it('matches snapshot with empty value', async () => {
+  it("matches snapshot with empty value", async () => {
     new CssMinimizerPlugin().apply(compiler);
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('matches snapshot for a single "test" value (RegExp)', async () => {
@@ -38,9 +38,9 @@ describe('when applied with "test" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
   it('matches snapshot for multiple "test" value (RegExp)', async () => {
@@ -50,8 +50,8 @@ describe('when applied with "test" option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 });

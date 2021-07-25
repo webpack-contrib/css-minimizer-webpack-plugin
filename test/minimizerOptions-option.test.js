@@ -1,10 +1,10 @@
-import CopyPlugin from 'copy-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import sugarss from 'sugarss';
+import CopyPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import sugarss from "sugarss";
 
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
-import { getCompiler, compile, readAsset } from './helpers';
+import { getCompiler, compile, readAsset } from "./helpers";
 
 describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardComments" option (enable [default])', () => {
@@ -35,7 +35,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: ['default', { discardComments: false }],
+        preset: ["default", { discardComments: false }],
       },
     }).apply(compiler);
 
@@ -59,7 +59,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: ['default', { discardComments: { removeAll: true } }],
+        preset: ["default", { discardComments: { removeAll: true } }],
       },
     }).apply(compiler);
 
@@ -83,7 +83,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: 'default',
+        preset: "default",
       },
     }).apply(compiler);
 
@@ -94,7 +94,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: require.resolve('cssnano-preset-simple'),
+        preset: require.resolve("cssnano-preset-simple"),
       },
     }).apply(compiler2);
 
@@ -155,7 +155,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: ['default', { mergeRules: false }],
+        preset: ["default", { mergeRules: false }],
       },
     }).apply(compiler);
 
@@ -199,7 +199,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: ['default', { discardEmpty: false }],
+        preset: ["default", { discardEmpty: false }],
       },
     }).apply(compiler);
 
@@ -231,7 +231,7 @@ describe('when applied with "minimizerOptions" option', () => {
           ],
         }),
         new MiniCssExtractPlugin({
-          filename: '[name].css',
+          filename: "[name].css",
         }),
       ],
     });
@@ -273,7 +273,7 @@ describe('when applied with "minimizerOptions" option', () => {
           ],
         }),
         new MiniCssExtractPlugin({
-          filename: '[name].css',
+          filename: "[name].css",
         }),
       ],
     });
@@ -281,7 +281,7 @@ describe('when applied with "minimizerOptions" option', () => {
       test: /\.(css|sss)$/i,
       minimizerOptions: {
         processorOptions: {
-          parser: 'sugarss',
+          parser: "sugarss",
         },
       },
     }).apply(compiler);
@@ -334,7 +334,7 @@ describe('when applied with "minimizerOptions" option', () => {
     new CssMinimizerPlugin({
       minimizerOptions: {
         processorOptions: {
-          stringifier: 'sugarss',
+          stringifier: "sugarss",
         },
       },
     }).apply(compiler);
@@ -367,7 +367,7 @@ describe('when applied with "minimizerOptions" option', () => {
           ],
         }),
         new MiniCssExtractPlugin({
-          filename: '[name].css',
+          filename: "[name].css",
         }),
       ],
     });
@@ -409,7 +409,7 @@ describe('when applied with "minimizerOptions" option', () => {
           ],
         }),
         new MiniCssExtractPlugin({
-          filename: '[name].css',
+          filename: "[name].css",
         }),
       ],
     });
@@ -417,7 +417,7 @@ describe('when applied with "minimizerOptions" option', () => {
       test: /\.(css|sss)$/i,
       minimizerOptions: {
         processorOptions: {
-          syntax: 'sugarss',
+          syntax: "sugarss",
         },
       },
     }).apply(compiler);
