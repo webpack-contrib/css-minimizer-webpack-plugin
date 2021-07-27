@@ -1,6 +1,6 @@
-import postcss from 'postcss';
+import postcss from "postcss";
 
-import CssMinimizerPlugin from '../src/index';
+import CssMinimizerPlugin from "../src/index";
 
 import {
   compile,
@@ -8,13 +8,13 @@ import {
   getErrors,
   getWarnings,
   readAssets,
-} from './helpers';
+} from "./helpers";
 
-describe('warningsFilter option', () => {
+describe("warningsFilter option", () => {
   it('should match snapshot for a "function" value', async () => {
-    const plugin = postcss.plugin('warning-plugin', () => (css, result) => {
+    const plugin = postcss.plugin("warning-plugin", () => (css, result) => {
       result.warn(`Warning from ${result.opts.from}`, {
-        plugin: 'warning-plugin',
+        plugin: "warning-plugin",
       });
     });
 
@@ -53,8 +53,8 @@ describe('warningsFilter option', () => {
 
     const stats = await compile(compiler);
 
-    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot('assets');
-    expect(getErrors(stats)).toMatchSnapshot('errors');
-    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 });

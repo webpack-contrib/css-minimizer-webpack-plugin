@@ -1,5 +1,5 @@
 export default function loader(content) {
-  this.emitFile('style-2.css', 'a { color: coral; }');
+  this.emitFile("style-2.css", "a { color: coral; }");
 
   const callback = this.async();
 
