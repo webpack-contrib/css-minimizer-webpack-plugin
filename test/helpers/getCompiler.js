@@ -13,6 +13,7 @@ export default function getCompiler(config) {
       minimize: false,
     },
     output: {
+      pathinfo: false,
       path: path.resolve(__dirname, "../outputs"),
       filename: "[name].js",
       chunkFilename: "[id].[name].js",
