@@ -104,7 +104,7 @@ exports[`CssMinimizerPlugin should work and do not use memory cache when the "ca
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.ee68cb428fa1feaa2c48.d801df74e2eeda59439d.74aeb19a113575472da2.css": "body{color:red}a{color:blue}",
+  "entry.ee68cb428fa1feaa2c48.e8cd6410d9437190b1de.2c4361406ee7653d59e1.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -194,7 +194,7 @@ exports[`CssMinimizerPlugin should work and use memory cache when the "cache" op
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 2`] = `Array []`;
 
-exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"entry.css?v=test\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"file\\":\\"entry.css?v=test\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}"`;
 
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css?v=test 1`] = `
 "body{color:red}a{color:blue}
@@ -215,7 +215,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -225,7 +225,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "a,body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -243,7 +243,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
@@ -253,7 +253,7 @@ exports[`CssMinimizerPlugin should work with source map and use memory cache whe
 Object {
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"sources\\":[\\"webpack:///./foo.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"file\\":\\"foo.css\\",\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }

@@ -34,32 +34,32 @@ Object {
 /*# sourceMappingURL=https://example.com/project/sourcemaps/entry2.css.map*/",
   "sourcemaps/entry.css.map": {
     "version": 3,
+    "file": "dist/entry.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.scss"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
-    "file": "dist/entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
   "sourcemaps/entry2.css.map": {
     "version": 3,
+    "file": "dist/entry2.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.css"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
-    "file": "dist/entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
 }
@@ -75,34 +75,34 @@ Object {
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
+    "file": "entry.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.scss"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
-    "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
   "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
+    "file": "entry2.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.css"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
-    "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
 }
@@ -118,34 +118,34 @@ Object {
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
+    "file": "entry.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.scss"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
-    "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
   "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
+    "file": "entry2.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.css"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
-    "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
 }
@@ -161,34 +161,34 @@ Object {
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
     "version": 3,
+    "file": "entry.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.scss"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAEE,OACE,iBAIJ",
-    "file": "entry.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
   "entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "entry2.css.map": {
     "version": 3,
+    "file": "entry2.css",
+    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
     "sources": [
         "webpack:///./sourcemap/bar.scss",
         "webpack:///./sourcemap/foo.css"
     ],
-    "names": [],
-    "mappings": "AAAA,KCGE,UDFA,eCCF,CAIA,OACE,iBAGF",
-    "file": "entry2.css",
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
         "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
+    "names": [],
     "sourceRoot": ""
 },
 }

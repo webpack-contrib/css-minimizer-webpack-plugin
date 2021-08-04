@@ -34,7 +34,7 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async (data, inputMap) => {
+      minify: async (data, inputSourceMap) => {
         // eslint-disable-next-line global-require
         const csso = require("csso");
         // eslint-disable-next-line global-require
@@ -43,19 +43,19 @@ describe('"minify" option', () => {
         const [[filename, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
           filename,
-          sourceMap: true,
+          sourceMap: inputSourceMap,
         });
 
-        if (inputMap) {
+        if (inputSourceMap) {
           minifiedCss.map.applySourceMap(
-            new sourcemap.SourceMapConsumer(inputMap),
+            new sourcemap.SourceMapConsumer(inputSourceMap),
             filename
           );
         }
 
         return {
           code: minifiedCss.css,
-          map: minifiedCss.map.toJSON(),
+          map: minifiedCss.map && minifiedCss.map.toJSON(),
         };
       },
     }).apply(compiler);

@@ -117,7 +117,7 @@ exports[`validation 8`] = `
    -> Read more at https://github.com/webpack-contrib/css-minimizer-webpack-plugin/#parallel
    Details:
     * options.parallel should be a boolean.
-    * options.parallel should be a integer."
+    * options.parallel should be an integer."
 `;
 
 exports[`validation 9`] = `
@@ -128,7 +128,7 @@ exports[`validation 9`] = `
    -> Read more at https://github.com/webpack-contrib/css-minimizer-webpack-plugin/#parallel
    Details:
     * options.parallel should be a boolean.
-    * options.parallel should be a integer."
+    * options.parallel should be an integer."
 `;
 
 exports[`validation 10`] = `
