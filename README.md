@@ -86,6 +86,17 @@ If you use your own `minify` function please read the `minify` section for handl
 
 ## Options
 
+|                    Name                     |                      Type                      |               Default                | Description                                                                                           |
+| :-----------------------------------------: | :--------------------------------------------: | :----------------------------------: | :---------------------------------------------------------------------------------------------------- |
+|             **[`test`](#test)**             |    `String\|RegExp\|Array<String\|RegExp>`     |          `/\.css(\?.*)?$/i`          | Test to match files against.                                                                          |
+|          **[`include`](#include)**          |    `String\|RegExp\|Array<String\|RegExp>`     |             `undefined`              | Files to include.                                                                                     |
+|          **[`exclude`](#exclude)**          |    `String\|RegExp\|Array<String\|RegExp>`     |             `undefined`              | Files to exclude.                                                                                     |
+|         **[`parallel`](#parallel)**         |               `Boolean\|Number`                |                `true`                | Enable/disable multi-process parallel running.                                                        |
+|           **[`minify`](#minify)**           |          `Function\|Array<Function>`           |  `CssMinimizerPlugin.cssnanoMinify`  | Allows to override default minify function.                                                           |
+| **[`minimizerOptions`](#minimizeroptions)** |            `Object\|Array<Object>`             |       `{ preset: 'default' }`        | Cssnano optimisations [options](https://cssnano.co/docs/optimisations).                               |
+| **[`processorOptions`](#processoroptions)** |                    `Object`                    | `{ to: assetName, from: assetName }` | Allows to specify option [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano. |
+|   **[`warningsFilter`](#warningsfilter)**   | `Function<(warning, file, source) -> Boolean>` |             `() => true`             | Allow to filter css-minimizer warnings.                                                               |
+
 ### `test`
 
 Type: `String|RegExp|Array<String|RegExp>` - default: `/\.css(\?.*)?$/i`
