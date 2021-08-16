@@ -223,7 +223,7 @@ Possible options:
 - CssMinimizerPlugin.cssnanoMinify
 - CssMinimizerPlugin.cssoMinify
 - CssMinimizerPlugin.cleanCssMinify
-- async (data, inputMap, minimizerOptions) => {return {code: `a{color: red}`, map: `...`, warnings: []}}
+- `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: []}}`
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
 
