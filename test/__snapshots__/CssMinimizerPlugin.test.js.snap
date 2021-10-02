@@ -104,7 +104,7 @@ exports[`CssMinimizerPlugin should work and do not use memory cache when the "ca
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
 Object {
-  "entry.ee68cb428fa1feaa2c48.e8cd6410d9437190b1de.2c4361406ee7653d59e1.css": "body{color:red}a{color:blue}",
+  "entry.ee68cb428fa1feaa2c48.7220c28033555af8b885.0d98769ab6278695c505.css": "body{color:red}a{color:blue}",
 }
 `;
 
