@@ -6,7 +6,12 @@ import serialize from "serialize-javascript";
 import pLimit from "p-limit";
 import { Worker } from "jest-worker";
 
-import { cssnanoMinify, cssoMinify, cleanCssMinify } from "./utils";
+import {
+  cssnanoMinify,
+  cssoMinify,
+  cleanCssMinify,
+  esbuildMinify,
+} from "./utils";
 
 import * as schema from "./options.json";
 import { minify as minifyFn } from "./minify";
@@ -484,5 +489,6 @@ class CssMinimizerPlugin {
 CssMinimizerPlugin.cssnanoMinify = cssnanoMinify;
 CssMinimizerPlugin.cssoMinify = cssoMinify;
 CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
+CssMinimizerPlugin.esbuildMinify = esbuildMinify;
 
 export default CssMinimizerPlugin;

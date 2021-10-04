@@ -16,7 +16,7 @@
 
 This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
 
-Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string, allows to cache and works in parallel mode.
+Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string, allows caching and works in parallel mode.
 
 ## Getting Started
 
@@ -169,8 +169,8 @@ Default: `true`
 Use multi-process parallel running to improve the build speed.
 Default number of concurrent runs: `os.cpus().length - 1`.
 
-> ℹ️ Parallelization can speedup your build significantly and is therefore **highly recommended**.
-> If a parallelization is enabled, the packages in `minimizerOptions` must be required via strings (`packageName` or `require.resolve(packageName)`). Read more in [`minimizerOptions`](#minimizerOptions)
+> ℹ️ Parallelization can speed up your build significantly and is therefore **highly recommended**.
+> If a parallelization is enabled, the packages in `minimizerOptions` must be required via strings (`packageName` or `require.resolve(packageName)`). Read more in [`minimizerOptions`](#minimizeroptions)
 
 #### `Boolean`
 
@@ -215,8 +215,8 @@ module.exports = {
 Type: `Function|Array<Function>`
 Default: `CssMinimizerPlugin.cssnanoMinify`
 
-Allows to override default minify function.
-By default plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
+Allows overriding default minify function.
+By default, plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
 Useful for using and testing unpublished versions or forks.
 
 Possible options:
@@ -224,6 +224,7 @@ Possible options:
 - CssMinimizerPlugin.cssnanoMinify
 - CssMinimizerPlugin.cssoMinify
 - CssMinimizerPlugin.cleanCssMinify
+- CssMinimizerPlugin.esbuildMinify
 - `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
@@ -345,7 +346,7 @@ module.exports = {
 Type: `Object`
 Default: `{ to: assetName, from: assetName }`
 
-Allows to specify options [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano.
+Allows filtering options [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano.
 The `parser`,` stringifier` and `syntax` can be either a function or a string indicating the module that will be imported.
 
 > ⚠️ **If a function is passed, the `parallel` option must be disabled.**.
@@ -392,7 +393,7 @@ module.exports = {
 Type: `Function<(warning, file, source) -> Boolean>`
 Default: `() => true`
 
-Allow to filter css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
+Allow filtering css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
 Return `true` to keep the warning, a falsy value (`false`/`null`/`undefined`) otherwise.
 
 > ⚠️ The `source` argument will contain `undefined` if you don't use source maps.
@@ -481,11 +482,6 @@ module.exports = {
 
 ### Using custom minifier [csso](https://github.com/css/csso)
 
-By default plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
-It is possible to use another minify function.
-
-> ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
-
 **webpack.config.js**
 
 ```js
@@ -495,28 +491,9 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: async (data, inputMap) => {
-          const csso = require("csso");
-          const sourcemap = require("source-map");
-
-          const [[filename, input]] = Object.entries(data);
-          const minifiedCss = csso.minify(input, {
-            filename: filename,
-            sourceMap: true,
-          });
-
-          if (inputMap) {
-            minifiedCss.map.applySourceMap(
-              new sourcemap.SourceMapConsumer(inputMap),
-              filename
-            );
-          }
-
-          return {
-            code: minifiedCss.css,
-            map: minifiedCss.map.toJSON(),
-          };
-        },
+        minify: CssMinimizerPlugin.cssoMinify,
+        // Uncomment this line for options
+        // minimizerOptions: { restructure: false },
       }),
     ],
   },
@@ -543,7 +520,7 @@ module.exports = {
 };
 ```
 
-### Using custom minifier [csso](https://github.com/css/csso)
+### Using custom minifier [esbuild](https://github.com/evanw/esbuild)
 
 **webpack.config.js**
 
@@ -554,9 +531,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: CssMinimizerPlugin.cssoMinify,
-        // Uncomment this line for options
-        // minimizerOptions: { restructure: false },
+        minify: CssMinimizerPlugin.esbuildMinify,
       }),
     ],
   },
