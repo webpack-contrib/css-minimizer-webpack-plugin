@@ -45,6 +45,9 @@
     },
     "csso": {
       "optional": true
+    },
+    "esbuild": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -72,6 +75,7 @@
     "csso": "^4.2.0",
     "del": "^6.0.0",
     "del-cli": "^4.0.0",
+    "esbuild": "^0.13.3",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.0",
@@ -91,6 +95,9 @@
   "keywords": [
     "cssnano",
     "css",
+    "csso",
+    "clean-css",
+    "esbuild",
     "webpack",
     "webpack-plugin",
     "minimize",

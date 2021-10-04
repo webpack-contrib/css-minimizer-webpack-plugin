@@ -1,6 +1,6 @@
 /* istanbul ignore next */
 async function cssnanoMinify(
-  data,
+  input,
   inputSourceMap,
   minimizerOptions = { preset: "default" }
 ) {
@@ -32,7 +32,7 @@ async function cssnanoMinify(
     }
   };
 
-  const [[name, input]] = Object.entries(data);
+  const [[name, code]] = Object.entries(input);
   const postcssOptions = {
     to: name,
     from: name,
@@ -78,7 +78,7 @@ async function cssnanoMinify(
   // eslint-disable-next-line global-require
   const cssnano = require("cssnano");
   const result = await postcss([cssnano(minimizerOptions)]).process(
-    input,
+    code,
     postcssOptions
   );
 
@@ -90,11 +90,11 @@ async function cssnanoMinify(
 }
 
 /* istanbul ignore next */
-async function cssoMinify(data, inputSourceMap, minimizerOptions) {
+async function cssoMinify(input, inputSourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const csso = require("csso");
-  const [[filename, input]] = Object.entries(data);
-  const result = csso.minify(input, {
+  const [[filename, code]] = Object.entries(input);
+  const result = csso.minify(code, {
     filename,
     sourceMap: Boolean(inputSourceMap),
     ...minimizerOptions,
@@ -107,14 +107,14 @@ async function cssoMinify(data, inputSourceMap, minimizerOptions) {
 }
 
 /* istanbul ignore next */
-async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
+async function cleanCssMinify(input, inputSourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const CleanCSS = require("clean-css");
-  const [[name, input]] = Object.entries(data);
+  const [[name, code]] = Object.entries(input);
   const result = await new CleanCSS({
     sourceMap: Boolean(inputSourceMap),
     ...minimizerOptions,
-  }).minify({ [name]: { styles: input } });
+  }).minify({ [name]: { styles: code } });
 
   return {
     code: result.styles,
@@ -123,4 +123,44 @@ async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
   };
 }
 
-export { cssnanoMinify, cssoMinify, cleanCssMinify };
+async function esbuildMinify(input, sourceMap, minimizerOptions) {
+  const buildEsbuildOptions = (esbuildOptions = {}) => {
+    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    return {
+      loader: "css",
+      minify: true,
+      legalComments: "inline",
+      ...esbuildOptions,
+      sourcemap: false,
+    };
+  };
+
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  const esbuild = require("esbuild");
+
+  // Copy `swc` options
+  const esbuildOptions = buildEsbuildOptions(minimizerOptions);
+
+  // Let `swc` generate a SourceMap
+  if (sourceMap) {
+    esbuildOptions.sourcemap = true;
+    esbuildOptions.sourcesContent = false;
+  }
+
+  const [[filename, code]] = Object.entries(input);
+
+  esbuildOptions.sourcefile = filename;
+
+  const result = await esbuild.transform(code, esbuildOptions);
+
+  return {
+    code: result.code,
+    // eslint-disable-next-line no-undefined
+    map: result.map ? result.map : undefined,
+    warnings: result.warnings
+      ? result.warnings.map((item) => item.toString())
+      : [],
+  };
+}
+
+export { cssnanoMinify, cssoMinify, cleanCssMinify, esbuildMinify };
