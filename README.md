@@ -50,6 +50,7 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
 ```
 
@@ -451,6 +452,7 @@ module.exports = {
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
 ```
 
