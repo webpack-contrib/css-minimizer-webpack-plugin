@@ -36,9 +36,9 @@ exports[`warningsFilter option should match snapshot for a "function" value: err
 
 exports[`warningsFilter option should match snapshot for a "function" value: warnings 1`] = `
 Array [
-  "Warning: bar1.css from Css Minimizer Plugin
+  "Warning: bar1.css from Css Minimizer plugin
 [warning-plugin] Warning from bar1.css",
-  "Warning: bar2.css from Css Minimizer Plugin
+  "Warning: bar2.css from Css Minimizer plugin
 [warning-plugin] Warning from bar2.css",
 ]
 `;

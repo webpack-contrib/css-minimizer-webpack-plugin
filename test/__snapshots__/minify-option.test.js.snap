@@ -10,13 +10,13 @@ exports[`"minify" option should work and allow to return errors and warnings fro
 
 exports[`"minify" option should work and allow to return errors and warnings from custom function: warning 1`] = `
 Array [
-  "Error: foo.css from Css Minimizer Plugin
+  "Error: foo.css from Css Minimizer plugin
 Error 1",
-  "Error: foo.css from Css Minimizer Plugin
+  "Error: foo.css from Css Minimizer plugin
 Error: Error 2",
-  "Warning: foo.css from Css Minimizer Plugin
+  "Warning: foo.css from Css Minimizer plugin
 Warning 1",
-  "Warning: foo.css from Css Minimizer Plugin
+  "Warning: foo.css from Css Minimizer plugin
 Warning 2",
 ]
 `;
@@ -100,7 +100,7 @@ body a {
 
 exports[`"minify" option should work throw an error if minimizer function doesn't return: error 1`] = `
 Array [
-  "Error: foo.css from Css Minimizer Plugin
+  "Error: foo.css from Css Minimizer plugin
 Error: Minimizer function doesn't return result",
 ]
 `;
