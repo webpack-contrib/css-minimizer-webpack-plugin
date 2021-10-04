@@ -50,6 +50,7 @@ module.exports = {
       new CssMinimizerPlugin(),
     ],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
 ```
 
@@ -223,7 +224,7 @@ Possible options:
 - CssMinimizerPlugin.cssnanoMinify
 - CssMinimizerPlugin.cssoMinify
 - CssMinimizerPlugin.cleanCssMinify
-- `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: []}}`
+- `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
 
@@ -278,6 +279,7 @@ module.exports = {
               code: `a{color: red}`,
               map: `{"version": "3", ...}`,
               warnings: [],
+              errors: [],
             };
           },
         ],
@@ -450,6 +452,7 @@ module.exports = {
   optimization: {
     minimizer: [new CssMinimizerPlugin()],
   },
+  plugins: [new MiniCssExtractPlugin()],
 };
 ```
 

@@ -132,21 +132,31 @@ exports[`"cache" option should work with the "filesystem" value for the "cache.t
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: warnings 1`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from five.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from four.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from one.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from three.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from two.css",
+  "Warning: five.css from Css Minimizer Plugin
+[warning-plugin] Warning from five.css",
+  "Warning: four.css from Css Minimizer Plugin
+[warning-plugin] Warning from four.css",
+  "Warning: one.css from Css Minimizer Plugin
+[warning-plugin] Warning from one.css",
+  "Warning: three.css from Css Minimizer Plugin
+[warning-plugin] Warning from three.css",
+  "Warning: two.css from Css Minimizer Plugin
+[warning-plugin] Warning from two.css",
 ]
 `;
 
 exports[`"cache" option should work with the "filesystem" value for the "cache.type" option and output warnings: warnings 2`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from five.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from four.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from one.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from three.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from two.css",
+  "Warning: five.css from Css Minimizer Plugin
+[warning-plugin] Warning from five.css",
+  "Warning: four.css from Css Minimizer Plugin
+[warning-plugin] Warning from four.css",
+  "Warning: one.css from Css Minimizer Plugin
+[warning-plugin] Warning from one.css",
+  "Warning: three.css from Css Minimizer Plugin
+[warning-plugin] Warning from three.css",
+  "Warning: two.css from Css Minimizer Plugin
+[warning-plugin] Warning from two.css",
 ]
 `;
 
