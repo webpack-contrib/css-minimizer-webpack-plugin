@@ -198,8 +198,14 @@ describe('when applied with "sourceMap" option', () => {
 
     const stats = await compile(compiler);
 
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
+    expect(stats.compilation.children[0].warnings[0].toString()).toMatch(
+      "contains invalid source map"
+    );
   });
 
   it("should work and emit warning on valid sourcemap and minimizer error", async () => {

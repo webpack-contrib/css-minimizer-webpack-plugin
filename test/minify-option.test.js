@@ -227,6 +227,41 @@ describe('"minify" option', () => {
 
   it('should work with "CssMinimizerPlugin.cssnanoMinify"', async () => {
     const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: "default",
+      },
+      minify: [CssMinimizerPlugin.cssnanoMinify],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" and generate source maps', async () => {
+    const compiler = getCompiler({
       devtool: "source-map",
       entry: {
         foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
@@ -307,6 +342,38 @@ describe('"minify" option', () => {
 
   it('should work with "CssMinimizerPlugin.cssoMinify" minifier', async () => {
     const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: CssMinimizerPlugin.cssoMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cssoMinify" minifier and generate source map', async () => {
+    const compiler = getCompiler({
       devtool: "source-map",
       entry: {
         foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
@@ -340,6 +407,26 @@ describe('"minify" option', () => {
 
   it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier', async () => {
     const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: CssMinimizerPlugin.cleanCssMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier and generate source maps', async () => {
+    const compiler = getCompiler({
       devtool: "source-map",
       entry: {
         foo: `${__dirname}/fixtures/foo.css`,
@@ -348,6 +435,91 @@ describe('"minify" option', () => {
 
     new CssMinimizerPlugin({
       minify: CssMinimizerPlugin.cleanCssMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnanoMinify",  "CssMinimizerPlugin.cssoMinify" and "CssMinimizerPlugin.cleanCssMinify" minifiers', async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: [
+        CssMinimizerPlugin.cssnanoMinify,
+        CssMinimizerPlugin.cssoMinify,
+        CssMinimizerPlugin.cleanCssMinify,
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnanoMinify",  "CssMinimizerPlugin.cssoMinify" and "CssMinimizerPlugin.cleanCssMinify" minifiers and generate source maps', async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: [
+        CssMinimizerPlugin.cssnanoMinify,
+        CssMinimizerPlugin.cssoMinify,
+        CssMinimizerPlugin.cleanCssMinify,
+      ],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it("should work throw an error if minimizer function doesn't return", async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: async () => {
+        return {
+          code: null,
+        };
+      },
     }).apply(compiler);
 
     const stats = await compile(compiler);

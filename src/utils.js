@@ -4,6 +4,34 @@ async function cssnanoMinify(
   inputSourceMap,
   minimizerOptions = { preset: "default" }
 ) {
+  const load = async (module) => {
+    let exports;
+
+    try {
+      // eslint-disable-next-line import/no-dynamic-require, global-require
+      exports = require(module);
+
+      return exports;
+    } catch (requireError) {
+      let importESM;
+
+      try {
+        // eslint-disable-next-line no-new-func
+        importESM = new Function("id", "return import(id);");
+      } catch (e) {
+        importESM = null;
+      }
+
+      if (requireError.code === "ERR_REQUIRE_ESM" && importESM) {
+        exports = await importESM(module);
+
+        return exports.default;
+      }
+
+      throw requireError;
+    }
+  };
+
   const [[name, input]] = Object.entries(data);
   const postcssOptions = {
     to: name,
@@ -42,10 +70,7 @@ async function cssnanoMinify(
   }
 
   if (inputSourceMap) {
-    postcssOptions.map = {
-      annotation: false,
-      prev: inputSourceMap,
-    };
+    postcssOptions.map = { annotation: false };
   }
 
   // eslint-disable-next-line global-require
@@ -62,55 +87,18 @@ async function cssnanoMinify(
     map: result.map && result.map.toString(),
     warnings: result.warnings().map(String),
   };
-
-  async function load(module) {
-    let exports;
-
-    try {
-      // eslint-disable-next-line import/no-dynamic-require, global-require
-      exports = require(module);
-
-      return exports;
-    } catch (requireError) {
-      let importESM;
-
-      try {
-        // eslint-disable-next-line no-new-func
-        importESM = new Function("id", "return import(id);");
-      } catch (e) {
-        importESM = null;
-      }
-
-      if (requireError.code === "ERR_REQUIRE_ESM" && importESM) {
-        exports = await importESM(module);
-
-        return exports.default;
-      }
-
-      throw requireError;
-    }
-  }
 }
 
 /* istanbul ignore next */
 async function cssoMinify(data, inputSourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const csso = require("csso");
-  // eslint-disable-next-line global-require
-  const sourcemap = require("source-map");
   const [[filename, input]] = Object.entries(data);
   const result = csso.minify(input, {
     filename,
-    sourceMap: inputSourceMap,
+    sourceMap: Boolean(inputSourceMap),
     ...minimizerOptions,
   });
-
-  if (inputSourceMap) {
-    result.map.applySourceMap(
-      new sourcemap.SourceMapConsumer(inputSourceMap),
-      filename
-    );
-  }
 
   return {
     code: result.css,
@@ -124,7 +112,7 @@ async function cleanCssMinify(data, inputSourceMap, minimizerOptions) {
   const CleanCSS = require("clean-css");
   const [[name, input]] = Object.entries(data);
   const result = await new CleanCSS({
-    sourceMap: inputSourceMap,
+    sourceMap: Boolean(inputSourceMap),
     ...minimizerOptions,
   }).minify({ [name]: { styles: input } });
 

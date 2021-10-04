@@ -167,8 +167,8 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildError(
         otherErrorWithLineAndCol,
         "test.css",
-        new RequestShortener("/example.com/www/js/"),
-        new SourceMapConsumer(rawSourceMap)
+        new SourceMapConsumer(rawSourceMap),
+        new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
 
