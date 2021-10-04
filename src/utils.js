@@ -123,6 +123,7 @@ async function cleanCssMinify(input, inputSourceMap, minimizerOptions) {
   };
 }
 
+/* istanbul ignore next */
 async function esbuildMinify(input, sourceMap, minimizerOptions) {
   const buildEsbuildOptions = (esbuildOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
