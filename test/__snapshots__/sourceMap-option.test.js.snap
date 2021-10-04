@@ -2,10 +2,10 @@
 
 exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: errors 1`] = `
 Array [
-  "Error: broken-source-map.css from Css Minimizer Webpack Plugin
+  "Error: broken-source-map.css from Css Minimizer Plugin
 error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
   "ModuleBuildError: Module build failed (from ../../node_modules/mini-css-extract-plugin/dist/loader.js):
-Error: broken-source-map.css from Css Minimizer Webpack Plugin",
+Error: broken-source-map.css from Css Minimizer Plugin",
 ]
 `;
 

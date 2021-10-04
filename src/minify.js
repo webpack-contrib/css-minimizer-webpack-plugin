@@ -32,15 +32,11 @@ const minify = async (options) => {
     }
 
     if (minifyResult.errors) {
-      result.errors = result.errors.concat(
-        minifyResult.errors.map((error) => error.toString())
-      );
+      result.errors = result.errors.concat(minifyResult.errors);
     }
 
     if (minifyResult.warnings) {
-      result.warnings = result.warnings.concat(
-        minifyResult.warnings.map((warning) => warning.toString())
-      );
+      result.warnings = result.warnings.concat(minifyResult.warnings);
     }
 
     result.outputs.push({ code: minifyResult.code, map: minifyResult.map });

@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`"minify" option should work and allow to return errors and warnings from custom function: assets 1`] = `
+Object {
+  "foo.css": ".test { color: red; }",
+}
+`;
+
+exports[`"minify" option should work and allow to return errors and warnings from custom function: error 1`] = `Array []`;
+
+exports[`"minify" option should work and allow to return errors and warnings from custom function: warning 1`] = `
+Array [
+  "Error: foo.css from Css Minimizer Plugin
+Error 1",
+  "Error: foo.css from Css Minimizer Plugin
+Error: Error 2",
+  "Warning: foo.css from Css Minimizer Plugin
+Warning 1",
+  "Warning: foo.css from Css Minimizer Plugin
+Warning 2",
+]
+`;
+
 exports[`"minify" option should work if minify is array && minimizerOptions is array: assets 1`] = `
 Object {
   "foo.css": "body {
@@ -79,7 +100,7 @@ body a {
 
 exports[`"minify" option should work throw an error if minimizer function doesn't return: error 1`] = `
 Array [
-  "Error: foo.css from Css Minimizer
+  "Error: foo.css from Css Minimizer Plugin
 Error: Minimizer function doesn't return result",
 ]
 `;

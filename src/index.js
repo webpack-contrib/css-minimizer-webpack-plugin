@@ -53,59 +53,6 @@ class CssMinimizerPlugin {
     );
   }
 
-  static buildError(error, name, sourceMap, requestShortener) {
-    let builtError;
-
-    if (error.line) {
-      const original =
-        sourceMap &&
-        sourceMap.originalPositionFor({
-          line: error.line,
-          column: error.column,
-        });
-
-      if (original && original.source && requestShortener) {
-        builtError = new Error(
-          `${name} from Css Minimizer Webpack Plugin\n${
-            error.message
-          } [${requestShortener.shorten(original.source)}:${original.line},${
-            original.column
-          }][${name}:${error.line},${error.column}]${
-            error.stack
-              ? `\n${error.stack.split("\n").slice(1).join("\n")}`
-              : ""
-          }`
-        );
-        builtError.file = name;
-
-        return builtError;
-      }
-
-      builtError = new Error(
-        `${name} from Css Minimizer \n${error.message} [${name}:${error.line},${
-          error.column
-        }]${
-          error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
-        }`
-      );
-      builtError.file = name;
-
-      return builtError;
-    }
-
-    if (error.stack) {
-      builtError = new Error(`${name} from Css Minimizer\n${error.stack}`);
-      builtError.file = name;
-
-      return builtError;
-    }
-
-    builtError = new Error(`${name} from Css Minimizer\n${error.message}`);
-    builtError.file = name;
-
-    return builtError;
-  }
-
   static buildWarning(
     warning,
     file,
@@ -113,7 +60,12 @@ class CssMinimizerPlugin {
     requestShortener,
     warningsFilter
   ) {
-    let warningMessage = warning;
+    let warningMessage =
+      typeof warning === "string"
+        ? warning
+        : `${warning.plugin ? `[${warning.plugin}] ` : ""}${
+            warning.text || warning.message
+          }`;
     let locationMessage = "";
     let source;
 
@@ -149,7 +101,7 @@ class CssMinimizerPlugin {
     }
 
     const builtWarning = new Error(
-      `Css Minimizer Plugin: ${warningMessage}${
+      `${file} from Css Minimizer Plugin\n${warningMessage}${
         locationMessage ? ` ${locationMessage}` : ""
       }`
     );
@@ -159,6 +111,70 @@ class CssMinimizerPlugin {
     builtWarning.file = file;
 
     return builtWarning;
+  }
+
+  static buildError(error, file, sourceMap, requestShortener) {
+    let builtError;
+
+    if (typeof error === "string") {
+      builtError = new Error(`${file} from Css Minimizer Plugin\n${error}`);
+      builtError.file = file;
+
+      return builtError;
+    }
+
+    if (error.line) {
+      const original =
+        sourceMap &&
+        sourceMap.originalPositionFor({
+          line: error.line,
+          column: error.column,
+        });
+
+      if (original && original.source && requestShortener) {
+        builtError = new Error(
+          `${file} from Css Minimizer Plugin\n${
+            error.message
+          } [${requestShortener.shorten(original.source)}:${original.line},${
+            original.column
+          }][${file}:${error.line},${error.column}]${
+            error.stack
+              ? `\n${error.stack.split("\n").slice(1).join("\n")}`
+              : ""
+          }`
+        );
+        builtError.file = file;
+
+        return builtError;
+      }
+
+      builtError = new Error(
+        `${file} from Css Minimizer Plugin\n${error.message} [${file}:${
+          error.line
+        },${error.column}]${
+          error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
+        }`
+      );
+      builtError.file = file;
+
+      return builtError;
+    }
+
+    if (error.stack) {
+      builtError = new Error(
+        `${file} from Css Minimizer Plugin\n${error.stack}`
+      );
+      builtError.file = file;
+
+      return builtError;
+    }
+
+    builtError = new Error(
+      `${file} from Css Minimizer Plugin\n${error.message}`
+    );
+    builtError.file = file;
+
+    return builtError;
   }
 
   static getAvailableNumberOfCores(parallel) {
@@ -347,6 +363,27 @@ class CssMinimizerPlugin {
                 );
               } else {
                 output.source = new RawSource(item.code);
+              }
+            }
+
+            if (result.errors && result.errors.length > 0) {
+              const hasSourceMap =
+                inputSourceMap &&
+                CssMinimizerPlugin.isSourceMap(inputSourceMap);
+
+              for (const error of result.errors) {
+                output.warnings.push(
+                  CssMinimizerPlugin.buildError(
+                    error,
+                    name,
+                    hasSourceMap
+                      ? new SourceMapConsumer(inputSourceMap)
+                      : // eslint-disable-next-line no-undefined
+                        undefined,
+                    // eslint-disable-next-line no-undefined
+                    hasSourceMap ? compilation.requestShortener : undefined
+                  )
+                );
               }
             }
 

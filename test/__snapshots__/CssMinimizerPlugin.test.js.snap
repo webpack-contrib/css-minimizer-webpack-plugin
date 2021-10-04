@@ -1,40 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CssMinimizerPlugin buildError method 1`] = `
-[Error: test.css from Css Minimizer
+[Error: test.css from Css Minimizer Plugin
 Message]
 `;
 
 exports[`CssMinimizerPlugin buildError method 2`] = `
-[Error: test.css from Css Minimizer 
+[Error: test.css from Css Minimizer Plugin
 Message [test.css:1,1]]
 `;
 
 exports[`CssMinimizerPlugin buildError method 3`] = `
-[Error: test.css from Css Minimizer Webpack Plugin
+[Error: test.css from Css Minimizer Plugin
 Message [http://example.com/www/js/one.css:1,1][test.css:1,1]]
 `;
 
 exports[`CssMinimizerPlugin buildError method 4`] = `
-[Error: test.css from Css Minimizer
+[Error: test.css from Css Minimizer Plugin
 Stack]
 `;
 
-exports[`CssMinimizerPlugin buildWarning method 1`] = `[Warning: Css Minimizer Plugin: Warning test.css:1:1]`;
+exports[`CssMinimizerPlugin buildWarning method 1`] = `
+[Warning: undefined from Css Minimizer Plugin
+Warning test.css:1:1]
+`;
 
-exports[`CssMinimizerPlugin buildWarning method 2`] = `[Warning: Css Minimizer Plugin: Warning test.css:1:1]`;
+exports[`CssMinimizerPlugin buildWarning method 2`] = `
+[Warning: test.css from Css Minimizer Plugin
+Warning test.css:1:1]
+`;
 
-exports[`CssMinimizerPlugin buildWarning method 3`] = `[Warning: Css Minimizer Plugin: Warning test.css:1:1]`;
+exports[`CssMinimizerPlugin buildWarning method 3`] = `
+[Warning: test.css from Css Minimizer Plugin
+Warning test.css:1:1]
+`;
 
-exports[`CssMinimizerPlugin buildWarning method 4`] = `[Warning: Css Minimizer Plugin: Warning http://example.com/www/js/one.css:1:1]`;
+exports[`CssMinimizerPlugin buildWarning method 4`] = `
+[Warning: test.css from Css Minimizer Plugin
+Warning http://example.com/www/js/one.css:1:1]
+`;
 
-exports[`CssMinimizerPlugin buildWarning method 5`] = `[Warning: Css Minimizer Plugin: Warning http://example.com/www/js/one.css:1:1]`;
+exports[`CssMinimizerPlugin buildWarning method 5`] = `
+[Warning: test.css from Css Minimizer Plugin
+Warning http://example.com/www/js/one.css:1:1]
+`;
 
 exports[`CssMinimizerPlugin buildWarning method 6`] = `null`;
 
 exports[`CssMinimizerPlugin should build error: error 1`] = `
 Array [
-  "Error: error.css from Css Minimizer 
+  "Error: error.css from Css Minimizer Plugin
 /error.css:1:1: Unknown word [error.css:1,1]",
 ]
 `;
@@ -45,7 +60,8 @@ exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin:: Warning webpack://./test/foo.css:2:2",
+  "Warning: foo.css from Css Minimizer Plugin
+[warning-plugin] Warning",
 ]
 `;
 
@@ -71,7 +87,7 @@ exports[`CssMinimizerPlugin should run plugin against assets added later by plug
 
 exports[`CssMinimizerPlugin should throw error from postcss: error 1`] = `
 Array [
-  "Error: foo.css from Css Minimizer Webpack Plugin
+  "Error: foo.css from Css Minimizer Plugin
 error-plugin: /foo.css:2:3: Postcss error [webpack://./test/foo.css:2,2][foo.css:2,3]",
 ]
 `;
@@ -297,9 +313,12 @@ a {
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css",
+  "Warning: foo.css from Css Minimizer Plugin
+[warning-plugin] Warning from foo.css",
+  "Warning: style-2.css from Css Minimizer Plugin
+[warning-plugin] Warning from style-2.css",
+  "Warning: style.css from Css Minimizer Plugin
+[warning-plugin] Warning from style.css",
 ]
 `;
 
@@ -309,9 +328,12 @@ exports[`CssMinimizerPlugin should work with warnings and use memory cache when 
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css",
+  "Warning: foo.css from Css Minimizer Plugin
+[warning-plugin] Warning from foo.css",
+  "Warning: style-2.css from Css Minimizer Plugin
+[warning-plugin] Warning from style-2.css",
+  "Warning: style.css from Css Minimizer Plugin
+[warning-plugin] Warning from style.css",
 ]
 `;
 
@@ -345,9 +367,12 @@ a {
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 1`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css",
+  "Warning: foo.css from Css Minimizer Plugin
+[warning-plugin] Warning from foo.css",
+  "Warning: style-2.css from Css Minimizer Plugin
+[warning-plugin] Warning from style-2.css",
+  "Warning: style.css from Css Minimizer Plugin
+[warning-plugin] Warning from style.css",
 ]
 `;
 
@@ -357,9 +382,12 @@ exports[`CssMinimizerPlugin should work with warnings and use memory cache when 
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 2`] = `
 Array [
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from foo.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style-2.css",
-  "Warning: Css Minimizer Plugin: warning-plugin: Warning from style.css",
+  "Warning: foo.css from Css Minimizer Plugin
+[warning-plugin] Warning from foo.css",
+  "Warning: style-2.css from Css Minimizer Plugin
+[warning-plugin] Warning from style-2.css",
+  "Warning: style.css from Css Minimizer Plugin
+[warning-plugin] Warning from style.css",
 ]
 `;
 
