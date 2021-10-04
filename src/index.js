@@ -106,7 +106,7 @@ class CssMinimizerPlugin {
     }
 
     const builtWarning = new Error(
-      `${file} from Css Minimizer Plugin\n${warningMessage}${
+      `${file} from Css Minimizer plugin\n${warningMessage}${
         locationMessage ? ` ${locationMessage}` : ""
       }`
     );
@@ -122,7 +122,7 @@ class CssMinimizerPlugin {
     let builtError;
 
     if (typeof error === "string") {
-      builtError = new Error(`${file} from Css Minimizer Plugin\n${error}`);
+      builtError = new Error(`${file} from Css Minimizer plugin\n${error}`);
       builtError.file = file;
 
       return builtError;
@@ -138,7 +138,7 @@ class CssMinimizerPlugin {
 
       if (original && original.source && requestShortener) {
         builtError = new Error(
-          `${file} from Css Minimizer Plugin\n${
+          `${file} from Css Minimizer plugin\n${
             error.message
           } [${requestShortener.shorten(original.source)}:${original.line},${
             original.column
@@ -154,7 +154,7 @@ class CssMinimizerPlugin {
       }
 
       builtError = new Error(
-        `${file} from Css Minimizer Plugin\n${error.message} [${file}:${
+        `${file} from Css Minimizer plugin\n${error.message} [${file}:${
           error.line
         },${error.column}]${
           error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
@@ -167,7 +167,7 @@ class CssMinimizerPlugin {
 
     if (error.stack) {
       builtError = new Error(
-        `${file} from Css Minimizer Plugin\n${error.stack}`
+        `${file} from Css Minimizer plugin\n${error.stack}`
       );
       builtError.file = file;
 
@@ -175,7 +175,7 @@ class CssMinimizerPlugin {
     }
 
     builtError = new Error(
-      `${file} from Css Minimizer Plugin\n${error.message}`
+      `${file} from Css Minimizer plugin\n${error.message}`
     );
     builtError.file = file;
 
