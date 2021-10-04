@@ -53,7 +53,7 @@ class CssMinimizerPlugin {
     );
   }
 
-  static buildError(error, name, requestShortener, sourceMap) {
+  static buildError(error, name, sourceMap, requestShortener) {
     let builtError;
 
     if (error.line) {
@@ -148,7 +148,17 @@ class CssMinimizerPlugin {
       return null;
     }
 
-    return `Css Minimizer Plugin: ${warningMessage} ${locationMessage}`;
+    const builtWarning = new Error(
+      `Css Minimizer Plugin: ${warningMessage}${
+        locationMessage ? ` ${locationMessage}` : ""
+      }`
+    );
+
+    builtWarning.name = "Warning";
+    builtWarning.hideStack = true;
+    builtWarning.file = file;
+
+    return builtWarning;
   }
 
   static getAvailableNumberOfCores(parallel) {
@@ -286,75 +296,102 @@ class CssMinimizerPlugin {
               minifyOptions: this.options.minimizerOptions,
             };
 
+            let result;
+
             try {
-              output = await (getWorker
+              result = await (getWorker
                 ? getWorker().transform(serialize(options))
                 : minifyFn(options));
             } catch (error) {
+              const hasSourceMap =
+                inputSourceMap &&
+                CssMinimizerPlugin.isSourceMap(inputSourceMap);
+
               compilation.errors.push(
                 CssMinimizerPlugin.buildError(
                   error,
                   name,
-                  compilation.requestShortener,
-                  inputSourceMap &&
-                    CssMinimizerPlugin.isSourceMap(inputSourceMap)
+                  hasSourceMap
                     ? new SourceMapConsumer(inputSourceMap)
-                    : null
+                    : // eslint-disable-next-line no-undefined
+                      undefined,
+                  // eslint-disable-next-line no-undefined
+                  hasSourceMap ? compilation.requestShortener : undefined
                 )
               );
 
               return;
             }
 
-            if (output.map) {
-              output.source = new SourceMapSource(
-                output.code,
-                name,
-                output.map,
-                input,
-                inputSourceMap,
-                true
-              );
-            } else {
-              output.source = new RawSource(output.code);
+            output = { warnings: [], errors: [] };
+
+            for (const item of result.outputs) {
+              if (item.map) {
+                let originalSource;
+                let innerSourceMap;
+
+                if (output.source) {
+                  ({ source: originalSource, map: innerSourceMap } =
+                    output.source.sourceAndMap());
+                } else {
+                  originalSource = input;
+                  innerSourceMap = inputSourceMap;
+                }
+
+                // TODO need API for merging source maps in `webpack-source`
+                output.source = new SourceMapSource(
+                  item.code,
+                  name,
+                  item.map,
+                  originalSource,
+                  innerSourceMap,
+                  true
+                );
+              } else {
+                output.source = new RawSource(item.code);
+              }
             }
 
-            if (output.warnings && output.warnings.length > 0) {
-              output.warnings = output.warnings
-                .map((warning) =>
-                  CssMinimizerPlugin.buildWarning(
-                    warning,
-                    name,
-                    inputSourceMap &&
-                      CssMinimizerPlugin.isSourceMap(inputSourceMap)
-                      ? new SourceMapConsumer(inputSourceMap)
-                      : null,
-                    compilation.requestShortener,
-                    this.options.warningsFilter
-                  )
-                )
-                .filter(Boolean);
+            if (result.warnings && result.warnings.length > 0) {
+              const hasSourceMap =
+                inputSourceMap &&
+                CssMinimizerPlugin.isSourceMap(inputSourceMap);
+
+              for (const warning of result.warnings) {
+                const buildWarning = CssMinimizerPlugin.buildWarning(
+                  warning,
+                  name,
+                  hasSourceMap
+                    ? new SourceMapConsumer(inputSourceMap)
+                    : // eslint-disable-next-line no-undefined
+                      undefined,
+                  // eslint-disable-next-line no-undefined
+                  hasSourceMap ? compilation.requestShortener : undefined,
+                  this.options.warningsFilter
+                );
+
+                if (buildWarning) {
+                  output.warnings.push(buildWarning);
+                }
+              }
             }
 
             await cacheItem.storePromise({
               source: output.source,
               warnings: output.warnings,
+              errors: output.errors,
             });
           }
 
           if (output.warnings && output.warnings.length > 0) {
             output.warnings.forEach((warning) => {
-              const Warning = class Warning extends Error {
-                constructor(message) {
-                  super(message);
+              compilation.warnings.push(warning);
+            });
+          }
 
-                  this.name = "Warning";
-                  this.hideStack = true;
-                  this.file = name;
-                }
-              };
-
-              compilation.warnings.push(new Warning(warning));
+          if (output.errors && output.errors.length > 0) {
+            output.errors.forEach((error) => {
+              compilation.errors.push(error);
             });
           }
 

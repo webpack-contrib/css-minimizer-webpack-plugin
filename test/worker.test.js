@@ -22,10 +22,9 @@ describe("worker", () => {
       minimizerOptions: { discardComments: false },
       minify: CssMinimizerPlugin.cssnanoMinify,
     };
-    const { code, map } = await transform(serialize(options));
+    const result = await transform(serialize(options));
 
-    expect(code).toMatchSnapshot("css");
-    expect(map).toMatchSnapshot("map");
+    expect(result).toMatchSnapshot("result");
   });
 
   it("should work inputSourceMap as prev", async () => {
@@ -43,10 +42,9 @@ describe("worker", () => {
       },
       minify: CssMinimizerPlugin.cssnanoMinify,
     };
-    const { code, map } = await transform(serialize(options));
+    const result = await transform(serialize(options));
 
-    expect(code).toMatchSnapshot("css");
-    expect(map).toMatchSnapshot("map");
+    expect(result).toMatchSnapshot("result");
   });
 
   it("should work options.minify function", async () => {
@@ -58,10 +56,9 @@ describe("worker", () => {
         return { code: ".minify {};" };
       },
     };
-    const { code, map } = await transform(serialize(options));
+    const result = await transform(serialize(options));
 
-    expect(code).toMatchSnapshot("css");
-    expect(map).toMatchSnapshot("map");
+    expect(result).toMatchSnapshot("result");
   });
 
   it("should emit error", async () => {
