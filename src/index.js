@@ -276,8 +276,6 @@ class CssMinimizerPlugin {
               if (CssMinimizerPlugin.isSourceMap(map)) {
                 inputSourceMap = map;
               } else {
-                inputSourceMap = map;
-
                 compilation.warnings.push(
                   new Error(`${name} contains invalid source map`)
                 );
@@ -384,15 +382,15 @@ class CssMinimizerPlugin {
           }
 
           if (output.warnings && output.warnings.length > 0) {
-            output.warnings.forEach((warning) => {
+            for (const warning of output.warnings) {
               compilation.warnings.push(warning);
-            });
+            }
           }
 
           if (output.errors && output.errors.length > 0) {
-            output.errors.forEach((error) => {
+            for (const error of output.errors) {
               compilation.errors.push(error);
-            });
+            }
           }
 
           const newInfo = { minimized: true };

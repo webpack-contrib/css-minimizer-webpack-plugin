@@ -11,6 +11,40 @@ Error: broken-source-map.css from Css Minimizer Webpack Plugin",
 
 exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: warnings 1`] = `Array []`;
 
+exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: assets 1`] = `
+Object {
+  "broken-source-map.css": ".bar {color: red};
+/*# sourceMappingURL=broken-source-map.css.map*/",
+  "broken-source-map.css.map": {
+    "sources": [],
+    "names": [],
+    "mappings": "AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO",
+    "file": "broken-source-map.css",
+    "sourcesContent": [],
+    "sourceRoot": ""
+},
+  "dist/entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
+/*# sourceMappingURL=entry2.css.map*/",
+  "dist/entry2.css.map": {
+    "version": 3,
+    "file": "dist/entry2.css",
+    "mappings": "AAAA,KAKE,SAAU,CAJV,eACF,CAMA,OACE,iBACF",
+    "sources": [
+        "webpack:///entry2.css"
+    ],
+    "sourcesContent": [
+        "body {\\n  font-weight: bold;\\n}\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
+    ],
+    "names": [],
+    "sourceRoot": ""
+},
+}
+`;
+
+exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: errors 1`] = `Array []`;
+
+exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: warnings 1`] = `Array []`;
+
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): assets 1`] = `
 Object {
   "dist/entry.css": "body{color:red;font-weight:700}body a{text-align:center}

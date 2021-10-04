@@ -137,7 +137,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
   });
 
-  it.skip("should work and emit warnings on broken sourcemaps", async () => {
+  it("should work and emit warnings on broken sourcemaps", async () => {
     const emitBrokenSourceMapPlugin = new (class EmitBrokenSourceMapPlugin {
       apply(pluginCompiler) {
         pluginCompiler.hooks.compilation.tap(
@@ -198,8 +198,14 @@ describe('when applied with "sourceMap" option', () => {
 
     const stats = await compile(compiler);
 
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
+    expect(stats.compilation.children[0].warnings[0].toString()).toMatch(
+      "contains invalid source map"
+    );
   });
 
   it("should work and emit warning on valid sourcemap and minimizer error", async () => {
