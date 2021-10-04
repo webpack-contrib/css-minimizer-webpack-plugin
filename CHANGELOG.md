@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.1.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.0.2...v3.1.0) (2021-10-04)
+
+
+### Features
+
+* added `esbuild` minimizer ([#122](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/122)) ([987d454](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/987d45402af81d88fbd1489021f8d14e5ff26a74))
+* allow returning errors from custom minimize function ([#121](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/121)) ([c9a11b2](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/c9a11b2349d24206bc03cf3670f50a822ef7a52b))
+* output documentation links on errors ([4e8afba](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/4e8afbae5c89b0fe52b83b69fb2c5ab8a6382750))
+
+
+### Bug Fixes
+
+* source map generation for multiple `minify` functions ([b736099](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/b7360993a50a4d998bb92f0a3d491030452fcb0b))
+
 ### [3.0.2](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.0.1...v3.0.2) (2021-06-25)
 
 ### Chore
