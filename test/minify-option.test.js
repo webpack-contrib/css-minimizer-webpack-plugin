@@ -109,6 +109,31 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
+  it("should work with empty code", async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/foo.css`,
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: async () => {
+        return {
+          code: "",
+        };
+      },
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
   it("should work if minify is array && minimizerOptions is array", async () => {
     const compiler = getCompiler({
       devtool: "source-map",
@@ -571,6 +596,43 @@ describe('"minify" option', () => {
       minify: async () => {
         return {
           code: null,
+        };
+      },
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it("should work throw an error if minimizer function doesn't return #2", async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: async () => {
+        return {
+          // eslint-disable-next-line no-undefined
+          code: undefined,
         };
       },
     }).apply(compiler);
