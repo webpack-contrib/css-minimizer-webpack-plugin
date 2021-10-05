@@ -23,8 +23,10 @@ const minify = async (options) => {
       minifyOptions
     );
 
-    if (!minifyResult.code) {
-      throw new Error("Minimizer function doesn't return result");
+    if (typeof minifyResult.code !== "string") {
+      throw new Error(
+        "minimizer function doesn't return the 'code' property or result is not a string value"
+      );
     }
 
     if (minifyResult.map) {
