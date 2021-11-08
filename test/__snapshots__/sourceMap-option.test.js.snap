@@ -5,7 +5,7 @@ Array [
   "Error: broken-source-map.css from Css Minimizer plugin
 error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
   "Error: dist/entry2.css from Css Minimizer plugin
-error-plugin: /dist/entry2.css:2:3: Postcss error [webpack://./sourcemap/bar.scss:2,2][dist/entry2.css:2,3]",
+error-plugin: /dist/entry2.css:10:3: Postcss error [webpack://./sourcemap/foo.css:8,2][dist/entry2.css:10,3]",
 ]
 `;
 

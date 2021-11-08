@@ -12,11 +12,18 @@ import {
 
 describe("warningsFilter option", () => {
   it('should match snapshot for a "function" value', async () => {
-    const plugin = postcss.plugin("warning-plugin", () => (css, result) => {
-      result.warn(`Warning from ${result.opts.from}`, {
-        plugin: "warning-plugin",
-      });
-    });
+    const plugin = () => {
+      return {
+        postcssPlugin: "warning-plugin",
+        Once(root, { result }) {
+          result.warn(`Warning from ${result.opts.from}`, {
+            plugin: "warning-plugin",
+          });
+        },
+      };
+    };
+
+    plugin.postcss = true;
 
     const compiler = getCompiler({
       entry: {

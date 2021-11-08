@@ -25,17 +25,12 @@ describe('"cache" option', () => {
     __dirname,
     "./outputs/type-filesystem-2"
   );
-  const fileSystemCacheDirectory3 = path.resolve(
-    __dirname,
-    "./outputs/type-filesystem-3"
-  );
 
   beforeAll(() =>
     Promise.all([
       del(fileSystemCacheDirectory),
       del(fileSystemCacheDirectory1),
       del(fileSystemCacheDirectory2),
-      del(fileSystemCacheDirectory3),
     ])
   );
 
@@ -318,14 +313,20 @@ describe('"cache" option', () => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
         const [[fileName, input]] = Object.entries(data);
+        const plugin = () => {
+          return {
+            postcssPlugin: "warning-plugin",
+            OnceExit(decl, { result }) {
+              result.warn(`Warning from ${result.opts.from}`, {
+                plugin: "warning-plugin",
+              });
+            },
+          };
+        };
 
-        return postcss([
-          postcss.plugin("warning-plugin", () => (css, result) => {
-            result.warn(`Warning from ${result.opts.from}`, {
-              plugin: "warning-plugin",
-            });
-          }),
-        ])
+        plugin.postcss = true;
+
+        return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {

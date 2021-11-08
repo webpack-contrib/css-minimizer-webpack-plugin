@@ -143,8 +143,11 @@ describe('when applied with "sourceMap" option', () => {
         pluginCompiler.hooks.compilation.tap(
           { name: this.constructor.name },
           (compilation) => {
-            compilation.hooks.additionalChunkAssets.tap(
-              { name: this.constructor.name },
+            compilation.hooks.processAssets.tap(
+              {
+                name: this.constructor.name,
+                stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+              },
               () => {
                 compilation.additionalChunkAssets.push("broken-source-map.css");
 
@@ -214,8 +217,11 @@ describe('when applied with "sourceMap" option', () => {
         pluginCompiler.hooks.compilation.tap(
           { name: this.constructor.name },
           (compilation) => {
-            compilation.hooks.additionalChunkAssets.tap(
-              { name: this.constructor.name },
+            compilation.hooks.processAssets.tap(
+              {
+                name: this.constructor.name,
+                stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+              },
               () => {
                 compilation.additionalChunkAssets.push("broken-source-map.css");
 
@@ -271,11 +277,21 @@ describe('when applied with "sourceMap" option', () => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
 
-        const plugin = postcss.plugin("error-plugin", () => (css) => {
-          css.walkDecls((decl) => {
-            throw decl.error("Postcss error");
-          });
-        });
+        const plugin = () => {
+          let erroredDecl;
+
+          return {
+            postcssPlugin: "error-plugin",
+            Declaration(decl) {
+              erroredDecl = decl;
+            },
+            OnceExit() {
+              throw erroredDecl.error("Postcss error");
+            },
+          };
+        };
+
+        plugin.postcss = true;
 
         const [[filename, input]] = Object.entries(data);
 

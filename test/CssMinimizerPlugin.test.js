@@ -263,12 +263,21 @@ describe("CssMinimizerPlugin", () => {
       minify: (data) => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
+        const plugin = () => {
+          let erroredDecl;
 
-        const plugin = postcss.plugin("error-plugin", () => (css) => {
-          css.walkDecls((decl) => {
-            throw decl.error("Postcss error");
-          });
-        });
+          return {
+            postcssPlugin: "error-plugin",
+            Declaration(decl) {
+              erroredDecl = decl;
+            },
+            OnceExit() {
+              throw erroredDecl.error("Postcss error");
+            },
+          };
+        };
+
+        plugin.postcss = true;
 
         const [[filename, input]] = Object.entries(data);
 
@@ -296,20 +305,23 @@ describe("CssMinimizerPlugin", () => {
       minify: (data) => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
-
-        const plugin = postcss.plugin("warning-plugin", () => (css, result) => {
+        const plugin = () => {
           let rule;
-          css.walkDecls((decl) => {
-            rule = decl;
-          });
 
-          result.warn("Warning", {
-            node: rule,
-            word: "warning_word",
-            index: 2,
-            plugin: "warning-plugin",
-          });
-        });
+          return {
+            postcssPlugin: "warning-plugin",
+            Declaration(decl, { result }) {
+              result.warn("Warning", {
+                node: rule,
+                word: "warning_word",
+                index: 2,
+                plugin: "warning-plugin",
+              });
+            },
+          };
+        };
+
+        plugin.postcss = true;
 
         const [[filename, input]] = Object.entries(data);
 
@@ -786,13 +798,20 @@ describe("CssMinimizerPlugin", () => {
         const postcss = require("postcss");
         const [[fileName, input]] = Object.entries(data);
 
-        return postcss([
-          postcss.plugin("warning-plugin", () => (css, result) => {
-            result.warn(`Warning from ${result.opts.from}`, {
-              plugin: "warning-plugin",
-            });
-          }),
-        ])
+        const plugin = () => {
+          return {
+            postcssPlugin: "warning-plugin",
+            OnceExit(decl, { result }) {
+              result.warn(`Warning from ${result.opts.from}`, {
+                plugin: "warning-plugin",
+              });
+            },
+          };
+        };
+
+        plugin.postcss = true;
+
+        return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
@@ -863,13 +882,20 @@ describe("CssMinimizerPlugin", () => {
         const postcss = require("postcss");
         const [[fileName, input]] = Object.entries(data);
 
-        return postcss([
-          postcss.plugin("warning-plugin", () => (css, result) => {
-            result.warn(`Warning from ${result.opts.from}`, {
-              plugin: "warning-plugin",
-            });
-          }),
-        ])
+        const plugin = () => {
+          return {
+            postcssPlugin: "warning-plugin",
+            OnceExit(decl, { result }) {
+              result.warn(`Warning from ${result.opts.from}`, {
+                plugin: "warning-plugin",
+              });
+            },
+          };
+        };
+
+        plugin.postcss = true;
+
+        return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {
