@@ -503,6 +503,37 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
+  it('should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings', async () => {
+    const compiler = getCompiler({
+      entry: {
+        foo: `${__dirname}/fixtures/wrong-calc.css`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+    });
+
+    new CssMinimizerPlugin({
+      minify: CssMinimizerPlugin.esbuildMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
   it('should work with "CssMinimizerPlugin.esbuildMinify" minifier and generate source maps', async () => {
     const compiler = getCompiler({
       devtool: "source-map",
