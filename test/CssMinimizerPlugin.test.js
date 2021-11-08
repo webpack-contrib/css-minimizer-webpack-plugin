@@ -1,5 +1,4 @@
 import path from "path";
-import crypto from "crypto";
 
 import { SourceMapConsumer } from "source-map";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -456,8 +455,8 @@ describe("CssMinimizerPlugin", () => {
     for (const assetName of Object.keys(assets)) {
       const [, webpackHash] = assetName.match(/^.+?\.(.+?)\..+$/);
       const { hashDigestLength, hashDigest, hashFunction } = output;
-      const cryptoHash = crypto
-        .createHash(hashFunction)
+      const cryptoHash = require("webpack")
+        .util.createHash(hashFunction)
         .update(readAsset(assetName, compiler, stats))
         .digest(hashDigest)
         .slice(0, hashDigestLength);
