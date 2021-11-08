@@ -143,8 +143,11 @@ describe('when applied with "sourceMap" option', () => {
         pluginCompiler.hooks.compilation.tap(
           { name: this.constructor.name },
           (compilation) => {
-            compilation.hooks.additionalChunkAssets.tap(
-              { name: this.constructor.name },
+            compilation.hooks.processAssets.tap(
+              {
+                name: this.constructor.name,
+                stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+              },
               () => {
                 compilation.additionalChunkAssets.push("broken-source-map.css");
 
@@ -214,8 +217,11 @@ describe('when applied with "sourceMap" option', () => {
         pluginCompiler.hooks.compilation.tap(
           { name: this.constructor.name },
           (compilation) => {
-            compilation.hooks.additionalChunkAssets.tap(
-              { name: this.constructor.name },
+            compilation.hooks.processAssets.tap(
+              {
+                name: this.constructor.name,
+                stage: webpack.Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+              },
               () => {
                 compilation.additionalChunkAssets.push("broken-source-map.css");
 
