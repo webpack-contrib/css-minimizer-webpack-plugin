@@ -263,12 +263,21 @@ describe("CssMinimizerPlugin", () => {
       minify: (data) => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
+        const plugin = () => {
+          let erroredDecl;
 
-        const plugin = postcss.plugin("error-plugin", () => (css) => {
-          css.walkDecls((decl) => {
-            throw decl.error("Postcss error");
-          });
-        });
+          return {
+            postcssPlugin: "error-plugin",
+            Declaration(decl) {
+              erroredDecl = decl;
+            },
+            OnceExit() {
+              throw erroredDecl.error("Postcss error");
+            },
+          };
+        };
+
+        plugin.postcss = true;
 
         const [[filename, input]] = Object.entries(data);
 
