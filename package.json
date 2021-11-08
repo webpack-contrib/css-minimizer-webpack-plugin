@@ -53,7 +53,6 @@
   "dependencies": {
     "cssnano": "^5.0.6",
     "jest-worker": "^27.0.2",
-    "p-limit": "^3.0.2",
     "postcss": "^8.3.5",
     "schema-utils": "^3.1.0",
     "serialize-javascript": "^6.0.0",

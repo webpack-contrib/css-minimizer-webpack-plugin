@@ -1,3 +1,49 @@
+const notSettled = Symbol(`not-settled`);
+
+function throttleAll(limit, tasks) {
+  if (!Number.isInteger(limit) || limit < 1) {
+    throw new TypeError(
+      `Expected \`limit\` to be a finite number > 0, got \`${limit}\` (${typeof limit})`
+    );
+  }
+
+  if (
+    !Array.isArray(tasks) ||
+    !tasks.every((task) => typeof task === `function`)
+  ) {
+    throw new TypeError(
+      `Expected \`tasks\` to be a list of functions returning a promise`
+    );
+  }
+
+  return new Promise((resolve, reject) => {
+    const result = Array(tasks.length).fill(notSettled);
+    const entries = tasks.entries();
+    const next = () => {
+      const { done, value } = entries.next();
+
+      if (done) {
+        const isLast = !result.includes(notSettled);
+
+        if (isLast) resolve(result);
+
+        return;
+      }
+
+      const [index, task] = value;
+
+      const onFulfilled = (x) => {
+        result[index] = x;
+        next();
+      };
+
+      task().then(onFulfilled, reject);
+    };
+
+    Array(limit).fill(0).forEach(next);
+  });
+}
+
 /* istanbul ignore next */
 async function cssnanoMinify(
   input,
@@ -196,4 +242,10 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
-export { cssnanoMinify, cssoMinify, cleanCssMinify, esbuildMinify };
+export {
+  throttleAll,
+  cssnanoMinify,
+  cssoMinify,
+  cleanCssMinify,
+  esbuildMinify,
+};
