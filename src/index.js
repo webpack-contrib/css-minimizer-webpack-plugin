@@ -115,8 +115,6 @@ class CssMinimizerPlugin {
     builtWarning.hideStack = true;
     builtWarning.file = file;
 
-    console.log(builtWarning);
-
     return builtWarning;
   }
 
