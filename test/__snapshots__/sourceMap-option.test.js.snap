@@ -4,8 +4,8 @@ exports[`when applied with "sourceMap" option should work and emit warning on va
 Array [
   "Error: broken-source-map.css from Css Minimizer plugin
 error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
-  "ModuleBuildError: Module build failed (from ../../node_modules/mini-css-extract-plugin/dist/loader.js):
-Error: broken-source-map.css from Css Minimizer plugin",
+  "Error: dist/entry2.css from Css Minimizer plugin
+error-plugin: /dist/entry2.css:2:3: Postcss error [webpack://./sourcemap/bar.scss:2,2][dist/entry2.css:2,3]",
 ]
 `;
 
@@ -13,16 +13,7 @@ exports[`when applied with "sourceMap" option should work and emit warning on va
 
 exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: assets 1`] = `
 Object {
-  "broken-source-map.css": ".bar {color: red};
-/*# sourceMappingURL=broken-source-map.css.map*/",
-  "broken-source-map.css.map": {
-    "sources": [],
-    "names": [],
-    "mappings": "AAAA,KAAK,iBAAiB,KAAK,UAAU,OAAO",
-    "file": "broken-source-map.css",
-    "sourcesContent": [],
-    "sourceRoot": ""
-},
+  "broken-source-map.css": ".bar{color:red};",
   "dist/entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
   "dist/entry2.css.map": {
@@ -43,7 +34,11 @@ Object {
 
 exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: errors 1`] = `Array []`;
 
-exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: warnings 1`] = `
+Array [
+  "Error: broken-source-map.css contains invalid source map",
+]
+`;
 
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): assets 1`] = `
 Object {
