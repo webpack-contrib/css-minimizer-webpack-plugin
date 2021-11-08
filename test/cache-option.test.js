@@ -25,17 +25,12 @@ describe('"cache" option', () => {
     __dirname,
     "./outputs/type-filesystem-2"
   );
-  const fileSystemCacheDirectory3 = path.resolve(
-    __dirname,
-    "./outputs/type-filesystem-3"
-  );
 
   beforeAll(() =>
     Promise.all([
       del(fileSystemCacheDirectory),
       del(fileSystemCacheDirectory1),
       del(fileSystemCacheDirectory2),
-      del(fileSystemCacheDirectory3),
     ])
   );
 
