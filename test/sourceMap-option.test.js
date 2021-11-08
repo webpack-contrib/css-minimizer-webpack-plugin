@@ -203,7 +203,7 @@ describe('when applied with "sourceMap" option', () => {
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
-    expect(stats.compilation.children[0].warnings[0].toString()).toMatch(
+    expect(stats.compilation.warnings[0].toString()).toMatch(
       "contains invalid source map"
     );
   });
