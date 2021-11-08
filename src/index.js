@@ -3,10 +3,10 @@ import * as os from "os";
 import { SourceMapConsumer } from "source-map";
 import { validate } from "schema-utils";
 import serialize from "serialize-javascript";
-import pLimit from "p-limit";
 import { Worker } from "jest-worker";
 
 import {
+  throttleAll,
   cssnanoMinify,
   cssoMinify,
   cleanCssMinify,
@@ -234,6 +234,10 @@ class CssMinimizerPlugin {
         })
     );
 
+    if (assetsForMinify.length === 0) {
+      return;
+    }
+
     let getWorker;
     let initializedWorker;
     let numberOfWorkers;
@@ -272,61 +276,106 @@ class CssMinimizerPlugin {
       };
     }
 
-    const limit = pLimit(
-      getWorker && numberOfAssetsForMinify > 0 ? numberOfWorkers : Infinity
-    );
     const { SourceMapSource, RawSource } = compiler.webpack.sources;
     const scheduledTasks = [];
 
     for (const asset of assetsForMinify) {
-      scheduledTasks.push(
-        limit(async () => {
-          const { name, inputSource, cacheItem } = asset;
-          let { output } = asset;
+      scheduledTasks.push(async () => {
+        const { name, inputSource, cacheItem } = asset;
+        let { output } = asset;
 
-          if (!output) {
-            let input;
-            let inputSourceMap;
+        if (!output) {
+          let input;
+          let inputSourceMap;
 
-            const { source: sourceFromInputSource, map } =
-              inputSource.sourceAndMap();
+          const { source: sourceFromInputSource, map } =
+            inputSource.sourceAndMap();
 
-            input = sourceFromInputSource;
+          input = sourceFromInputSource;
 
-            if (map) {
-              if (CssMinimizerPlugin.isSourceMap(map)) {
-                inputSourceMap = map;
+          if (map) {
+            if (CssMinimizerPlugin.isSourceMap(map)) {
+              inputSourceMap = map;
+            } else {
+              compilation.warnings.push(
+                new Error(`${name} contains invalid source map`)
+              );
+            }
+          }
+
+          if (Buffer.isBuffer(input)) {
+            input = input.toString();
+          }
+
+          const options = {
+            name,
+            input,
+            inputSourceMap,
+            minify: this.options.minify,
+            minifyOptions: this.options.minimizerOptions,
+          };
+
+          let result;
+
+          try {
+            result = await (getWorker
+              ? getWorker().transform(serialize(options))
+              : minifyFn(options));
+          } catch (error) {
+            const hasSourceMap =
+              inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
+
+            compilation.errors.push(
+              CssMinimizerPlugin.buildError(
+                error,
+                name,
+                hasSourceMap
+                  ? new SourceMapConsumer(inputSourceMap)
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
+                // eslint-disable-next-line no-undefined
+                hasSourceMap ? compilation.requestShortener : undefined
+              )
+            );
+
+            return;
+          }
+
+          output = { warnings: [], errors: [] };
+
+          for (const item of result.outputs) {
+            if (item.map) {
+              let originalSource;
+              let innerSourceMap;
+
+              if (output.source) {
+                ({ source: originalSource, map: innerSourceMap } =
+                  output.source.sourceAndMap());
               } else {
-                compilation.warnings.push(
-                  new Error(`${name} contains invalid source map`)
-                );
+                originalSource = input;
+                innerSourceMap = inputSourceMap;
               }
+
+              // TODO need API for merging source maps in `webpack-source`
+              output.source = new SourceMapSource(
+                item.code,
+                name,
+                item.map,
+                originalSource,
+                innerSourceMap,
+                true
+              );
+            } else {
+              output.source = new RawSource(item.code);
             }
+          }
 
-            if (Buffer.isBuffer(input)) {
-              input = input.toString();
-            }
+          if (result.errors && result.errors.length > 0) {
+            const hasSourceMap =
+              inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
 
-            const options = {
-              name,
-              input,
-              inputSourceMap,
-              minify: this.options.minify,
-              minifyOptions: this.options.minimizerOptions,
-            };
-
-            let result;
-
-            try {
-              result = await (getWorker
-                ? getWorker().transform(serialize(options))
-                : minifyFn(options));
-            } catch (error) {
-              const hasSourceMap =
-                inputSourceMap &&
-                CssMinimizerPlugin.isSourceMap(inputSourceMap);
-
-              compilation.errors.push(
+            for (const error of result.errors) {
+              output.warnings.push(
                 CssMinimizerPlugin.buildError(
                   error,
                   name,
@@ -338,118 +387,68 @@ class CssMinimizerPlugin {
                   hasSourceMap ? compilation.requestShortener : undefined
                 )
               );
-
-              return;
-            }
-
-            output = { warnings: [], errors: [] };
-
-            for (const item of result.outputs) {
-              if (item.map) {
-                let originalSource;
-                let innerSourceMap;
-
-                if (output.source) {
-                  ({ source: originalSource, map: innerSourceMap } =
-                    output.source.sourceAndMap());
-                } else {
-                  originalSource = input;
-                  innerSourceMap = inputSourceMap;
-                }
-
-                // TODO need API for merging source maps in `webpack-source`
-                output.source = new SourceMapSource(
-                  item.code,
-                  name,
-                  item.map,
-                  originalSource,
-                  innerSourceMap,
-                  true
-                );
-              } else {
-                output.source = new RawSource(item.code);
-              }
-            }
-
-            if (result.errors && result.errors.length > 0) {
-              const hasSourceMap =
-                inputSourceMap &&
-                CssMinimizerPlugin.isSourceMap(inputSourceMap);
-
-              for (const error of result.errors) {
-                output.warnings.push(
-                  CssMinimizerPlugin.buildError(
-                    error,
-                    name,
-                    hasSourceMap
-                      ? new SourceMapConsumer(inputSourceMap)
-                      : // eslint-disable-next-line no-undefined
-                        undefined,
-                    // eslint-disable-next-line no-undefined
-                    hasSourceMap ? compilation.requestShortener : undefined
-                  )
-                );
-              }
-            }
-
-            if (result.warnings && result.warnings.length > 0) {
-              const hasSourceMap =
-                inputSourceMap &&
-                CssMinimizerPlugin.isSourceMap(inputSourceMap);
-
-              for (const warning of result.warnings) {
-                const buildWarning = CssMinimizerPlugin.buildWarning(
-                  warning,
-                  name,
-                  hasSourceMap
-                    ? new SourceMapConsumer(inputSourceMap)
-                    : // eslint-disable-next-line no-undefined
-                      undefined,
-                  // eslint-disable-next-line no-undefined
-                  hasSourceMap ? compilation.requestShortener : undefined,
-                  this.options.warningsFilter
-                );
-
-                if (buildWarning) {
-                  output.warnings.push(buildWarning);
-                }
-              }
-            }
-
-            await cacheItem.storePromise({
-              source: output.source,
-              warnings: output.warnings,
-              errors: output.errors,
-            });
-          }
-
-          if (output.warnings && output.warnings.length > 0) {
-            for (const warning of output.warnings) {
-              compilation.warnings.push(warning);
             }
           }
 
-          if (output.errors && output.errors.length > 0) {
-            for (const error of output.errors) {
-              compilation.errors.push(error);
+          if (result.warnings && result.warnings.length > 0) {
+            const hasSourceMap =
+              inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
+
+            for (const warning of result.warnings) {
+              const buildWarning = CssMinimizerPlugin.buildWarning(
+                warning,
+                name,
+                hasSourceMap
+                  ? new SourceMapConsumer(inputSourceMap)
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
+                // eslint-disable-next-line no-undefined
+                hasSourceMap ? compilation.requestShortener : undefined,
+                this.options.warningsFilter
+              );
+
+              if (buildWarning) {
+                output.warnings.push(buildWarning);
+              }
             }
           }
 
-          const newInfo = { minimized: true };
-          const { source } = output;
+          await cacheItem.storePromise({
+            source: output.source,
+            warnings: output.warnings,
+            errors: output.errors,
+          });
+        }
 
-          compilation.updateAsset(name, source, newInfo);
-        })
-      );
+        if (output.warnings && output.warnings.length > 0) {
+          for (const warning of output.warnings) {
+            compilation.warnings.push(warning);
+          }
+        }
+
+        if (output.errors && output.errors.length > 0) {
+          for (const error of output.errors) {
+            compilation.errors.push(error);
+          }
+        }
+
+        const newInfo = { minimized: true };
+        const { source } = output;
+
+        compilation.updateAsset(name, source, newInfo);
+      });
     }
 
-    const result = await Promise.all(scheduledTasks);
+    const limit =
+      getWorker && numberOfAssetsForMinify > 0
+        ? numberOfWorkers
+        : scheduledTasks.length;
+
+    await throttleAll(limit, scheduledTasks);
 
     if (initializedWorker) {
       await initializedWorker.end();
     }
-
-    return result;
   }
 
   apply(compiler) {
