@@ -318,14 +318,20 @@ describe('"cache" option', () => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
         const [[fileName, input]] = Object.entries(data);
+        const plugin = () => {
+          return {
+            postcssPlugin: "warning-plugin",
+            OnceExit(decl, { result }) {
+              result.warn(`Warning from ${result.opts.from}`, {
+                plugin: "warning-plugin",
+              });
+            },
+          };
+        };
 
-        return postcss([
-          postcss.plugin("warning-plugin", () => (css, result) => {
-            result.warn(`Warning from ${result.opts.from}`, {
-              plugin: "warning-plugin",
-            });
-          }),
-        ])
+        plugin.postcss = true;
+
+        return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
           .then((result) => {
             return {

@@ -277,9 +277,9 @@ describe('when applied with "sourceMap" option', () => {
         // eslint-disable-next-line global-require
         const postcss = require("postcss");
 
-        let erroredDecl;
-
         const plugin = () => {
+          let erroredDecl;
+
           return {
             postcssPlugin: "error-plugin",
             Declaration(decl) {
