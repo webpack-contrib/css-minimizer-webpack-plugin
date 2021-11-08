@@ -224,6 +224,24 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifier: warning 1`] = `Array []`;
 
+exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: assets 1`] = `
+Object {
+  "foo.css": "width: calc(100px + 100){}
+",
+}
+`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: error 1`] = `Array []`;
+
+exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: warning 1`] = `
+Array [
+  "Warning: foo.css from Css Minimizer plugin
+Expected identifier but found whitespace",
+  "Warning: foo.css from Css Minimizer plugin
+Unexpected \\"calc(\\"",
+]
+`;
+
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and generate source maps: assets 1`] = `
 Object {
   "foo.css": "body{color:red}a{color:#00f}
