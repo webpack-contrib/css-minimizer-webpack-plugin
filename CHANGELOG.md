@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.3](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.1.2...v3.1.3) (2021-11-10)
+
+
+### Bug Fixes
+
+* source map generation for `cssnano` and `clean-css` ([#135](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/135)) ([a9dd43e](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/a9dd43e1a7284bb713e19eac6fa3f3724fb9d48b))
+
 ### [3.1.2](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.1.1...v3.1.2) (2021-11-08)
 
 
