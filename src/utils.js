@@ -80,7 +80,6 @@ async function cssnanoMinify(
 
   const [[name, code]] = Object.entries(input);
   const postcssOptions = {
-    to: name,
     from: name,
     ...minimizerOptions.processorOptions,
   };

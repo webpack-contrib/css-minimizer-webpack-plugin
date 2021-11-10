@@ -19,12 +19,14 @@ Object {
   "dist/entry2.css.map": {
     "version": 3,
     "file": "dist/entry2.css",
-    "mappings": "AAAA,KAKE,SAAU,CAJV,eACF,CAMA,OACE,iBACF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
     "sources": [
-        "webpack:///entry2.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
-        "body {\\n  font-weight: bold;\\n}\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
     "names": [],
     "sourceRoot": ""
@@ -49,12 +51,14 @@ Object {
   "sourcemaps/entry.css.map": {
     "version": 3,
     "file": "dist/entry.css",
-    "mappings": "AAAA,KAKE,SAAU,CAJV,eACF,CAKA,OACE,iBACF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAEE,OACE,iBAIJ",
     "sources": [
-        "webpack:///entry.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.scss"
     ],
     "sourcesContent": [
-        "body {\\n  font-weight: bold;\\n}\\n\\nbody {\\n  color: red;\\n}\\nbody a {\\n  text-align: center;\\n}\\n"
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
     ],
     "names": [],
     "sourceRoot": ""
@@ -62,12 +66,14 @@ Object {
   "sourcemaps/entry2.css.map": {
     "version": 3,
     "file": "dist/entry2.css",
-    "mappings": "AAAA,KAKE,SAAU,CAJV,eACF,CAMA,OACE,iBACF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
     "sources": [
-        "webpack:///entry2.css"
+        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
-        "body {\\n  font-weight: bold;\\n}\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
+        "body {\\n  font-weight: bold;\\n}",
+        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
     ],
     "names": [],
     "sourceRoot": ""
