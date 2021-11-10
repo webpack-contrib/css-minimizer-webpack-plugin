@@ -161,9 +161,21 @@ async function cleanCssMinify(input, inputSourceMap, minimizerOptions) {
     ...minimizerOptions,
   }).minify({ [name]: { styles: code } });
 
+  const sourceMap = result.sourceMap && result.sourceMap.toJSON();
+
+  // workaround for source maps on windows
+  if (sourceMap) {
+    // eslint-disable-next-line global-require
+    const isWindowsPathSep = require("path").sep === "\\";
+
+    sourceMap.sources = sourceMap.sources.map((item) =>
+      isWindowsPathSep ? item.replace(/\\/g, "/") : item
+    );
+  }
+
   return {
     code: result.styles,
-    map: result.sourceMap && result.sourceMap.toJSON(),
+    map: sourceMap,
     warnings: result.warnings,
   };
 }
