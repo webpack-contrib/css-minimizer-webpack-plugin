@@ -250,7 +250,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
-  it('should work with "CssMinimizerPlugin.cssnanoMinify"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
         foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
@@ -285,7 +285,7 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
-  it('should work with "CssMinimizerPlugin.cssnanoMinify" and generate source maps', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" minifier and generate source maps', async () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
@@ -321,7 +321,49 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
-  it('should work with "CssMinimizerPlugin.cssnanoMinify" and parser option as "String"', async () => {
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" minifier and generate source maps #2', async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: "foo/[name].css",
+          chunkFilename: "foo/[id].[name].css",
+        }),
+      ],
+    });
+
+    new CssMinimizerPlugin({
+      minimizerOptions: {
+        preset: "default",
+      },
+      minify: [CssMinimizerPlugin.cssnanoMinify],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cssnanoMinify" minifier and parser option as "String"', async () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
@@ -430,6 +472,45 @@ describe('"minify" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
+  it('should work with "CssMinimizerPlugin.cssoMinify" minifier and generate source maps #2', async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: "foo/[name].css",
+          chunkFilename: "foo/[id].[name].css",
+        }),
+      ],
+    });
+
+    new CssMinimizerPlugin({
+      minify: [CssMinimizerPlugin.cssoMinify],
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
   it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
@@ -460,6 +541,45 @@ describe('"minify" option', () => {
 
     new CssMinimizerPlugin({
       minify: CssMinimizerPlugin.cleanCssMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier and generate source maps #2', async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: "foo/[name].css",
+          chunkFilename: "foo/[id].[name].css",
+        }),
+      ],
+    });
+
+    new CssMinimizerPlugin({
+      minify: [CssMinimizerPlugin.cleanCssMinify],
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -544,6 +664,45 @@ describe('"minify" option', () => {
 
     new CssMinimizerPlugin({
       minify: CssMinimizerPlugin.esbuildMinify,
+    }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets"
+    );
+    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(getWarnings(stats)).toMatchSnapshot("warning");
+  });
+
+  it('should work with "CssMinimizerPlugin.esbuildMinify" minifier and generate source maps #2', async () => {
+    const compiler = getCompiler({
+      devtool: "source-map",
+      entry: {
+        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+      },
+      module: {
+        rules: [
+          {
+            test: /.s?css$/i,
+            use: [
+              MiniCssExtractPlugin.loader,
+              { loader: "css-loader", options: { sourceMap: true } },
+              { loader: "sass-loader", options: { sourceMap: true } },
+            ],
+          },
+        ],
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: "foo/[name].css",
+          chunkFilename: "foo/[id].[name].css",
+        }),
+      ],
+    });
+
+    new CssMinimizerPlugin({
+      minify: [CssMinimizerPlugin.esbuildMinify],
     }).apply(compiler);
 
     const stats = await compile(compiler);
