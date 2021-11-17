@@ -280,10 +280,10 @@ Unexpected \\"calc(\\"",
 
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and generate source maps #2: assets 1`] = `
 Object {
-  "foo/foo.css": "body{font-weight:bold}body{color:red}body a{text-align:center}
+  "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo/foo.css\\",\\"mappings\\":\\"AAAA,KACE,iBCCF,KACE,UACA,OACE\\",\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo/foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo/foo.css\\",\\"mappings\\":\\"AAAA,KACE,gBCCF,KACE,UACA,OACE\\",\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
 }
 `;
 
@@ -306,7 +306,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
 
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier: assets 1`] = `
 Object {
-  "foo.css": "body{font-weight:bold}body{color:red}body a{text-align:center}
+  "foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 ",
 }
 `;
