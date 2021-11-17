@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.1.4](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.1.3...v3.1.4) (2021-11-17)
+
+
+### Chore
+
+* update `schema-utils` package to `4.0.0` version
+
 ### [3.1.3](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.1.2...v3.1.3) (2021-11-10)
 
 
