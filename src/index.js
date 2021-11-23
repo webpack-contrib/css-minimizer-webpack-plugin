@@ -163,7 +163,7 @@ class CssMinimizerPlugin {
       minify = /** @type {MinimizerImplementation<InferDefaultType<T>>} */
       (cssnanoMinify),
       minimizerOptions = /** @type {MinimizerOptions<InferDefaultType<T>>} */
-      ({ preset: "default" }),
+      ({}),
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
       parallel = true,
@@ -499,14 +499,14 @@ class CssMinimizerPlugin {
           input = sourceFromInputSource;
 
           if (map) {
-            inputSourceMap = /** @type {RawSourceMap} */ (map);
-
             if (!CssMinimizerPlugin.isSourceMap(map)) {
               compilation.warnings.push(
                 /** @type {WebpackError} */ (
                   new Error(`${name} contains invalid source map`)
                 )
               );
+            } else {
+              inputSourceMap = /** @type {RawSourceMap} */ (map);
             }
           }
 

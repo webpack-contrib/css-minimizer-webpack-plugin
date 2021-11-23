@@ -75,7 +75,11 @@ function throttleAll(limit, tasks) {
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-async function cssnanoMinify(input, sourceMap, minimizerOptions) {
+async function cssnanoMinify(
+  input,
+  sourceMap,
+  minimizerOptions = { preset: "default" }
+) {
   /**
    * @template T
    * @param {string} module

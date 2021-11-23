@@ -272,9 +272,9 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: warning 1`] = `
 Array [
   "Warning: foo.css from Css Minimizer plugin
-Expected identifier but found whitespace",
+Expected identifier but found whitespace webpack://./wrong-calc.css:1:0",
   "Warning: foo.css from Css Minimizer plugin
-Unexpected \\"calc(\\"",
+Unexpected \\"calc(\\" webpack://./wrong-calc.css:1:0",
 ]
 `;
 
