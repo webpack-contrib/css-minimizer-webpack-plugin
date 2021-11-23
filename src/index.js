@@ -16,36 +16,156 @@ import {
 import * as schema from "./options.json";
 import { minify as minifyFn } from "./minify";
 
+/** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
+/** @typedef {import("webpack").Compiler} Compiler */
+/** @typedef {import("webpack").Compilation} Compilation */
+/** @typedef {import("webpack").WebpackError} WebpackError */
+/** @typedef {import("jest-worker").Worker} JestWorker */
+/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
+/** @typedef {import("cssnano").CssNanoOptions} CssNanoOptions */
+/** @typedef {import("webpack").Asset} Asset */
+
+/**
+ * @typedef {Object} MinimizedResult
+ * @property {string} code
+ * @property {RawSourceMap} [map]
+ * @property {Array<Error | string>} [errors]
+ * @property {Array<Warning | string>} [warnings]
+ */
+
+/**
+ * @typedef {{ [file: string]: string }} Input
+ */
+
+/**
+ * @template T
+ * @callback BasicMinimizerImplementation
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {T} minifyOptions
+ * @returns {Promise<MinimizedResult>}
+ */
+
+/**
+ * @template T
+ * @typedef {T extends any[] ? { [P in keyof T]: BasicMinimizerImplementation<T[P]>; } : BasicMinimizerImplementation<T>} MinimizerImplementation
+ */
+
+/**
+ * @template T
+ * @typedef {T extends any[] ? { [P in keyof T]?: T[P]; } : T} MinimizerOptions
+ */
+
+/**
+ * @template T
+ * @typedef {Object} InternalOptions
+ * @property {string} name
+ * @property {string} input
+ * @property {RawSourceMap | undefined} inputSourceMap
+ * @property {{ implementation: MinimizerImplementation<InferDefaultType<T>>, options: MinimizerOptions<InferDefaultType<T>> }} minimizer
+ */
+
+/**
+ * @typedef InternalResult
+ * @property {Array<{ code: string, map: RawSourceMap | undefined }>} outputs
+ * @property {Array<Warning | string>} warnings
+ * @property {Array<Error | string>} errors
+ */
+
+/** @typedef {undefined | boolean | number} Parallel */
+
+/** @typedef {RegExp | string} Rule */
+
+/** @typedef {Rule[] | Rule} Rules */
+
+/** @typedef {Error & { plugin?: string, text?: string, source?: string } | string} Warning */
+
+/** @typedef {(warning: Warning, file: string, source?: string) => boolean} WarningsFilter */
+
+/**
+ * @typedef {Object} BasePluginOptions
+ * @property {Rules} [test]
+ * @property {Rules} [include]
+ * @property {Rules} [exclude]
+ * @property {WarningsFilter} [warningsFilter]
+ * @property {Parallel} [parallel]
+ */
+
+/**
+ * @template T
+ * @typedef {JestWorker & { transform: (options: string) => InternalResult, minify: (options: InternalOptions<T>) => InternalResult }} MinimizerWorker
+ */
+
+/**
+ * @typedef {{ [key: string]: any }} CustomOptions
+ */
+
+/**
+ * @template T
+ * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
+ */
+
+/**
+ * @template T
+ * @typedef {T extends CssNanoOptions ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined }} DefinedDefaultMinimizerAndOptions
+ */
+
+/**
+ * @template T
+ * @typedef {BasePluginOptions & { minimizer: { implementation: MinimizerImplementation<InferDefaultType<T>>, options: MinimizerOptions<InferDefaultType<T>> } }} InternalPluginOptions
+ */
+
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
+/**
+ * @template [T=CssNanoOptions]
+ */
 class CssMinimizerPlugin {
-  constructor(options = {}) {
-    validate(schema, options, {
+  /**
+   * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
+   */
+  constructor(options) {
+    validate(/** @type {Schema} */ (schema), options || {}, {
       name: "Css Minimizer Plugin",
       baseDataPath: "options",
     });
 
     const {
-      minify = cssnanoMinify,
-      minimizerOptions,
+      minify = /** @type {MinimizerImplementation<InferDefaultType<T>>} */
+      (cssnanoMinify),
+      minimizerOptions = /** @type {MinimizerOptions<InferDefaultType<T>>} */
+      ({ preset: "default" }),
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
       parallel = true,
       include,
       exclude,
-    } = options;
+    } = options || {};
 
+    /**
+     * @private
+     * @type {InternalPluginOptions<T>}
+     */
     this.options = {
       test,
       warningsFilter,
       parallel,
       include,
       exclude,
-      minify,
-      minimizerOptions,
+      minimizer: {
+        implementation:
+          /** @type {MinimizerImplementation<InferDefaultType<T>>} */ (minify),
+        // TODO clone options
+        options: minimizerOptions,
+      },
     };
   }
 
+  /**
+   * @private
+   * @param {any} input
+   * @returns {boolean}
+   */
   static isSourceMap(input) {
     // All required options for `new SourceMapConsumer(...options)`
     // https://github.com/mozilla/source-map#new-sourcemapconsumerrawsourcemap
@@ -58,12 +178,21 @@ class CssMinimizerPlugin {
     );
   }
 
+  /**
+   * @private
+   * @param {Warning} warning
+   * @param {string} file
+   * @param {WarningsFilter} [warningsFilter]
+   * @param {SourceMapConsumer} [sourceMap]
+   * @param {Compilation["requestShortener"]} [requestShortener]
+   * @returns {Error & { hideStack?: boolean, file?: string } | undefined}
+   */
   static buildWarning(
     warning,
     file,
+    warningsFilter,
     sourceMap,
-    requestShortener,
-    warningsFilter
+    requestShortener
   ) {
     let warningMessage =
       typeof warning === "string"
@@ -75,6 +204,8 @@ class CssMinimizerPlugin {
     let source;
 
     if (sourceMap) {
+      // TODO fix me
+      // @ts-ignore
       const match = warningRegex.exec(warning);
 
       if (match) {
@@ -102,9 +233,12 @@ class CssMinimizerPlugin {
     }
 
     if (warningsFilter && !warningsFilter(warning, file, source)) {
-      return null;
+      return;
     }
 
+    /**
+     * @type {Error & { hideStack?: boolean, file?: string }}
+     */
     const builtWarning = new Error(
       `${file} from Css Minimizer plugin\n${warningMessage}${
         locationMessage ? ` ${locationMessage}` : ""
@@ -115,13 +249,26 @@ class CssMinimizerPlugin {
     builtWarning.hideStack = true;
     builtWarning.file = file;
 
+    // eslint-disable-next-line consistent-return
     return builtWarning;
   }
 
+  /**
+   * @private
+   * @param {any} error
+   * @param {string} file
+   * @param {SourceMapConsumer} [sourceMap]
+   * @param {Compilation["requestShortener"]} [requestShortener]
+   * @returns {Error}
+   */
   static buildError(error, file, sourceMap, requestShortener) {
+    /**
+     * @type {Error & { file?: string }}
+     */
     let builtError;
 
     if (typeof error === "string") {
+      // @ts-ignore
       builtError = new Error(`${file} from Css Minimizer plugin\n${error}`);
       builtError.file = file;
 
@@ -182,6 +329,11 @@ class CssMinimizerPlugin {
     return builtError;
   }
 
+  /**
+   * @private
+   * @param {Parallel} parallel
+   * @returns {number}
+   */
   static getAvailableNumberOfCores(parallel) {
     // In some cases cpus() returns undefined
     // https://github.com/nodejs/node/issues/19022
@@ -192,13 +344,21 @@ class CssMinimizerPlugin {
       : Math.min(Number(parallel) || 0, cpus.length - 1);
   }
 
+  /**
+   * @private
+   * @param {Compiler} compiler
+   * @param {Compilation} compilation
+   * @param {Record<string, import("webpack").sources.Source>} assets
+   * @param {{availableNumberOfCores: number}} optimizeOptions
+   * @returns {Promise<void>}
+   */
   async optimize(compiler, compilation, assets, optimizeOptions) {
     const cache = compilation.getCache("CssMinimizerWebpackPlugin");
     let numberOfAssetsForMinify = 0;
     const assetsForMinify = await Promise.all(
       Object.keys(typeof assets === "undefined" ? compilation.assets : assets)
         .filter((name) => {
-          const { info } = compilation.getAsset(name);
+          const { info } = /** @type {Asset} */ (compilation.getAsset(name));
 
           if (
             // Skip double minimize assets from child compilation
@@ -220,7 +380,9 @@ class CssMinimizerPlugin {
           return true;
         })
         .map(async (name) => {
-          const { info, source } = compilation.getAsset(name);
+          const { info, source } = /** @type {Asset} */ (
+            compilation.getAsset(name)
+          );
 
           const eTag = cache.getLazyHashedEtag(source);
           const cacheItem = cache.getItemCache(name, eTag);
@@ -238,8 +400,11 @@ class CssMinimizerPlugin {
       return;
     }
 
+    /** @type {undefined | (() => MinimizerWorker<T>)} */
     let getWorker;
+    /** @type {undefined | MinimizerWorker<T>} */
     let initializedWorker;
+    /** @type {undefined | number} */
     let numberOfWorkers;
 
     if (optimizeOptions.availableNumberOfCores > 0) {
@@ -254,10 +419,12 @@ class CssMinimizerPlugin {
           return initializedWorker;
         }
 
-        initializedWorker = new Worker(require.resolve("./minify"), {
-          numWorkers: numberOfWorkers,
-          enableWorkerThreads: true,
-        });
+        initializedWorker = /** @type {MinimizerWorker<T>} */ (
+          new Worker(require.resolve("./minify"), {
+            numWorkers: numberOfWorkers,
+            enableWorkerThreads: true,
+          })
+        );
 
         // https://github.com/facebook/jest/issues/8872#issuecomment-524822081
         const workerStdout = initializedWorker.getStdout();
@@ -286,6 +453,7 @@ class CssMinimizerPlugin {
 
         if (!output) {
           let input;
+          /** @type {RawSourceMap | undefined} */
           let inputSourceMap;
 
           const { source: sourceFromInputSource, map } =
@@ -294,11 +462,13 @@ class CssMinimizerPlugin {
           input = sourceFromInputSource;
 
           if (map) {
-            if (CssMinimizerPlugin.isSourceMap(map)) {
-              inputSourceMap = map;
-            } else {
+            inputSourceMap = /** @type {RawSourceMap} */ (map);
+
+            if (!CssMinimizerPlugin.isSourceMap(map)) {
               compilation.warnings.push(
-                new Error(`${name} contains invalid source map`)
+                /** @type {WebpackError} */ (
+                  new Error(`${name} contains invalid source map`)
+                )
               );
             }
           }
@@ -307,12 +477,17 @@ class CssMinimizerPlugin {
             input = input.toString();
           }
 
+          /**
+           * @type {InternalOptions<T>}
+           */
           const options = {
             name,
             input,
             inputSourceMap,
-            minify: this.options.minify,
-            minifyOptions: this.options.minimizerOptions,
+            minimizer: {
+              implementation: this.options.minimizer.implementation,
+              options: this.options.minimizer.options,
+            },
           };
 
           let result;
@@ -326,15 +501,19 @@ class CssMinimizerPlugin {
               inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
 
             compilation.errors.push(
-              CssMinimizerPlugin.buildError(
-                error,
-                name,
-                hasSourceMap
-                  ? new SourceMapConsumer(inputSourceMap)
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
-                // eslint-disable-next-line no-undefined
-                hasSourceMap ? compilation.requestShortener : undefined
+              /** @type {WebpackError} */ (
+                CssMinimizerPlugin.buildError(
+                  error,
+                  name,
+                  hasSourceMap
+                    ? new SourceMapConsumer(
+                        /** @type {RawSourceMap} */ (inputSourceMap)
+                      )
+                    : // eslint-disable-next-line no-undefined
+                      undefined,
+                  // eslint-disable-next-line no-undefined
+                  hasSourceMap ? compilation.requestShortener : undefined
+                )
               )
             );
 
@@ -380,7 +559,9 @@ class CssMinimizerPlugin {
                   error,
                   name,
                   hasSourceMap
-                    ? new SourceMapConsumer(inputSourceMap)
+                    ? new SourceMapConsumer(
+                        /** @type {RawSourceMap} */ (inputSourceMap)
+                      )
                     : // eslint-disable-next-line no-undefined
                       undefined,
                   // eslint-disable-next-line no-undefined
@@ -398,13 +579,15 @@ class CssMinimizerPlugin {
               const buildWarning = CssMinimizerPlugin.buildWarning(
                 warning,
                 name,
+                this.options.warningsFilter,
                 hasSourceMap
-                  ? new SourceMapConsumer(inputSourceMap)
+                  ? new SourceMapConsumer(
+                      /** @type {RawSourceMap} */ (inputSourceMap)
+                    )
                   : // eslint-disable-next-line no-undefined
                     undefined,
                 // eslint-disable-next-line no-undefined
-                hasSourceMap ? compilation.requestShortener : undefined,
-                this.options.warningsFilter
+                hasSourceMap ? compilation.requestShortener : undefined
               );
 
               if (buildWarning) {
@@ -441,7 +624,7 @@ class CssMinimizerPlugin {
 
     const limit =
       getWorker && numberOfAssetsForMinify > 0
-        ? numberOfWorkers
+        ? /** @type {number} */ (numberOfWorkers)
         : scheduledTasks.length;
 
     await throttleAll(limit, scheduledTasks);
@@ -451,6 +634,10 @@ class CssMinimizerPlugin {
     }
   }
 
+  /**
+   * @param {Compiler} compiler
+   * @returns {void}
+   */
   apply(compiler) {
     const pluginName = this.constructor.name;
     const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
@@ -478,7 +665,11 @@ class CssMinimizerPlugin {
             "css-minimizer-webpack-plugin",
             (minimized, { green, formatFlag }) =>
               // eslint-disable-next-line no-undefined
-              minimized ? green(formatFlag("minimized")) : ""
+              minimized
+                ? /** @type {Function} */ (green)(
+                    /** @type {Function} */ (formatFlag)("minimized")
+                  )
+                : ""
           );
       });
     });

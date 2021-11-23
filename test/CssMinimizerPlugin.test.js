@@ -191,6 +191,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        undefined,
         new SourceMapConsumer(rawSourceMap)
       )
     ).toMatchSnapshot();
@@ -198,6 +199,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        undefined,
         new SourceMapConsumer(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
@@ -206,18 +208,18 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        () => true,
         new SourceMapConsumer(rawSourceMap),
-        new RequestShortener("/example.com/www/js/"),
-        () => true
+        new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
     expect(
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        () => false,
         new SourceMapConsumer(rawSourceMap),
-        new RequestShortener("/example.com/www/js/"),
-        () => false
+        new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
   });

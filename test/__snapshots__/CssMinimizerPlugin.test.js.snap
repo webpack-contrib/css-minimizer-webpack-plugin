@@ -45,7 +45,7 @@ exports[`CssMinimizerPlugin buildWarning method 5`] = `
 Warning http://example.com/www/js/one.css:1:1]
 `;
 
-exports[`CssMinimizerPlugin buildWarning method 6`] = `null`;
+exports[`CssMinimizerPlugin buildWarning method 6`] = `undefined`;
 
 exports[`CssMinimizerPlugin should build error: error 1`] = `
 Array [

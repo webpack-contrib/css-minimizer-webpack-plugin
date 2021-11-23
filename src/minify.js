@@ -1,16 +1,27 @@
-const minify = async (options) => {
-  const minifyFns =
-    typeof options.minify === "function" ? [options.minify] : options.minify;
+/** @typedef {import("./index.js").MinimizedResult} MinimizedResult */
+/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
+/** @typedef {import("./index.js").InternalResult} InternalResult */
 
+/**
+ * @template T
+ * @param {import("./index.js").InternalOptions<T>} options
+ * @returns {Promise<InternalResult>}
+ */
+const minify = async (options) => {
+  const minifyFns = Array.isArray(options.minimizer.implementation)
+    ? options.minimizer.implementation
+    : [options.minimizer.implementation];
+
+  /** @type {InternalResult} */
   const result = { outputs: [], warnings: [], errors: [] };
 
   let needSourceMap = false;
 
   for (let i = 0; i <= minifyFns.length - 1; i++) {
     const minifyFn = minifyFns[i];
-    const minifyOptions = Array.isArray(options.minifyOptions)
-      ? options.minifyOptions[i]
-      : options.minifyOptions;
+    const minifyOptions = Array.isArray(options.minimizer.options)
+      ? options.minimizer.options[i]
+      : options.minimizer.options;
     const prevResult =
       result.outputs.length > 0
         ? result.outputs[result.outputs.length - 1]
@@ -51,6 +62,10 @@ const minify = async (options) => {
   return result;
 };
 
+/**
+ * @param {string} options
+ * @returns {Promise<InternalResult>}
+ */
 async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)
   // Safer for possible security issues, albeit not critical at all here
@@ -64,13 +79,7 @@ async function transform(options) {
     `'use strict'\nreturn ${options}`
   )(exports, require, module, __filename, __dirname);
 
-  const result = await minify(evaluatedOptions);
-
-  if (result.error) {
-    throw result.error;
-  } else {
-    return result;
-  }
+  return minify(evaluatedOptions);
 }
 
 module.exports.minify = minify;
