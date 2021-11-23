@@ -117,8 +117,6 @@ async function cssnanoMinify(input, sourceMap, minimizerOptions) {
   /** @type {ProcessOptions} */
   const postcssOptions = {
     from: name,
-    // TODO: add types
-    // @ts-ignore
     ...minimizerOptions.processorOptions,
   };
 

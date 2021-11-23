@@ -7,6 +7,10 @@ export type JestWorker = import("jest-worker").Worker;
 export type RawSourceMap = import("source-map").RawSourceMap;
 export type CssNanoOptions = import("cssnano").CssNanoOptions;
 export type Asset = import("webpack").Asset;
+export type ProcessOptions = import("postcss").ProcessOptions;
+export type Syntax = import("postcss").Syntax;
+export type Parser = import("postcss").Parser;
+export type Stringifier = import("postcss").Stringifier;
 export type MinimizedResult = {
   code: string;
   map?: import("source-map").RawSourceMap | undefined;
@@ -74,15 +78,28 @@ export type CustomOptions = {
   [key: string]: any;
 };
 export type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
-export type DefinedDefaultMinimizerAndOptions<T> = T extends CssNanoOptions
-  ? {
-      minify?: MinimizerImplementation<InferDefaultType<T>> | undefined;
-      minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
-    }
-  : {
-      minify: MinimizerImplementation<InferDefaultType<T>>;
-      minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
+export type ProcessOptionsExtender =
+  | ProcessOptions
+  | {
+      from?: string;
+      to?: string;
+      parser?: string | Syntax | Parser;
+      stringifier?: string | Syntax | Stringifier;
+      syntax?: string | Syntax;
     };
+export type CssNanoOptionsExtended = CssNanoOptions & {
+  processorOptions?: ProcessOptionsExtender;
+};
+export type DefinedDefaultMinimizerAndOptions<T> =
+  T extends CssNanoOptionsExtended
+    ? {
+        minify?: MinimizerImplementation<InferDefaultType<T>> | undefined;
+        minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
+      }
+    : {
+        minify: MinimizerImplementation<InferDefaultType<T>>;
+        minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
+      };
 export type InternalPluginOptions<T> = BasePluginOptions & {
   minimizer: {
     implementation: MinimizerImplementation<InferDefaultType<T>>;
@@ -90,9 +107,9 @@ export type InternalPluginOptions<T> = BasePluginOptions & {
   };
 };
 /**
- * @template [T=CssNanoOptions]
+ * @template [T=CssNanoOptionsExtended]
  */
-declare class CssMinimizerPlugin<T = import("cssnano").CssNanoOptions> {
+declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   /**
    * @private
    * @param {any} input

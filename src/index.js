@@ -24,6 +24,10 @@ import { minify as minifyFn } from "./minify";
 /** @typedef {import("source-map").RawSourceMap} RawSourceMap */
 /** @typedef {import("cssnano").CssNanoOptions} CssNanoOptions */
 /** @typedef {import("webpack").Asset} Asset */
+/** @typedef {import("postcss").ProcessOptions} ProcessOptions */
+/** @typedef {import("postcss").Syntax} Syntax */
+/** @typedef {import("postcss").Parser} Parser */
+/** @typedef {import("postcss").Stringifier} Stringifier */
 
 /**
  * @typedef {Object} MinimizedResult
@@ -106,8 +110,16 @@ import { minify as minifyFn } from "./minify";
  */
 
 /**
+ * @typedef{ProcessOptions | { from?: string,  to?: string, parser?: string | Syntax | Parser, stringifier?: string | Syntax | Stringifier, syntax?: string | Syntax } } ProcessOptionsExtender
+ */
+
+/**
+ * @typedef {CssNanoOptions & { processorOptions?: ProcessOptionsExtender }} CssNanoOptionsExtended
+ */
+
+/**
  * @template T
- * @typedef {T extends CssNanoOptions ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined }} DefinedDefaultMinimizerAndOptions
+ * @typedef {T extends CssNanoOptionsExtended ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined }} DefinedDefaultMinimizerAndOptions
  */
 
 /**
@@ -118,7 +130,7 @@ import { minify as minifyFn } from "./minify";
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
 /**
- * @template [T=CssNanoOptions]
+ * @template [T=CssNanoOptionsExtended]
  */
 class CssMinimizerPlugin {
   /**
@@ -155,7 +167,6 @@ class CssMinimizerPlugin {
       minimizer: {
         implementation:
           /** @type {MinimizerImplementation<InferDefaultType<T>>} */ (minify),
-        // TODO clone options
         options: minimizerOptions,
       },
     };
