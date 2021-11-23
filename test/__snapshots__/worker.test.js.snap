@@ -12,7 +12,19 @@ Object {
   "outputs": Array [
     Object {
       "code": ".foo{color:red}.bar{color:coral}",
-      "map": "{\\"version\\":3,\\"sources\\":[\\"entry.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,SAAU,CACf,KAAK,WAAY\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\".foo{color:red;}\\\\n.bar{color:coral;}\\"]}",
+      "map": Object {
+        "file": "entry.css",
+        "mappings": "AAAA,KAAK,SAAU,CACf,KAAK,WAAY",
+        "names": Array [],
+        "sources": Array [
+          "entry.css",
+        ],
+        "sourcesContent": Array [
+          ".foo{color:red;}
+.bar{color:coral;}",
+        ],
+        "version": 3,
+      },
     },
   ],
   "warnings": Array [],
@@ -25,7 +37,19 @@ Object {
   "outputs": Array [
     Object {
       "code": ".foo{color:red}.bar{color:coral}",
-      "map": "{\\"version\\":3,\\"sources\\":[\\"entry.css\\"],\\"names\\":[],\\"mappings\\":\\"AAAA,KAAK,SAAU,CACf,KAAK,WAAY\\",\\"file\\":\\"entry.css\\",\\"sourcesContent\\":[\\".foo{color:red;}\\\\n.bar{color:coral;}\\"]}",
+      "map": Object {
+        "file": "entry.css",
+        "mappings": "AAAA,KAAK,SAAU,CACf,KAAK,WAAY",
+        "names": Array [],
+        "sources": Array [
+          "entry.css",
+        ],
+        "sourcesContent": Array [
+          ".foo{color:red;}
+.bar{color:coral;}",
+        ],
+        "version": 3,
+      },
     },
   ],
   "warnings": Array [],

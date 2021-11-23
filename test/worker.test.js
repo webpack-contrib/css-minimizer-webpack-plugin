@@ -19,8 +19,10 @@ describe("worker", () => {
         file: "x",
         sourcesContent: [".foo{color:red;}", ".bar{color:coral;}"],
       },
-      minimizerOptions: { discardComments: false },
-      minify: CssMinimizerPlugin.cssnanoMinify,
+      minimizer: {
+        implementation: CssMinimizerPlugin.cssnanoMinify,
+        options: { discardComments: false },
+      },
     };
     const result = await transform(serialize(options));
 
@@ -31,7 +33,6 @@ describe("worker", () => {
     const options = {
       name: "entry.css",
       input: ".foo{color:red;}\n.bar{color:coral;}",
-      minimizerOptions: { discardComments: false },
       inputSourceMap: {
         version: 3,
         sources: ["foo.css", "bar.css"],
@@ -40,7 +41,10 @@ describe("worker", () => {
         file: "x",
         sourcesContent: [".foo{color:red;}", ".bar{color:coral;}"],
       },
-      minify: CssMinimizerPlugin.cssnanoMinify,
+      minimizer: {
+        implementation: CssMinimizerPlugin.cssnanoMinify,
+        options: { discardComments: false },
+      },
     };
     const result = await transform(serialize(options));
 
@@ -51,9 +55,11 @@ describe("worker", () => {
     const options = {
       name: "entry.css",
       input: ".foo{color:red;}\n.bar{color:coral;}",
-      minimizerOptions: { discardComments: false },
-      minify: () => {
-        return { code: ".minify {};" };
+      minimizer: {
+        implementation: () => {
+          return { code: ".minify {};" };
+        },
+        options: { discardComments: false },
       },
     };
     const result = await transform(serialize(options));
@@ -65,8 +71,10 @@ describe("worker", () => {
     const options = {
       name: "entry.css",
       input: false,
-      minimizerOptions: { preset: "default" },
-      minify: CssMinimizerPlugin.cssnanoMinify,
+      minimizer: {
+        implementation: CssMinimizerPlugin.cssnanoMinify,
+        options: { preset: "default" },
+      },
     };
 
     try {
