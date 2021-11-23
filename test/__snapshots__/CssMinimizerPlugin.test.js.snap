@@ -47,6 +47,11 @@ Warning http://example.com/www/js/one.css:1:1]
 
 exports[`CssMinimizerPlugin buildWarning method 6`] = `undefined`;
 
+exports[`CssMinimizerPlugin buildWarning method 7`] = `
+[Warning: test.css from Css Minimizer plugin
+warning http://example.com/www/js/one.css:1:1]
+`;
+
 exports[`CssMinimizerPlugin should build error: error 1`] = `
 Array [
   "Error: error.css from Css Minimizer plugin

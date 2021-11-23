@@ -11,11 +11,31 @@ export type ProcessOptions = import("postcss").ProcessOptions;
 export type Syntax = import("postcss").Syntax;
 export type Parser = import("postcss").Parser;
 export type Stringifier = import("postcss").Stringifier;
+export type Warning =
+  | (Error & {
+      plugin?: string;
+      text?: string;
+      source?: string;
+    })
+  | string;
+export type WarningObject = {
+  message: string;
+  plugin?: string | undefined;
+  text?: string | undefined;
+  line?: number | undefined;
+  column?: number | undefined;
+};
+export type ErrorObject = {
+  message: string;
+  line?: number | undefined;
+  column?: number | undefined;
+  stack?: string | undefined;
+};
 export type MinimizedResult = {
   code: string;
   map?: import("source-map").RawSourceMap | undefined;
-  errors?: (string | Error)[] | undefined;
-  warnings?: Warning[] | undefined;
+  errors?: (string | Error | ErrorObject)[] | undefined;
+  warnings?: (Warning | WarningObject)[] | undefined;
 };
 export type Input = {
   [file: string]: string;
@@ -45,21 +65,14 @@ export type InternalResult = {
     code: string;
     map: RawSourceMap | undefined;
   }>;
-  warnings: Array<Warning | string>;
-  errors: Array<Error | string>;
+  warnings: Array<Warning | WarningObject | string>;
+  errors: Array<Error | ErrorObject | string>;
 };
 export type Parallel = undefined | boolean | number;
 export type Rule = RegExp | string;
 export type Rules = Rule[] | Rule;
-export type Warning =
-  | (Error & {
-      plugin?: string;
-      text?: string;
-      source?: string;
-    })
-  | string;
 export type WarningsFilter = (
-  warning: Warning,
+  warning: Warning | WarningObject | string,
   file: string,
   source?: string | undefined
 ) => boolean;
@@ -118,7 +131,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   private static isSourceMap;
   /**
    * @private
-   * @param {Warning} warning
+   * @param {Warning | WarningObject | string} warning
    * @param {string} file
    * @param {WarningsFilter} [warningsFilter]
    * @param {SourceMapConsumer} [sourceMap]
@@ -128,7 +141,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   private static buildWarning;
   /**
    * @private
-   * @param {any} error
+   * @param {Error | ErrorObject | string} error
    * @param {string} file
    * @param {SourceMapConsumer} [sourceMap]
    * @param {Compilation["requestShortener"]} [requestShortener]

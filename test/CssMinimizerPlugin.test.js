@@ -222,6 +222,20 @@ describe("CssMinimizerPlugin", () => {
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
+    expect(
+      CssMinimizerPlugin.buildWarning(
+        {
+          message: "warning",
+          line: 1,
+          column: 1,
+        },
+        "test.css",
+        // eslint-disable-next-line no-undefined
+        undefined,
+        new SourceMapConsumer(rawSourceMap),
+        new RequestShortener("/example.com/www/js/")
+      )
+    ).toMatchSnapshot();
   });
 
   it("should build error", () => {

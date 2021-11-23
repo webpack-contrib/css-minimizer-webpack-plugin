@@ -29,12 +29,31 @@ import { minify as minifyFn } from "./minify";
 /** @typedef {import("postcss").Parser} Parser */
 /** @typedef {import("postcss").Stringifier} Stringifier */
 
+/** @typedef {Error & { plugin?: string, text?: string, source?: string } | string} Warning */
+
+/**
+ * @typedef {Object} WarningObject
+ * @property {string} message
+ * @property {string} [plugin]
+ * @property {string} [text]
+ * @property {number} [line]
+ * @property {number} [column]
+ */
+
+/**
+ * @typedef {Object} ErrorObject
+ * @property {string} message
+ * @property {number} [line]
+ * @property {number} [column]
+ * @property {string} [stack]
+ */
+
 /**
  * @typedef {Object} MinimizedResult
  * @property {string} code
  * @property {RawSourceMap} [map]
- * @property {Array<Error | string>} [errors]
- * @property {Array<Warning | string>} [warnings]
+ * @property {Array<Error | ErrorObject| string>} [errors]
+ * @property {Array<Warning | WarningObject | string>} [warnings]
  */
 
 /**
@@ -72,8 +91,8 @@ import { minify as minifyFn } from "./minify";
 /**
  * @typedef InternalResult
  * @property {Array<{ code: string, map: RawSourceMap | undefined }>} outputs
- * @property {Array<Warning | string>} warnings
- * @property {Array<Error | string>} errors
+ * @property {Array<Warning | WarningObject | string>} warnings
+ * @property {Array<Error | ErrorObject | string>} errors
  */
 
 /** @typedef {undefined | boolean | number} Parallel */
@@ -82,9 +101,7 @@ import { minify as minifyFn } from "./minify";
 
 /** @typedef {Rule[] | Rule} Rules */
 
-/** @typedef {Error & { plugin?: string, text?: string, source?: string } | string} Warning */
-
-/** @typedef {(warning: Warning, file: string, source?: string) => boolean} WarningsFilter */
+/** @typedef {(warning: Warning | WarningObject | string, file: string, source?: string) => boolean} WarningsFilter */
 
 /**
  * @typedef {Object} BasePluginOptions
@@ -191,7 +208,7 @@ class CssMinimizerPlugin {
 
   /**
    * @private
-   * @param {Warning} warning
+   * @param {Warning | WarningObject | string} warning
    * @param {string} file
    * @param {WarningsFilter} [warningsFilter]
    * @param {SourceMapConsumer} [sourceMap]
@@ -215,13 +232,21 @@ class CssMinimizerPlugin {
     let source;
 
     if (sourceMap) {
-      // TODO fix me
-      // @ts-ignore
-      const match = warningRegex.exec(warning);
+      let line;
+      let column;
 
-      if (match) {
-        const line = +match[1];
-        const column = +match[2];
+      if (typeof warning === "string") {
+        const match = warningRegex.exec(warning);
+
+        if (match) {
+          line = +match[1];
+          column = +match[2];
+        }
+      } else {
+        ({ line, column } = /** @type {WarningObject} */ (warning));
+      }
+
+      if (line && column) {
         const original = sourceMap.originalPositionFor({
           line,
           column,
@@ -266,7 +291,7 @@ class CssMinimizerPlugin {
 
   /**
    * @private
-   * @param {any} error
+   * @param {Error | ErrorObject | string} error
    * @param {string} file
    * @param {SourceMapConsumer} [sourceMap]
    * @param {Compilation["requestShortener"]} [requestShortener]
@@ -279,20 +304,21 @@ class CssMinimizerPlugin {
     let builtError;
 
     if (typeof error === "string") {
-      // @ts-ignore
       builtError = new Error(`${file} from Css Minimizer plugin\n${error}`);
       builtError.file = file;
 
       return builtError;
     }
 
-    if (error.line) {
+    if (
+      /** @type {ErrorObject} */ (error).line &&
+      /** @type {ErrorObject} */ (error).column
+    ) {
+      const { line, column } =
+        /** @type {ErrorObject & { line: number, column: number }} */ (error);
+
       const original =
-        sourceMap &&
-        sourceMap.originalPositionFor({
-          line: error.line,
-          column: error.column,
-        });
+        sourceMap && sourceMap.originalPositionFor({ line, column });
 
       if (original && original.source && requestShortener) {
         builtError = new Error(
@@ -300,7 +326,7 @@ class CssMinimizerPlugin {
             error.message
           } [${requestShortener.shorten(original.source)}:${original.line},${
             original.column
-          }][${file}:${error.line},${error.column}]${
+          }][${file}:${line},${column}]${
             error.stack
               ? `\n${error.stack.split("\n").slice(1).join("\n")}`
               : ""
@@ -312,9 +338,9 @@ class CssMinimizerPlugin {
       }
 
       builtError = new Error(
-        `${file} from Css Minimizer plugin\n${error.message} [${file}:${
-          error.line
-        },${error.column}]${
+        `${file} from Css Minimizer plugin\n${
+          error.message
+        } [${file}:${line},${column}]${
           error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
         }`
       );
@@ -514,7 +540,7 @@ class CssMinimizerPlugin {
             compilation.errors.push(
               /** @type {WebpackError} */ (
                 CssMinimizerPlugin.buildError(
-                  error,
+                  /** @type {any} */ (error),
                   name,
                   hasSourceMap
                     ? new SourceMapConsumer(

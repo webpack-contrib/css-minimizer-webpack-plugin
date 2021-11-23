@@ -166,6 +166,7 @@ async function cssnanoMinify(input, sourceMap, minimizerOptions) {
   // eslint-disable-next-line global-require
   const cssnano = require("cssnano");
   // @ts-ignore
+  // Types are broken
   const result = await postcss([cssnano(minimizerOptions)]).process(
     code,
     postcssOptions
@@ -296,15 +297,21 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
     code: result.code,
     // eslint-disable-next-line no-undefined
     map: result.map ? JSON.parse(result.map) : undefined,
-    // TODO fix me
-    // @ts-ignore
     warnings:
       result.warnings.length > 0
         ? result.warnings.map((item) => {
             return {
               source: item.location && item.location.file,
-              line: item.location && item.location.line,
-              column: item.location && item.location.column,
+              // eslint-disable-next-line no-undefined
+              line:
+                item.location && item.location.line
+                  ? item.location.line
+                  : undefined,
+              // eslint-disable-next-line no-undefined
+              column:
+                item.location && item.location.column
+                  ? item.location.column
+                  : undefined,
               plugin: item.pluginName,
               message: `${item.text}${
                 item.detail ? `\nDetails:\n${item.detail}` : ""
