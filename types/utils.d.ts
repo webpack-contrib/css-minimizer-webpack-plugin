@@ -30,7 +30,7 @@ export function throttleAll<T>(limit: number, tasks: Task<T>[]): Promise<T[]>;
 export function cssnanoMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions?: CustomOptions
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
