@@ -40,24 +40,28 @@ export type MinimizedResult = {
 export type Input = {
   [file: string]: string;
 };
+export type CustomOptions = {
+  [key: string]: any;
+};
+export type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
 export type BasicMinimizerImplementation<T> = (
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minifyOptions: T
+  minifyOptions: InferDefaultType<T>
 ) => Promise<MinimizedResult>;
 export type MinimizerImplementation<T> = T extends any[]
   ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
   : BasicMinimizerImplementation<T>;
 export type MinimizerOptions<T> = T extends any[]
-  ? { [P in keyof T]?: T[P] | undefined }
-  : T;
+  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
+  : InferDefaultType<T>;
 export type InternalOptions<T> = {
   name: string;
   input: string;
   inputSourceMap: RawSourceMap | undefined;
   minimizer: {
-    implementation: MinimizerImplementation<InferDefaultType<T>>;
-    options: MinimizerOptions<InferDefaultType<T>>;
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
   };
 };
 export type InternalResult = {
@@ -87,10 +91,6 @@ export type MinimizerWorker<T> = Worker & {
   transform: (options: string) => InternalResult;
   minify: (options: InternalOptions<T>) => InternalResult;
 };
-export type CustomOptions = {
-  [key: string]: any;
-};
-export type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
 export type ProcessOptionsExtender =
   | ProcessOptions
   | {
@@ -106,17 +106,17 @@ export type CssNanoOptionsExtended = CssNanoOptions & {
 export type DefinedDefaultMinimizerAndOptions<T> =
   T extends CssNanoOptionsExtended
     ? {
-        minify?: MinimizerImplementation<InferDefaultType<T>> | undefined;
-        minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
+        minify?: MinimizerImplementation<T> | undefined;
+        minimizerOptions?: MinimizerOptions<T> | undefined;
       }
     : {
-        minify: MinimizerImplementation<InferDefaultType<T>>;
-        minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined;
+        minify: MinimizerImplementation<T>;
+        minimizerOptions?: MinimizerOptions<T> | undefined;
       };
 export type InternalPluginOptions<T> = BasePluginOptions & {
   minimizer: {
-    implementation: MinimizerImplementation<InferDefaultType<T>>;
-    options: MinimizerOptions<InferDefaultType<T>>;
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
   };
 };
 /**

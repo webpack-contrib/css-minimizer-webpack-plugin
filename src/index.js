@@ -61,11 +61,20 @@ import { minify as minifyFn } from "./minify";
  */
 
 /**
+ * @typedef {{ [key: string]: any }} CustomOptions
+ */
+
+/**
+ * @template T
+ * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
+ */
+
+/**
  * @template T
  * @callback BasicMinimizerImplementation
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {T} minifyOptions
+ * @param {InferDefaultType<T>} minifyOptions
  * @returns {Promise<MinimizedResult>}
  */
 
@@ -76,7 +85,7 @@ import { minify as minifyFn } from "./minify";
 
 /**
  * @template T
- * @typedef {T extends any[] ? { [P in keyof T]?: T[P]; } : T} MinimizerOptions
+ * @typedef {T extends any[] ? { [P in keyof T]?: InferDefaultType<T[P]> } : InferDefaultType<T>} MinimizerOptions
  */
 
 /**
@@ -85,7 +94,7 @@ import { minify as minifyFn } from "./minify";
  * @property {string} name
  * @property {string} input
  * @property {RawSourceMap | undefined} inputSourceMap
- * @property {{ implementation: MinimizerImplementation<InferDefaultType<T>>, options: MinimizerOptions<InferDefaultType<T>> }} minimizer
+ * @property {{ implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> }} minimizer
  */
 
 /**
@@ -118,15 +127,6 @@ import { minify as minifyFn } from "./minify";
  */
 
 /**
- * @typedef {{ [key: string]: any }} CustomOptions
- */
-
-/**
- * @template T
- * @typedef {T extends infer U ? U : CustomOptions} InferDefaultType
- */
-
-/**
  * @typedef{ProcessOptions | { from?: string,  to?: string, parser?: string | Syntax | Parser, stringifier?: string | Syntax | Stringifier, syntax?: string | Syntax } } ProcessOptionsExtender
  */
 
@@ -136,12 +136,12 @@ import { minify as minifyFn } from "./minify";
 
 /**
  * @template T
- * @typedef {T extends CssNanoOptionsExtended ? { minify?: MinimizerImplementation<InferDefaultType<T>> | undefined, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined } : { minify: MinimizerImplementation<InferDefaultType<T>>, minimizerOptions?: MinimizerOptions<InferDefaultType<T>> | undefined }} DefinedDefaultMinimizerAndOptions
+ * @typedef {T extends CssNanoOptionsExtended ? { minify?: MinimizerImplementation<T> | undefined, minimizerOptions?: MinimizerOptions<T> | undefined } : { minify: MinimizerImplementation<T>, minimizerOptions?: MinimizerOptions<T> | undefined }} DefinedDefaultMinimizerAndOptions
  */
 
 /**
  * @template T
- * @typedef {BasePluginOptions & { minimizer: { implementation: MinimizerImplementation<InferDefaultType<T>>, options: MinimizerOptions<InferDefaultType<T>> } }} InternalPluginOptions
+ * @typedef {BasePluginOptions & { minimizer: { implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> } }} InternalPluginOptions
  */
 
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
@@ -160,10 +160,8 @@ class CssMinimizerPlugin {
     });
 
     const {
-      minify = /** @type {MinimizerImplementation<InferDefaultType<T>>} */
-      (cssnanoMinify),
-      minimizerOptions = /** @type {MinimizerOptions<InferDefaultType<T>>} */
-      ({}),
+      minify = /** @type {BasicMinimizerImplementation<T>} */ (cssnanoMinify),
+      minimizerOptions = /** @type {MinimizerOptions<T>} */ ({}),
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
       parallel = true,
@@ -182,8 +180,7 @@ class CssMinimizerPlugin {
       include,
       exclude,
       minimizer: {
-        implementation:
-          /** @type {MinimizerImplementation<InferDefaultType<T>>} */ (minify),
+        implementation: /** @type {MinimizerImplementation<T>} */ (minify),
         options: minimizerOptions,
       },
     };
