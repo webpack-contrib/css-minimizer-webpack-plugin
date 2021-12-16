@@ -1,20 +1,20 @@
-import * as os from "os";
+const os = require("os");
 
-import { SourceMapConsumer } from "source-map";
-import { validate } from "schema-utils";
-import serialize from "serialize-javascript";
-import { Worker } from "jest-worker";
+const { SourceMapConsumer } = require("source-map");
+const { validate } = require("schema-utils");
+const serialize = require("serialize-javascript");
+const { Worker } = require("jest-worker");
 
-import {
+const {
   throttleAll,
   cssnanoMinify,
   cssoMinify,
   cleanCssMinify,
   esbuildMinify,
-} from "./utils";
+} = require("./utils");
 
-import * as schema from "./options.json";
-import { minify as minifyFn } from "./minify";
+const schema = require("./options.json");
+const { minify } = require("./minify");
 
 /** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
 /** @typedef {import("webpack").Compiler} Compiler */
@@ -529,7 +529,7 @@ class CssMinimizerPlugin {
           try {
             result = await (getWorker
               ? getWorker().transform(serialize(options))
-              : minifyFn(options));
+              : minify(options));
           } catch (error) {
             const hasSourceMap =
               inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
@@ -715,4 +715,4 @@ CssMinimizerPlugin.cssoMinify = cssoMinify;
 CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
 CssMinimizerPlugin.esbuildMinify = esbuildMinify;
 
-export default CssMinimizerPlugin;
+module.exports = CssMinimizerPlugin;

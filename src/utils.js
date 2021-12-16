@@ -347,7 +347,7 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
-export {
+module.exports = {
   throttleAll,
   cssnanoMinify,
   cssoMinify,

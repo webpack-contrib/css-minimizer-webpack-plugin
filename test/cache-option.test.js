@@ -92,6 +92,12 @@ describe('"cache" option', () => {
     expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
     expect(getErrors(newStats)).toMatchSnapshot("errors");
     expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+
+    await new Promise((resolve) => {
+      compiler.close(() => {
+        resolve();
+      });
+    });
   });
 
   it('should work with the "memory" value for the "cache.type" option', async () => {
@@ -154,6 +160,12 @@ describe('"cache" option', () => {
     expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
     expect(getErrors(newStats)).toMatchSnapshot("errors");
     expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+
+    await new Promise((resolve) => {
+      compiler.close(() => {
+        resolve();
+      });
+    });
   });
 
   it('should work with the "filesystem" value for the "cache.type" option', async () => {
@@ -217,6 +229,12 @@ describe('"cache" option', () => {
     expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
     expect(getErrors(newStats)).toMatchSnapshot("errors");
     expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+
+    await new Promise((resolve) => {
+      compiler.close(() => {
+        resolve();
+      });
+    });
   });
 
   it('should work with the "filesystem" value for the "cache.type" option and source maps', async () => {
