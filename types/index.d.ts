@@ -1,124 +1,4 @@
-export default CssMinimizerPlugin;
-export type Schema = import("schema-utils/declarations/validate").Schema;
-export type Compiler = import("webpack").Compiler;
-export type Compilation = import("webpack").Compilation;
-export type WebpackError = import("webpack").WebpackError;
-export type JestWorker = import("jest-worker").Worker;
-export type RawSourceMap = import("source-map").RawSourceMap;
-export type CssNanoOptions = import("cssnano").CssNanoOptions;
-export type Asset = import("webpack").Asset;
-export type ProcessOptions = import("postcss").ProcessOptions;
-export type Syntax = import("postcss").Syntax;
-export type Parser = import("postcss").Parser;
-export type Stringifier = import("postcss").Stringifier;
-export type Warning =
-  | (Error & {
-      plugin?: string;
-      text?: string;
-      source?: string;
-    })
-  | string;
-export type WarningObject = {
-  message: string;
-  plugin?: string | undefined;
-  text?: string | undefined;
-  line?: number | undefined;
-  column?: number | undefined;
-};
-export type ErrorObject = {
-  message: string;
-  line?: number | undefined;
-  column?: number | undefined;
-  stack?: string | undefined;
-};
-export type MinimizedResult = {
-  code: string;
-  map?: import("source-map").RawSourceMap | undefined;
-  errors?: (string | Error | ErrorObject)[] | undefined;
-  warnings?: (Warning | WarningObject)[] | undefined;
-};
-export type Input = {
-  [file: string]: string;
-};
-export type CustomOptions = {
-  [key: string]: any;
-};
-export type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
-export type BasicMinimizerImplementation<T> = (
-  input: Input,
-  sourceMap: RawSourceMap | undefined,
-  minifyOptions: InferDefaultType<T>
-) => Promise<MinimizedResult>;
-export type MinimizerImplementation<T> = T extends any[]
-  ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
-  : BasicMinimizerImplementation<T>;
-export type MinimizerOptions<T> = T extends any[]
-  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
-  : InferDefaultType<T>;
-export type InternalOptions<T> = {
-  name: string;
-  input: string;
-  inputSourceMap: RawSourceMap | undefined;
-  minimizer: {
-    implementation: MinimizerImplementation<T>;
-    options: MinimizerOptions<T>;
-  };
-};
-export type InternalResult = {
-  outputs: Array<{
-    code: string;
-    map: RawSourceMap | undefined;
-  }>;
-  warnings: Array<Warning | WarningObject | string>;
-  errors: Array<Error | ErrorObject | string>;
-};
-export type Parallel = undefined | boolean | number;
-export type Rule = RegExp | string;
-export type Rules = Rule[] | Rule;
-export type WarningsFilter = (
-  warning: Warning | WarningObject | string,
-  file: string,
-  source?: string | undefined
-) => boolean;
-export type BasePluginOptions = {
-  test?: Rules | undefined;
-  include?: Rules | undefined;
-  exclude?: Rules | undefined;
-  warningsFilter?: WarningsFilter | undefined;
-  parallel?: Parallel;
-};
-export type MinimizerWorker<T> = Worker & {
-  transform: (options: string) => InternalResult;
-  minify: (options: InternalOptions<T>) => InternalResult;
-};
-export type ProcessOptionsExtender =
-  | ProcessOptions
-  | {
-      from?: string;
-      to?: string;
-      parser?: string | Syntax | Parser;
-      stringifier?: string | Syntax | Stringifier;
-      syntax?: string | Syntax;
-    };
-export type CssNanoOptionsExtended = CssNanoOptions & {
-  processorOptions?: ProcessOptionsExtender;
-};
-export type DefinedDefaultMinimizerAndOptions<T> =
-  T extends CssNanoOptionsExtended
-    ? {
-        minify?: MinimizerImplementation<T> | undefined;
-        minimizerOptions?: MinimizerOptions<T> | undefined;
-      }
-    : {
-        minify: MinimizerImplementation<T>;
-        minimizerOptions?: MinimizerOptions<T> | undefined;
-      };
-export type InternalPluginOptions<T> = BasePluginOptions & {
-  minimizer: {
-    implementation: MinimizerImplementation<T>;
-    options: MinimizerOptions<T>;
-  };
-};
+export = CssMinimizerPlugin;
 /**
  * @template [T=CssNanoOptionsExtended]
  */
@@ -183,13 +63,169 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   apply(compiler: Compiler): void;
 }
 declare namespace CssMinimizerPlugin {
-  export { cssnanoMinify };
-  export { cssoMinify };
-  export { cleanCssMinify };
-  export { esbuildMinify };
+  export {
+    cssnanoMinify,
+    cssoMinify,
+    cleanCssMinify,
+    esbuildMinify,
+    Schema,
+    Compiler,
+    Compilation,
+    WebpackError,
+    JestWorker,
+    RawSourceMap,
+    CssNanoOptions,
+    Asset,
+    ProcessOptions,
+    Syntax,
+    Parser,
+    Stringifier,
+    Warning,
+    WarningObject,
+    ErrorObject,
+    MinimizedResult,
+    Input,
+    CustomOptions,
+    InferDefaultType,
+    BasicMinimizerImplementation,
+    MinimizerImplementation,
+    MinimizerOptions,
+    InternalOptions,
+    InternalResult,
+    Parallel,
+    Rule,
+    Rules,
+    WarningsFilter,
+    BasePluginOptions,
+    MinimizerWorker,
+    ProcessOptionsExtender,
+    CssNanoOptionsExtended,
+    DefinedDefaultMinimizerAndOptions,
+    InternalPluginOptions,
+  };
 }
-import { Worker } from "jest-worker";
+type CssNanoOptionsExtended = CssNanoOptions & {
+  processorOptions?: ProcessOptionsExtender;
+};
+type Compiler = import("webpack").Compiler;
+type BasePluginOptions = {
+  test?: Rules | undefined;
+  include?: Rules | undefined;
+  exclude?: Rules | undefined;
+  warningsFilter?: WarningsFilter | undefined;
+  parallel?: Parallel;
+};
+type DefinedDefaultMinimizerAndOptions<T> = T extends CssNanoOptionsExtended
+  ? {
+      minify?: MinimizerImplementation<T> | undefined;
+      minimizerOptions?: MinimizerOptions<T> | undefined;
+    }
+  : {
+      minify: MinimizerImplementation<T>;
+      minimizerOptions?: MinimizerOptions<T> | undefined;
+    };
 import { cssnanoMinify } from "./utils";
 import { cssoMinify } from "./utils";
 import { cleanCssMinify } from "./utils";
 import { esbuildMinify } from "./utils";
+type Schema = import("schema-utils/declarations/validate").Schema;
+type Compilation = import("webpack").Compilation;
+type WebpackError = import("webpack").WebpackError;
+type JestWorker = import("jest-worker").Worker;
+type RawSourceMap = import("source-map").RawSourceMap;
+type CssNanoOptions = import("cssnano").CssNanoOptions;
+type Asset = import("webpack").Asset;
+type ProcessOptions = import("postcss").ProcessOptions;
+type Syntax = import("postcss").Syntax;
+type Parser = import("postcss").Parser;
+type Stringifier = import("postcss").Stringifier;
+type Warning =
+  | (Error & {
+      plugin?: string;
+      text?: string;
+      source?: string;
+    })
+  | string;
+type WarningObject = {
+  message: string;
+  plugin?: string | undefined;
+  text?: string | undefined;
+  line?: number | undefined;
+  column?: number | undefined;
+};
+type ErrorObject = {
+  message: string;
+  line?: number | undefined;
+  column?: number | undefined;
+  stack?: string | undefined;
+};
+type MinimizedResult = {
+  code: string;
+  map?: import("source-map").RawSourceMap | undefined;
+  errors?: (string | Error | ErrorObject)[] | undefined;
+  warnings?: (Warning | WarningObject)[] | undefined;
+};
+type Input = {
+  [file: string]: string;
+};
+type CustomOptions = {
+  [key: string]: any;
+};
+type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
+type BasicMinimizerImplementation<T> = (
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minifyOptions: InferDefaultType<T>
+) => Promise<MinimizedResult>;
+type MinimizerImplementation<T> = T extends any[]
+  ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
+  : BasicMinimizerImplementation<T>;
+type MinimizerOptions<T> = T extends any[]
+  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
+  : InferDefaultType<T>;
+type InternalOptions<T> = {
+  name: string;
+  input: string;
+  inputSourceMap: RawSourceMap | undefined;
+  minimizer: {
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
+  };
+};
+type InternalResult = {
+  outputs: Array<{
+    code: string;
+    map: RawSourceMap | undefined;
+  }>;
+  warnings: Array<Warning | WarningObject | string>;
+  errors: Array<Error | ErrorObject | string>;
+};
+type Parallel = undefined | boolean | number;
+type Rule = RegExp | string;
+type Rules = Rule[] | Rule;
+type WarningsFilter = (
+  warning: Warning | WarningObject | string,
+  file: string,
+  source?: string | undefined
+) => boolean;
+type MinimizerWorker<T> = Worker & {
+  transform: (options: string) => InternalResult;
+  minify: (options: InternalOptions<T>) => InternalResult;
+};
+type ProcessOptionsExtender =
+  | ProcessOptions
+  | {
+      from?: string;
+      to?: string;
+      parser?: string | Syntax | Parser;
+      stringifier?: string | Syntax | Stringifier;
+      syntax?: string | Syntax;
+    };
+type InternalPluginOptions<T> = BasePluginOptions & {
+  minimizer: {
+    implementation: MinimizerImplementation<T>;
+    options: MinimizerOptions<T>;
+  };
+};
+import { minify } from "./minify";
+import { Worker } from "jest-worker";
