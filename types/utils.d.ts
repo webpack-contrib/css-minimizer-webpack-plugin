@@ -6,9 +6,6 @@ export type MinimizedResult = import("./index.js").MinimizedResult;
 export type CustomOptions = import("./index.js").CustomOptions;
 export type ProcessOptions = import("postcss").ProcessOptions;
 export type Postcss = import("postcss").Postcss;
-export type CssNano = import("cssnano/node_modules/postcss").Plugin<
-  import("cssnano").CssNanoOptions
->;
 /**
  * @template T
  * @typedef {() => Promise<T>} Task

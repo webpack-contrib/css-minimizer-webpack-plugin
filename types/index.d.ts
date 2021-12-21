@@ -74,12 +74,12 @@ declare namespace CssMinimizerPlugin {
     WebpackError,
     JestWorker,
     RawSourceMap,
-    CssNanoOptions,
     Asset,
     ProcessOptions,
     Syntax,
     Parser,
     Stringifier,
+    CssNanoOptions,
     Warning,
     WarningObject,
     ErrorObject,
@@ -133,12 +133,15 @@ type Compilation = import("webpack").Compilation;
 type WebpackError = import("webpack").WebpackError;
 type JestWorker = import("jest-worker").Worker;
 type RawSourceMap = import("source-map").RawSourceMap;
-type CssNanoOptions = import("cssnano").CssNanoOptions;
 type Asset = import("webpack").Asset;
 type ProcessOptions = import("postcss").ProcessOptions;
 type Syntax = import("postcss").Syntax;
 type Parser = import("postcss").Parser;
 type Stringifier = import("postcss").Stringifier;
+type CssNanoOptions = {
+  configFile?: string | undefined;
+  preset?: [string, object] | string | undefined;
+};
 type Warning =
   | (Error & {
       plugin?: string;
