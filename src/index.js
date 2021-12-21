@@ -22,12 +22,17 @@ const { minify } = require("./minify");
 /** @typedef {import("webpack").WebpackError} WebpackError */
 /** @typedef {import("jest-worker").Worker} JestWorker */
 /** @typedef {import("source-map").RawSourceMap} RawSourceMap */
-/** @typedef {import("cssnano").CssNanoOptions} CssNanoOptions */
 /** @typedef {import("webpack").Asset} Asset */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
 /** @typedef {import("postcss").Syntax} Syntax */
 /** @typedef {import("postcss").Parser} Parser */
 /** @typedef {import("postcss").Stringifier} Stringifier */
+
+/**
+ * @typedef {Object} CssNanoOptions
+ * @property {string} [configFile]
+ * @property {[string, object] | string | undefined} [preset]
+ */
 
 /** @typedef {Error & { plugin?: string, text?: string, source?: string } | string} Warning */
 

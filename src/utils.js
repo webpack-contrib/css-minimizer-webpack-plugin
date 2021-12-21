@@ -5,7 +5,6 @@
 /** @typedef {import("./index.js").CustomOptions} CustomOptions */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
 /** @typedef {import("postcss").Postcss} Postcss */
-/** @typedef {import("cssnano")} CssNano */
 
 const notSettled = Symbol(`not-settled`);
 
@@ -167,6 +166,7 @@ async function cssnanoMinify(
   /** @type {Postcss} */
   // eslint-disable-next-line global-require
   const postcss = require("postcss").default;
+  // @ts-ignore
   // eslint-disable-next-line global-require
   const cssnano = require("cssnano");
   // @ts-ignore
