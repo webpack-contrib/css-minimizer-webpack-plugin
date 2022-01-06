@@ -438,7 +438,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
   devtool: "source-map",
   module: {
-    loaders: [
+    rules: [
       {
         test: /.s?css$/,
         use: [
