@@ -347,10 +347,55 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+/* istanbul ignore next */
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+async function parcelCssMinify(input, sourceMap, minimizerOptions) {
+  const [[filename, code]] = Object.entries(input);
+  /**
+   * @param {Partial<import("@parcel/css").TransformOptions>} [parcelCssOptions={}]
+   * @returns {import("@parcel/css").TransformOptions}
+   */
+  const buildParcelCssOptions = (parcelCssOptions = {}) => {
+    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    return {
+      minify: true,
+      ...parcelCssOptions,
+      sourceMap: false,
+      filename,
+      code: Buffer.from(code),
+    };
+  };
+
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  const parcelCss = require("@parcel/css");
+
+  // Copy `esbuild` options
+  const parcelCssOptions = buildParcelCssOptions(minimizerOptions);
+
+  // Let `esbuild` generate a SourceMap
+  if (sourceMap) {
+    parcelCssOptions.sourceMap = true;
+  }
+
+  const result = await parcelCss.transform(parcelCssOptions);
+
+  return {
+    code: result.code.toString(),
+    // eslint-disable-next-line no-undefined
+    map: result.map ? JSON.parse(result.map.toString()) : undefined,
+  };
+}
+
 module.exports = {
   throttleAll,
   cssnanoMinify,
   cssoMinify,
   cleanCssMinify,
   esbuildMinify,
+  parcelCssMinify,
 };

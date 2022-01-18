@@ -53,6 +53,9 @@
     },
     "esbuild": {
       "optional": true
+    },
+    "@parcel/css": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -69,6 +72,7 @@
     "@babel/preset-env": "^7.16.7",
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@parcel/css": "^1.0.3",
     "@types/clean-css": "^4.2.5",
     "@types/csso": "^5.0.0",
     "@types/serialize-javascript": "^5.0.2",

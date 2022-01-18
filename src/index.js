@@ -11,6 +11,7 @@ const {
   cssoMinify,
   cleanCssMinify,
   esbuildMinify,
+  parcelCssMinify,
 } = require("./utils");
 
 const schema = require("./options.json");
@@ -719,5 +720,6 @@ CssMinimizerPlugin.cssnanoMinify = cssnanoMinify;
 CssMinimizerPlugin.cssoMinify = cssoMinify;
 CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
 CssMinimizerPlugin.esbuildMinify = esbuildMinify;
+CssMinimizerPlugin.parcelCssMinify = parcelCssMinify;
 
 module.exports = CssMinimizerPlugin;
