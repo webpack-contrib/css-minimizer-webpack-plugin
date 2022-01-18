@@ -68,6 +68,7 @@ declare namespace CssMinimizerPlugin {
     cssoMinify,
     cleanCssMinify,
     esbuildMinify,
+    parcelCssMinify,
     Schema,
     Compiler,
     Compilation,
@@ -128,6 +129,7 @@ import { cssnanoMinify } from "./utils";
 import { cssoMinify } from "./utils";
 import { cleanCssMinify } from "./utils";
 import { esbuildMinify } from "./utils";
+import { parcelCssMinify } from "./utils";
 type Schema = import("schema-utils/declarations/validate").Schema;
 type Compilation = import("webpack").Compilation;
 type WebpackError = import("webpack").WebpackError;

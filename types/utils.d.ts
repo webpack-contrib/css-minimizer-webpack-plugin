@@ -62,3 +62,14 @@ export function esbuildMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions
 ): Promise<MinimizedResult>;
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+export function parcelCssMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
