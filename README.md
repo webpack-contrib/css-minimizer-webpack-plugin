@@ -224,6 +224,7 @@ Possible options:
 - CssMinimizerPlugin.cssoMinify
 - CssMinimizerPlugin.cleanCssMinify
 - CssMinimizerPlugin.esbuildMinify
+- CssMinimizerPlugin.parcelCssMinify
 - `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
 > ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
@@ -485,7 +486,8 @@ module.exports = {
 
 ```js
 module.exports = {
-  devtool: "source-map",
+  // Uncomment if you need source maps
+  // devtool: "source-map",
   optimization: {
     minimize: true,
     minimizer: [
@@ -505,7 +507,8 @@ module.exports = {
 
 ```js
 module.exports = {
-  devtool: "source-map",
+  // Uncomment if you need source maps
+  // devtool: "source-map",
   optimization: {
     minimize: true,
     minimizer: [
@@ -525,12 +528,34 @@ module.exports = {
 
 ```js
 module.exports = {
-  devtool: "source-map",
+  // Uncomment if you need source maps
+  // devtool: "source-map",
   optimization: {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
         minify: CssMinimizerPlugin.esbuildMinify,
+      }),
+    ],
+  },
+};
+```
+
+### Using custom minifier [@parcel/css](https://github.com/parcel-bundler/parcel-css)
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  // Uncomment if you need source maps
+  // devtool: "source-map",
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minify: CssMinimizerPlugin.parcelCssMinify,
+        // Uncomment this line for options
+        // minimizerOptions: { targets: { ie: 11 }, drafts: { nesting: true } },
       }),
     ],
   },

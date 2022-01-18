@@ -1,0 +1,21 @@
+table.colortable {
+    & td {
+        text-align:center;
+        &.c { text-transform:uppercase }
+    
+        &:first-child, &:first-child + td { border:1px solid black }
+    }
+
+    & th {
+          text-align:center;
+          background:black;
+          color:white;
+    }
+}
+
+.example {
+    display: grid;
+    transition: all .5s;
+    user-select: none;
+    background: linear-gradient(to bottom, white, black);
+}
