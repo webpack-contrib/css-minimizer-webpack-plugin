@@ -23,7 +23,19 @@ Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-
 To begin, you'll need to install `css-minimizer-webpack-plugin`:
 
 ```console
-$ npm install css-minimizer-webpack-plugin --save-dev
+npm install css-minimizer-webpack-plugin --save-dev
+```
+
+or
+
+```console
+yarn add -D css-minimizer-webpack-plugin
+```
+
+or
+
+```console
+pnpm add -D css-minimizer-webpack-plugin
 ```
 
 Then add the plugin to your `webpack` configuration. For example:
