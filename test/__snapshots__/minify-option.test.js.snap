@@ -262,7 +262,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: assets 1`] = `
 Object {
-  "foo.css": "width: calc(100px + 100){}
+  "foo.css": "width: calc(100px + 100);{}
 ",
 }
 `;
