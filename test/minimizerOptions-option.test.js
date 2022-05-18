@@ -83,7 +83,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: "default",
+        preset: require.resolve("cssnano-preset-default"),
       },
     }).apply(compiler);
 
@@ -94,7 +94,7 @@ describe('when applied with "minimizerOptions" option', () => {
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
-        preset: require.resolve("cssnano-preset-simple"),
+        preset: require.resolve("cssnano-preset-default"),
       },
     }).apply(compiler2);
 
