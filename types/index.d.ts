@@ -183,10 +183,14 @@ type BasicMinimizerImplementation<T> = (
   minifyOptions: InferDefaultType<T>
 ) => Promise<MinimizedResult>;
 type MinimizerImplementation<T> = T extends any[]
-  ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
+  ? T extends infer T_1
+    ? { [P in keyof T_1]: BasicMinimizerImplementation<T[P]> }
+    : never
   : BasicMinimizerImplementation<T>;
 type MinimizerOptions<T> = T extends any[]
-  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
+  ? T extends infer T_1
+    ? { [P in keyof T_1]?: InferDefaultType<T[P]> | undefined }
+    : never
   : InferDefaultType<T>;
 type InternalOptions<T> = {
   name: string;
@@ -211,7 +215,7 @@ type Rules = Rule[] | Rule;
 type WarningsFilter = (
   warning: Warning | WarningObject | string,
   file: string,
-  source?: string | undefined
+  source?: string
 ) => boolean;
 type MinimizerWorker<T> = Worker & {
   transform: (options: string) => InternalResult;
