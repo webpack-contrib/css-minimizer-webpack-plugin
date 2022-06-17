@@ -238,7 +238,9 @@ Possible options:
 - CssMinimizerPlugin.parcelCssMinify
 - `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
-> ⚠️ **Always use `require` inside `minify` function when `parallel` option enabled**.
+> **Warning**
+>
+> **Always use `require` inside `minify` function when `parallel` option enabled**.
 
 #### `Function`
 
@@ -360,7 +362,9 @@ Default: `{ from: assetName }`
 Allows filtering options [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano.
 The `parser`,` stringifier` and `syntax` can be either a function or a string indicating the module that will be imported.
 
-> ⚠️ **If a function is passed, the `parallel` option must be disabled.**.
+> **Warning**
+>
+> **If a function is passed, the `parallel` option must be disabled.**.
 
 ```js
 import sugarss from "sugarss";
@@ -407,7 +411,9 @@ Default: `() => true`
 Allow filtering css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
 Return `true` to keep the warning, a falsy value (`false`/`null`/`undefined`) otherwise.
 
-> ⚠️ The `source` argument will contain `undefined` if you don't use source maps.
+> **Warning**
+>
+> The `source` argument will contain `undefined` if you don't use source maps.
 
 **webpack.config.js**
 
