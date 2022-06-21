@@ -105,7 +105,7 @@ If you use your own `minify` function please read the `minify` section for handl
 |          **[`exclude`](#exclude)**          |    `String\|RegExp\|Array<String\|RegExp>`     |            `undefined`             | Files to exclude.                                                       |
 |         **[`parallel`](#parallel)**         |               `Boolean\|Number`                |               `true`               | Enable/disable multi-process parallel running.                          |
 |           **[`minify`](#minify)**           |          `Function\|Array<Function>`           | `CssMinimizerPlugin.cssnanoMinify` | Allows to override default minify function.                             |
-| **[`minimizerOptions`](#minimizeroptions)** |            `Object\|Array<Object>`             |      `{ preset: 'default' }`       | Cssnano optimisations [options](https://cssnano.co/docs/optimisations). |
+| **[`minimizerOptions`](#minimizeroptions)** |            `Object\|Array<Object>`             |      `{ preset: 'default' }`       | Cssnano optimisations [options](https://cssnano.co/docs/what-are-optimisations). |
 |   **[`warningsFilter`](#warningsfilter)**   | `Function<(warning, file, source) -> Boolean>` |            `() => true`            | Allow to filter css-minimizer warnings.                                 |
 
 ### `test`
@@ -308,7 +308,7 @@ module.exports = {
 Type: `Object|Array<Object>`
 Default: `{ preset: 'default' }`
 
-Cssnano optimisations [options](https://cssnano.co/docs/optimisations).
+Cssnano optimisations [options](https://cssnano.co/docs/what-are-optimisations).
 
 #### `Object`
 
