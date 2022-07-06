@@ -1,16 +1,16 @@
-import path from "path";
+const path = require("path");
 
-import del from "del";
+const del = require("del");
 
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import {
+const {
   compile,
   getCompiler,
   getErrors,
   getWarnings,
   readAssets,
-} from "./helpers";
+} = require("./helpers");
 
 describe('"cache" option', () => {
   const fileSystemCacheDirectory = path.resolve(

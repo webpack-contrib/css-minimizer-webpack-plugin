@@ -1,16 +1,16 @@
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import CopyPlugin from "copy-webpack-plugin";
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
-import CssMinimizerPlugin from "../src";
+const CssMinimizerPlugin = require("../src");
 
-import {
+const {
   compile,
   getCompiler,
   getErrors,
   getWarnings,
   readAsset,
-  readAssets,
-} from "./helpers";
+  readAssets
+} = require("./helpers");
 
 describe('"minify" option', () => {
   it('should work with "csso" minifier', async () => {

@@ -1,15 +1,15 @@
-import webpack from "webpack";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import {
+const {
   getCompiler,
   compile,
   readAssets,
   getErrors,
   getWarnings,
-} from "./helpers";
+} = require("./helpers");
 
 expect.addSnapshotSerializer({
   test: (value) => {

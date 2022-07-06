@@ -1,16 +1,16 @@
-import os from "os";
+const os = require("os");
 
-import { Worker } from "jest-worker";
+const { Worker } = require("jest-worker");
 
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import {
+const {
   compile,
   getCompiler,
   getErrors,
   getWarnings,
   readAssets,
-} from "./helpers";
+} = require("./helpers");
 
 jest.mock("os", () => {
   const actualOs = jest.requireActual("os");

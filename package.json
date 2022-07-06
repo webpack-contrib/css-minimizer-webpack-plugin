@@ -11,17 +11,16 @@
     "type": "opencollective",
     "url": "https://opencollective.com/webpack"
   },
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "types": "types/index.d.ts",
   "engines": {
     "node": ">= 14.15.0"
   },
   "scripts": {
     "start": "npm run build -- -w",
-    "clean": "del-cli dist",
-    "prebuild": "npm run clean types",
+    "clean": "del-cli types",
+    "prebuild": "npm run clean",
     "build:types": "tsc --declaration --emitDeclarationOnly --outDir types && prettier \"types/**/*.ts\" --write",
-    "build:code": "cross-env NODE_ENV=production babel src -d dist --copy-files",
     "build": "npm-run-all -p \"build:**\"",
     "commitlint": "commitlint --from=master",
     "security": "npm audit",
@@ -38,7 +37,7 @@
     "release": "standard-version"
   },
   "files": [
-    "dist",
+    "src",
     "types"
   ],
   "peerDependencies": {
@@ -67,9 +66,6 @@
     "source-map": "^0.6.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.18.9",
-    "@babel/core": "^7.18.9",
-    "@babel/preset-env": "^7.18.9",
     "@commitlint/cli": "^17.0.3",
     "@commitlint/config-conventional": "^17.0.3",
     "@parcel/css": "^1.12.2",
@@ -77,8 +73,7 @@
     "@types/csso": "^5.0.0",
     "@types/serialize-javascript": "^5.0.2",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
-    "babel-jest": "^28.1.2",
-    "clean-css": "^5.3.1",
+    "clean-css": "^5.3.0",
     "copy-webpack-plugin": "^9.1.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",

@@ -1,13 +1,13 @@
-import path from "path";
+const path = require("path");
 
-import { SourceMapConsumer } from "source-map";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import CopyPlugin from "copy-webpack-plugin";
-import RequestShortener from "webpack/lib/RequestShortener";
+const { SourceMapConsumer } = require("source-map");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+const RequestShortener = require("webpack/lib/RequestShortener");
 
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import {
+const {
   getCompiler,
   getErrors,
   getWarnings,
@@ -15,8 +15,8 @@ import {
   readAssets,
   readAsset,
   ModifyExistingAsset,
-  EmitNewAsset,
-} from "./helpers";
+  EmitNewAsset
+} = require("./helpers");
 
 describe("CssMinimizerPlugin", () => {
   const rawSourceMap = {
@@ -530,7 +530,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -585,7 +585,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -640,7 +640,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -697,7 +697,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(8);
+    expect(stats.compilation.emittedAssets.size).toBe(6);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
       "assets"
@@ -754,7 +754,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(8);
+    expect(stats.compilation.emittedAssets.size).toBe(6);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
       "assets"
@@ -842,7 +842,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -926,7 +926,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -983,7 +983,7 @@ describe("CssMinimizerPlugin", () => {
 
     const stats = await compile(compiler);
 
-    expect(stats.compilation.emittedAssets.size).toBe(5);
+    expect(stats.compilation.emittedAssets.size).toBe(4);
 
     expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
     expect(getWarnings(stats)).toMatchSnapshot("errors");
@@ -992,7 +992,7 @@ describe("CssMinimizerPlugin", () => {
     await new Promise(async (resolve) => {
       const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(5);
+      expect(newStats.compilation.emittedAssets.size).toBe(4);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
         "assets"

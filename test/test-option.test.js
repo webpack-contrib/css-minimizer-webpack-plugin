@@ -1,12 +1,12 @@
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import {
+const {
   getCompiler,
   compile,
   readAssets,
   getErrors,
   getWarnings,
-} from "./helpers";
+} = require("./helpers");
 
 describe('when applied with "test" option', () => {
   let compiler;

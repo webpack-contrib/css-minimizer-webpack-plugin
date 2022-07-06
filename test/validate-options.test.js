@@ -1,4 +1,4 @@
-import CssMinimizerPlugin from "../src";
+const CssMinimizerPlugin = require("../src");
 
 it("validation", () => {
   /* eslint-disable no-new */

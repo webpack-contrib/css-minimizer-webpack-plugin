@@ -1,10 +1,10 @@
-import CopyPlugin from "copy-webpack-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import sugarss from "sugarss";
+const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const sugarss = require("sugarss");
 
-import CssMinimizerPlugin from "../src/index";
+const CssMinimizerPlugin = require("../src/index");
 
-import { getCompiler, compile, readAsset } from "./helpers";
+const { getCompiler, compile, readAsset } = require("./helpers");
 
 describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardComments" option (enable [default])', () => {

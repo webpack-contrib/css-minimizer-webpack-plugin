@@ -1,1 +1,1 @@
-export default 'bar';
+module.exports = 'bar';

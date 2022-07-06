@@ -1,1 +1,1 @@
-import './foo.css';
+require('./foo.css');

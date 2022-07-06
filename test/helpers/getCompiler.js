@@ -1,10 +1,11 @@
-import path from "path";
+const path = require("path");
 
-import webpack from "webpack";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { createFsFromVolume, Volume } from "memfs";
+const webpack = require("webpack");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-export default function getCompiler(config) {
+const { createFsFromVolume, Volume } = require("memfs");
+
+module.exports = function getCompiler(config) {
   const compiler = webpack({
     mode: "development",
     devtool: config.devtool || false,
@@ -40,4 +41,4 @@ export default function getCompiler(config) {
   }
 
   return compiler;
-}
+};

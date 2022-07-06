@@ -1,11 +1,11 @@
-import foo from './simple-emit';
-import bar from './simple-emit-2';
-import './foo.css';
+const foo = require("./simple-emit");
+const bar = require("./simple-emit-2");
+require('./foo.css');
 
 async function load() {
-  return import('./simple-async');
+  return require('./simple-async');
 }
 
 load();
 
-export default [foo, bar, extracted, css, otherCss];
+module.exports = [foo, bar, extracted, css, otherCss];

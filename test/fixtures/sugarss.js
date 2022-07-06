@@ -1,1 +1,3 @@
-export const foo = 'foo';
+const foo = 'foo';
+
+module.exports = { foo };

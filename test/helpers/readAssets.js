@@ -1,6 +1,6 @@
-import readAsset from "./readAsset";
+const readAsset = require("./readAsset");
 
-export default function readAssets(compiler, stats, extension) {
+module.exports = function readAssets(compiler, stats, extension) {
   const assets = {};
 
   Object.keys(stats.compilation.assets).forEach((asset) => {
@@ -12,4 +12,4 @@ export default function readAssets(compiler, stats, extension) {
   });
 
   return assets;
-}
+};
