@@ -9,7 +9,7 @@ const {
   getErrors,
   getWarnings,
   readAsset,
-  readAssets
+  readAssets,
 } = require("./helpers");
 
 describe('"minify" option', () => {

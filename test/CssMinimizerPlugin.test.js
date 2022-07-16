@@ -15,7 +15,7 @@ const {
   readAssets,
   readAsset,
   ModifyExistingAsset,
-  EmitNewAsset
+  EmitNewAsset,
 } = require("./helpers");
 
 describe("CssMinimizerPlugin", () => {
