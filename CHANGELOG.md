@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [4.1.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v4.0.0...v4.1.0) (2022-09-09)
+
+
+### Features
+
+* added `lightningcss` support ([#192](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/192)) ([04a3347](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/04a3347610a0044116bfebfd3f3be50d3ada4e04))
+
 ## [4.0.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v3.4.1...v4.0.0) (2022-05-18)
 
 
