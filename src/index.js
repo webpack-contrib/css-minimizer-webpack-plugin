@@ -12,10 +12,11 @@ const {
   cleanCssMinify,
   esbuildMinify,
   parcelCssMinify,
+  lightningCssMinify,
 } = require("./utils");
 
 const schema = require("./options.json");
-const { minify } = require("./minify");
+const { minify: minifyWorker } = require("./minify");
 
 /** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
 /** @typedef {import("webpack").Compiler} Compiler */
@@ -535,7 +536,7 @@ class CssMinimizerPlugin {
           try {
             result = await (getWorker
               ? getWorker().transform(serialize(options))
-              : minify(options));
+              : minifyWorker(options));
           } catch (error) {
             const hasSourceMap =
               inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);
@@ -721,5 +722,6 @@ CssMinimizerPlugin.cssoMinify = cssoMinify;
 CssMinimizerPlugin.cleanCssMinify = cleanCssMinify;
 CssMinimizerPlugin.esbuildMinify = esbuildMinify;
 CssMinimizerPlugin.parcelCssMinify = parcelCssMinify;
+CssMinimizerPlugin.lightningCssMinify = lightningCssMinify;
 
 module.exports = CssMinimizerPlugin;

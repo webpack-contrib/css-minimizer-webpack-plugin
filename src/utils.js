@@ -306,16 +306,16 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
         ? result.warnings.map((item) => {
             return {
               source: item.location && item.location.file,
-              // eslint-disable-next-line no-undefined
               line:
                 item.location && item.location.line
                   ? item.location.line
-                  : undefined,
-              // eslint-disable-next-line no-undefined
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
               column:
                 item.location && item.location.column
                   ? item.location.column
-                  : undefined,
+                  : // eslint-disable-next-line no-undefined
+                    undefined,
               plugin: item.pluginName,
               message: `${item.text}${
                 item.detail ? `\nDetails:\n${item.detail}` : ""
@@ -347,6 +347,7 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+// TODO remove in the next major release
 /* istanbul ignore next */
 /**
  * @param {Input} input
@@ -391,6 +392,50 @@ async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+/* istanbul ignore next */
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+async function lightningCssMinify(input, sourceMap, minimizerOptions) {
+  const [[filename, code]] = Object.entries(input);
+  /**
+   * @param {Partial<import("lightningcss").TransformOptions>} [lightningCssOptions={}]
+   * @returns {import("lightningcss").TransformOptions}
+   */
+  const buildLightningCssOptions = (lightningCssOptions = {}) => {
+    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    return {
+      minify: true,
+      ...lightningCssOptions,
+      sourceMap: false,
+      filename,
+      code: Buffer.from(code),
+    };
+  };
+
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  const lightningCss = require("lightningcss");
+
+  // Copy `esbuild` options
+  const lightningCssOptions = buildLightningCssOptions(minimizerOptions);
+
+  // Let `esbuild` generate a SourceMap
+  if (sourceMap) {
+    lightningCssOptions.sourceMap = true;
+  }
+
+  const result = await lightningCss.transform(lightningCssOptions);
+
+  return {
+    code: result.code.toString(),
+    // eslint-disable-next-line no-undefined
+    map: result.map ? JSON.parse(result.map.toString()) : undefined,
+  };
+}
+
 module.exports = {
   throttleAll,
   cssnanoMinify,
@@ -398,4 +443,5 @@ module.exports = {
   cleanCssMinify,
   esbuildMinify,
   parcelCssMinify,
+  lightningCssMinify,
 };

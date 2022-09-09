@@ -231,11 +231,11 @@ Useful for using and testing unpublished versions or forks.
 
 Possible options:
 
-- CssMinimizerPlugin.cssnanoMinify
-- CssMinimizerPlugin.cssoMinify
-- CssMinimizerPlugin.cleanCssMinify
-- CssMinimizerPlugin.esbuildMinify
-- CssMinimizerPlugin.parcelCssMinify
+- `CssMinimizerPlugin.cssnanoMinify`
+- `CssMinimizerPlugin.cssoMinify`
+- `CssMinimizerPlugin.cleanCssMinify`
+- `CssMinimizerPlugin.esbuildMinify`
+- `CssMinimizerPlugin.lightningCssMinify` (previously`CssMinimizerPlugin.parcelCssMinify`, the package was renamed, but we keep it for backward compatibility)
 - `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
 > **Warning**
@@ -558,7 +558,7 @@ module.exports = {
 };
 ```
 
-### Using custom minifier [@parcel/css](https://github.com/parcel-bundler/parcel-css)
+### Using custom minifier [lightningcss](https://github.com/parcel-bundler/lightningcss), previously `@parcel/css`
 
 **webpack.config.js**
 
@@ -570,7 +570,7 @@ module.exports = {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
-        minify: CssMinimizerPlugin.parcelCssMinify,
+        minify: CssMinimizerPlugin.lightningCssMinify,
         // Uncomment this line for options
         // minimizerOptions: { targets: { ie: 11 }, drafts: { nesting: true } },
       }),

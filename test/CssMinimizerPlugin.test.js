@@ -191,6 +191,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        // eslint-disable-next-line no-undefined
         undefined,
         new SourceMapConsumer(rawSourceMap)
       )
@@ -199,6 +200,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
+        // eslint-disable-next-line no-undefined
         undefined,
         new SourceMapConsumer(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
@@ -483,6 +485,7 @@ describe("CssMinimizerPlugin", () => {
     for (const assetName of Object.keys(assets)) {
       const [, webpackHash] = assetName.match(/^.+?\.(.+?)\..+$/);
       const { hashDigestLength, hashDigest, hashFunction } = output;
+      // eslint-disable-next-line global-require
       const cryptoHash = require("webpack")
         .util.createHash(hashFunction)
         .update(readAsset(assetName, compiler, stats))

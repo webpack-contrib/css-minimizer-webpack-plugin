@@ -73,3 +73,14 @@ export function parcelCssMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions
 ): Promise<MinimizedResult>;
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+export function lightningCssMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
