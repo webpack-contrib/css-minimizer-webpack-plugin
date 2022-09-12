@@ -1,25 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`worker should emit error: error 1`] = `
-Array [
+[
   "/entry.css:1:1: Unknown word",
 ]
 `;
 
 exports[`worker should minify css: result 1`] = `
-Object {
-  "errors": Array [],
-  "outputs": Array [
-    Object {
+{
+  "errors": [],
+  "outputs": [
+    {
       "code": ".foo{color:red}.bar{color:coral}",
-      "map": Object {
+      "map": {
         "file": "entry.css",
         "mappings": "AAAA,KAAK,SAAU,CACf,KAAK,WAAY",
-        "names": Array [],
-        "sources": Array [
+        "names": [],
+        "sources": [
           "entry.css",
         ],
-        "sourcesContent": Array [
+        "sourcesContent": [
           ".foo{color:red;}
 .bar{color:coral;}",
         ],
@@ -27,24 +27,24 @@ Object {
       },
     },
   ],
-  "warnings": Array [],
+  "warnings": [],
 }
 `;
 
 exports[`worker should work inputSourceMap as prev: result 1`] = `
-Object {
-  "errors": Array [],
-  "outputs": Array [
-    Object {
+{
+  "errors": [],
+  "outputs": [
+    {
       "code": ".foo{color:red}.bar{color:coral}",
-      "map": Object {
+      "map": {
         "file": "entry.css",
         "mappings": "AAAA,KAAK,SAAU,CACf,KAAK,WAAY",
-        "names": Array [],
-        "sources": Array [
+        "names": [],
+        "sources": [
           "entry.css",
         ],
-        "sourcesContent": Array [
+        "sourcesContent": [
           ".foo{color:red;}
 .bar{color:coral;}",
         ],
@@ -52,19 +52,19 @@ Object {
       },
     },
   ],
-  "warnings": Array [],
+  "warnings": [],
 }
 `;
 
 exports[`worker should work options.minify function: result 1`] = `
-Object {
-  "errors": Array [],
-  "outputs": Array [
-    Object {
+{
+  "errors": [],
+  "outputs": [
+    {
       "code": ".minify {};",
       "map": undefined,
     },
   ],
-  "warnings": Array [],
+  "warnings": [],
 }
 `;

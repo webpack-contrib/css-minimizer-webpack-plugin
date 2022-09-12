@@ -53,54 +53,54 @@ warning http://example.com/www/js/one.css:1:1]
 `;
 
 exports[`CssMinimizerPlugin should build error: error 1`] = `
-Array [
+[
   "Error: error.css from Css Minimizer plugin
 /error.css:1:1: Unknown word [error.css:1,1]",
 ]
 `;
 
-exports[`CssMinimizerPlugin should build error: warning 1`] = `Array []`;
+exports[`CssMinimizerPlugin should build error: warning 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should build warning: error 1`] = `Array []`;
+exports[`CssMinimizerPlugin should build warning: error 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should build warning: warning 1`] = `
-Array [
+[
   "Warning: foo.css from Css Minimizer plugin
 [warning-plugin] Warning",
 ]
 `;
 
 exports[`CssMinimizerPlugin should respect the hash options #1: assets 1`] = `
-Object {
+{
   "entry.css": "a{text-align:center}",
 }
 `;
 
-exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should respect the hash options #1: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should respect the hash options #1: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: assets 1`] = `
-Object {
+{
   "newFile.css": ".a{color:coral;display:block}",
 }
 `;
 
-exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should run plugin against assets added later by plugins: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should throw error from postcss: error 1`] = `
-Array [
+[
   "Error: foo.css from Css Minimizer plugin
 error-plugin: /foo.css:2:3: Postcss error [webpack://./test/foo.css:2,2][foo.css:2,3]",
 ]
 `;
 
-exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `Array []`;
+exports[`CssMinimizerPlugin should throw error from postcss: warning 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
@@ -108,43 +108,43 @@ Object {
 `;
 
 exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": assets 2`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and do not use memory cache when the "cache" option is "false": warnings 2`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and generate real content hash: assets 1`] = `
-Object {
-  "entry.ee68cb428fa1feaa2c48.072159461f23c2c047e9.0e6907f00e0eaf46a2f9.css": "body{color:red}a{color:blue}",
+{
+  "entry.ee68cb428fa1feaa2c48.e55d247f17ebcb48bd51.47e5afd8283b82390673.css": "body{color:red}a{color:blue}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and generate real content hash: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and generate real content hash: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and generate real content hash: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and generate real content hash: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and show minimized assets in stats: assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and show minimized assets in stats: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and show minimized assets in stats: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and show minimized assets in stats: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and show minimized assets in stats: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and use memory cache out of box: assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
@@ -152,23 +152,23 @@ Object {
 `;
 
 exports[`CssMinimizerPlugin should work and use memory cache out of box: assets 2`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and use memory cache out of box: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache out of box: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache out of box: errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache out of box: errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache out of box: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache out of box: warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache out of box: warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache out of box: warnings 2`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
@@ -176,23 +176,23 @@ Object {
 `;
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: assets 2`] = `
-Object {
+{
   "foo.css": "a,body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `[]`;
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
@@ -200,22 +200,22 @@ Object {
 `;
 
 exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": assets 2`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work and use memory cache when the "cache" option is "true": warnings 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{\\"version\\":3,\\"file\\":\\"entry.css?v=test\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///entry.css%3Fv=test\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\\\n\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}"`;
+exports[`CssMinimizerPlugin should work with assets using querystring: entry.css.map?v=test 1`] = `"{"version":3,"file":"entry.css?v=test","mappings":"AAAA,KACE,SACF,CACA,EACE,UACF","sources":["webpack:///entry.css%3Fv=test"],"sourcesContent":["body {\\r\\n  color: red;\\r\\n}\\r\\na {\\r\\n  color: blue;\\r\\n}\\n"],"names":[],"sourceRoot":""}"`;
 
 exports[`CssMinimizerPlugin should work with assets using querystring: entry.css?v=test 1`] = `
 "body{color:red}a{color:blue}
@@ -223,73 +223,73 @@ exports[`CssMinimizerPlugin should work with assets using querystring: entry.css
 `;
 
 exports[`CssMinimizerPlugin should work with child compilation: assets 1`] = `
-Object {
+{
   "entry.css": ".entry{text-align:center}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work with child compilation: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with child compilation: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with child compilation: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with child compilation: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KACE,SACF,CACA,EACE,UACF","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\r\\n  color: red;\\r\\n}\\r\\na {\\r\\n  color: blue;\\r\\n}"],"names":[],"sourceRoot":""}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: assets 2`] = `
-Object {
+{
   "foo.css": "a,body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,OACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,OACE,SACF,CACA,EACE,UACF","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\r\\n  color: red;\\r\\n}\\r\\na {\\r\\n  color: blue;\\r\\n}"],"names":[],"sourceRoot":""}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `[]`;
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": assets 1`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KACE,SACF,CACA,EACE,UACF","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\r\\n  color: red;\\r\\n}\\r\\na {\\r\\n  color: blue;\\r\\n}"],"names":[],"sourceRoot":""}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
 exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": assets 2`] = `
-Object {
+{
   "foo.css": "body{color:red}a{color:blue}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,KACE,SACF,CACA,EACE,UACF\\",\\"sources\\":[\\"webpack:///./foo.css\\"],\\"sourcesContent\\":[\\"body {\\\\n  color: red;\\\\n}\\\\na {\\\\n  color: blue;\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KACE,SACF,CACA,EACE,UACF","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\r\\n  color: red;\\r\\n}\\r\\na {\\r\\n  color: blue;\\r\\n}"],"names":[],"sourceRoot":""}",
   "style-2.css": "a{color:coral}",
   "style.css": "a{color:red}",
 }
 `;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": errors 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": warnings 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": warnings 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with source map and use memory cache when the "cache" option is "true": warnings 2`] = `[]`;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: assets 1`] = `
-Object {
+{
   "foo.css": "body {
   color: red;
 }
@@ -303,7 +303,7 @@ a {
 `;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: assets 2`] = `
-Object {
+{
   "foo.css": "a { color: red; }body {
   color: red;
 }
@@ -317,7 +317,7 @@ a {
 `;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 1`] = `
-Array [
+[
   "Warning: foo.css from Css Minimizer plugin
 [warning-plugin] Warning from foo.css",
   "Warning: style-2.css from Css Minimizer plugin
@@ -327,12 +327,12 @@ Array [
 ]
 `;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed: warnings 2`] = `
-Array [
+[
   "Warning: foo.css from Css Minimizer plugin
 [warning-plugin] Warning from foo.css",
   "Warning: style-2.css from Css Minimizer plugin
@@ -343,7 +343,7 @@ Array [
 `;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": assets 1`] = `
-Object {
+{
   "foo.css": "body {
   color: red;
 }
@@ -357,7 +357,7 @@ a {
 `;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": assets 2`] = `
-Object {
+{
   "foo.css": "body {
   color: red;
 }
@@ -371,7 +371,7 @@ a {
 `;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 1`] = `
-Array [
+[
   "Warning: foo.css from Css Minimizer plugin
 [warning-plugin] Warning from foo.css",
   "Warning: style-2.css from Css Minimizer plugin
@@ -381,12 +381,12 @@ Array [
 ]
 `;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 2`] = `Array []`;
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": errors 2`] = `[]`;
 
-exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should work with warnings and use memory cache when the "cache" option is "true": warnings 2`] = `
-Array [
+[
   "Warning: foo.css from Css Minimizer plugin
 [warning-plugin] Warning from foo.css",
   "Warning: style-2.css from Css Minimizer plugin
@@ -397,13 +397,13 @@ Array [
 `;
 
 exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: assets 1`] = `
-Object {
+{
   "one.css": ".minify {};",
   "two.css": ".minify {};",
 }
 `;
 
-exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: errors 1`] = `Array []`;
+exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: errors 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: process stderr output 1`] = `
 "stderr
@@ -417,4 +417,4 @@ stdout
 "
 `;
 
-exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: warnings 1`] = `Array []`;
+exports[`CssMinimizerPlugin should write stdout and stderr of workers to stdout and stderr of main process in parallel mode: warnings 1`] = `[]`;

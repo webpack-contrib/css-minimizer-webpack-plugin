@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`include option should match snapshot for a single RegExp value included1: assets 1`] = `
-Object {
+{
   "entry.css": "body {
   color: red;
 }
@@ -25,12 +25,12 @@ a {
 }
 `;
 
-exports[`include option should match snapshot for a single RegExp value included1: errors 1`] = `Array []`;
+exports[`include option should match snapshot for a single RegExp value included1: errors 1`] = `[]`;
 
-exports[`include option should match snapshot for a single RegExp value included1: warnings 1`] = `Array []`;
+exports[`include option should match snapshot for a single RegExp value included1: warnings 1`] = `[]`;
 
 exports[`include option should match snapshot for a single String value included1: assets 1`] = `
-Object {
+{
   "entry.css": "body {
   color: red;
 }
@@ -54,12 +54,12 @@ a {
 }
 `;
 
-exports[`include option should match snapshot for a single String value included1: errors 1`] = `Array []`;
+exports[`include option should match snapshot for a single String value included1: errors 1`] = `[]`;
 
-exports[`include option should match snapshot for a single String value included1: warnings 1`] = `Array []`;
+exports[`include option should match snapshot for a single String value included1: warnings 1`] = `[]`;
 
 exports[`include option should match snapshot for multiple RegExp values included1 and included2: assets 1`] = `
-Object {
+{
   "entry.css": "body {
   color: red;
 }
@@ -72,12 +72,12 @@ a {
 }
 `;
 
-exports[`include option should match snapshot for multiple RegExp values included1 and included2: errors 1`] = `Array []`;
+exports[`include option should match snapshot for multiple RegExp values included1 and included2: errors 1`] = `[]`;
 
-exports[`include option should match snapshot for multiple RegExp values included1 and included2: warnings 1`] = `Array []`;
+exports[`include option should match snapshot for multiple RegExp values included1 and included2: warnings 1`] = `[]`;
 
 exports[`include option should match snapshot for multiple String values included1 and included2: assets 1`] = `
-Object {
+{
   "entry.css": "body {
   color: red;
 }
@@ -90,6 +90,6 @@ a {
 }
 `;
 
-exports[`include option should match snapshot for multiple String values included1 and included2: errors 1`] = `Array []`;
+exports[`include option should match snapshot for multiple String values included1 and included2: errors 1`] = `[]`;
 
-exports[`include option should match snapshot for multiple String values included1 and included2: warnings 1`] = `Array []`;
+exports[`include option should match snapshot for multiple String values included1 and included2: warnings 1`] = `[]`;

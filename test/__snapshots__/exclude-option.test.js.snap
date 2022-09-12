@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`exclude option should match snapshot for a single RegExp value excluded1: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
@@ -12,12 +12,12 @@ Object {
 }
 `;
 
-exports[`exclude option should match snapshot for a single RegExp value excluded1: errors 1`] = `Array []`;
+exports[`exclude option should match snapshot for a single RegExp value excluded1: errors 1`] = `[]`;
 
-exports[`exclude option should match snapshot for a single RegExp value excluded1: warnings 1`] = `Array []`;
+exports[`exclude option should match snapshot for a single RegExp value excluded1: warnings 1`] = `[]`;
 
 exports[`exclude option should match snapshot for a single String value excluded1: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
@@ -28,12 +28,12 @@ Object {
 }
 `;
 
-exports[`exclude option should match snapshot for a single String value excluded1: errors 1`] = `Array []`;
+exports[`exclude option should match snapshot for a single String value excluded1: errors 1`] = `[]`;
 
-exports[`exclude option should match snapshot for a single String value excluded1: warnings 1`] = `Array []`;
+exports[`exclude option should match snapshot for a single String value excluded1: warnings 1`] = `[]`;
 
 exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
@@ -55,12 +55,12 @@ a {
 }
 `;
 
-exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: errors 1`] = `Array []`;
+exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: errors 1`] = `[]`;
 
-exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: warnings 1`] = `Array []`;
+exports[`exclude option should match snapshot for multiple RegExp values excluded1 and excluded2: warnings 1`] = `[]`;
 
 exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red}a{color:blue}",
   "excluded1.css": "a {
   text-align: center;
@@ -82,6 +82,6 @@ a {
 }
 `;
 
-exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: errors 1`] = `Array []`;
+exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: errors 1`] = `[]`;
 
-exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: warnings 1`] = `Array []`;
+exports[`exclude option should match snapshot for multiple String values excluded1 and excluded2: warnings 1`] = `[]`;
