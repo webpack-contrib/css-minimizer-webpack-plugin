@@ -63,7 +63,6 @@
   },
   "dependencies": {
     "cssnano": "^5.1.8",
-    "jest-worker": "^29.0.3",
     "postcss": "^8.4.13",
     "schema-utils": "^4.0.0",
     "serialize-javascript": "^6.0.0",
