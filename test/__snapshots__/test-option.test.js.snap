@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): assets 1`] = `
-Object {
+{
   "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a {
@@ -12,12 +12,12 @@ Object {
 }
 `;
 
-exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): errors 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): errors 1`] = `[]`;
 
-exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): warnings 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot for a single "test" value (RegExp): warnings 1`] = `[]`;
 
 exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): assets 1`] = `
-Object {
+{
   "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a {
@@ -28,18 +28,18 @@ Object {
 }
 `;
 
-exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): errors 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): errors 1`] = `[]`;
 
-exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): warnings 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot for multiple "test" value (RegExp): warnings 1`] = `[]`;
 
 exports[`when applied with "test" option matches snapshot with empty value: assets 1`] = `
-Object {
+{
   "bar1.css": "body{color:red;font-size:20px}a{color:blue}",
   "bar2.css": "h1{color:green}h2{color:#ff0}",
   "foo.css": "a{text-align:center}",
 }
 `;
 
-exports[`when applied with "test" option matches snapshot with empty value: errors 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot with empty value: errors 1`] = `[]`;
 
-exports[`when applied with "test" option matches snapshot with empty value: warnings 1`] = `Array []`;
+exports[`when applied with "test" option matches snapshot with empty value: warnings 1`] = `[]`;

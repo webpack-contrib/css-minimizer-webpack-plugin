@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: errors 1`] = `
-Array [
+[
   "Error: broken-source-map.css from Css Minimizer plugin
 error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
   "Error: dist/entry2.css from Css Minimizer plugin
@@ -9,10 +9,10 @@ error-plugin: /dist/entry2.css:10:3: Postcss error [webpack://./sourcemap/foo.cs
 ]
 `;
 
-exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: assets 1`] = `
-Object {
+{
   "broken-source-map.css": ".bar{color:red};",
   "dist/entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry2.css.map*/",
@@ -34,16 +34,16 @@ Object {
 }
 `;
 
-exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: errors 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: errors 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work and emit warnings on broken sourcemaps: warnings 1`] = `
-Array [
+[
   "Error: broken-source-map.css contains invalid source map",
 ]
 `;
 
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): assets 1`] = `
-Object {
+{
   "dist/entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=https://example.com/project/sourcemaps/entry.css.map*/",
   "dist/entry2.css": "body{color:red;font-weight:700}body a{text-align:center}
@@ -81,12 +81,12 @@ Object {
 }
 `;
 
-exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): errors 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
@@ -124,12 +124,12 @@ Object {
 }
 `;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: errors 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
@@ -167,12 +167,12 @@ Object {
 }
 `;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: errors 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option: assets 1`] = `
-Object {
+{
   "entry.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=entry.css.map*/",
   "entry.css.map": {
@@ -210,6 +210,6 @@ Object {
 }
 `;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option: errors 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option: warnings 1`] = `Array []`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option: warnings 1`] = `[]`;
