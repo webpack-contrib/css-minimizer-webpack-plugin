@@ -404,48 +404,48 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" minifier: warning 1`] = `[]`;
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: assets 1`] = `
-Object {
+{
   "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo/foo.css\\",\\"mappings\\":\\"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM\\",\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: error 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: error 1`] = `[]`;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: warning 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: warning 1`] = `[]`;
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: assets 1`] = `
-Object {
+{
   "foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{\\"version\\":3,\\"file\\":\\"foo.css\\",\\"mappings\\":\\"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM\\",\\"sources\\":[\\"webpack:///./sourcemap/bar.scss\\",\\"webpack:///./sourcemap/foo.scss\\"],\\"sourcesContent\\":[\\"body {\\\\n  font-weight: bold;\\\\n}\\",\\"@import 'bar';\\\\n\\\\nbody {\\\\n  color: red;\\\\n  a {\\\\n    text-align: center;\\\\n  }\\\\n}\\"],\\"names\\":[],\\"sourceRoot\\":\\"\\"}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: error 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: error 1`] = `[]`;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: warning 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: warning 1`] = `[]`;
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify": assets 1`] = `
-Object {
+{
   "foo.css": "table.colortable{& td{text-align:center;&.c{text-transform:uppercase}&:first-child,&:first-child+td{border:1px solid black}}& th{text-align:center;background:black;color:white}}.example{display:grid;transition:all.5s;user-select:none;background:linear-gradient(to bottom,white,black)}",
 }
 `;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify": error 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify": error 1`] = `[]`;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify": warning 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify": warning 1`] = `[]`;
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: assets 1`] = `
-Object {
+{
   "foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}",
 }
 `;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: error 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: error 1`] = `[]`;
 
-exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: warning 1`] = `Array []`;
+exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: warning 1`] = `[]`;
 
 exports[`"minify" option should work with "clean-css" minifier: assets 1`] = `
 {
