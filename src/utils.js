@@ -375,7 +375,7 @@ async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const parcelCss = require("@parcel/css");
 
-  // Copy `esbuild` options
+  // Copy `parcel-css` options
   const parcelCssOptions = buildParcelCssOptions(minimizerOptions);
 
   // Let `esbuild` generate a SourceMap
@@ -419,7 +419,7 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
   // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const lightningCss = require("lightningcss");
 
-  // Copy `esbuild` options
+  // Copy `lightningCss` options
   const lightningCssOptions = buildLightningCssOptions(minimizerOptions);
 
   // Let `esbuild` generate a SourceMap
@@ -436,6 +436,47 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+/* istanbul ignore next */
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+async function swcMinify(input, sourceMap, minimizerOptions) {
+  const [[filename, code]] = Object.entries(input);
+  /**
+   * @param {*} [swcOptions={}]
+   * @returns {*}
+   */
+  const buildSwcOptions = (swcOptions = {}) => {
+    // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
+    return {
+      ...swcOptions,
+      filename,
+    };
+  };
+
+  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
+  const swc = require("@swc/css");
+
+  // Copy `swc` options
+  const swcOptions = buildSwcOptions(minimizerOptions);
+
+  // Let `swc` generate a SourceMap
+  if (sourceMap) {
+    swcOptions.sourceMap = true;
+  }
+
+  const result = await swc.minify(Buffer.from(code), swcOptions);
+
+  return {
+    code: result.code.toString(),
+    // eslint-disable-next-line no-undefined
+    map: result.map ? JSON.parse(result.map.toString()) : undefined,
+  };
+}
+
 module.exports = {
   throttleAll,
   cssnanoMinify,
@@ -444,4 +485,5 @@ module.exports = {
   esbuildMinify,
   parcelCssMinify,
   lightningCssMinify,
+  swcMinify,
 };

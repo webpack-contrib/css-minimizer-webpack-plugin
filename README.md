@@ -579,6 +579,27 @@ module.exports = {
 };
 ```
 
+### Using custom minifier [swc](https://github.com/swc-project/swc)
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  // Uncomment if you need source maps
+  // devtool: "source-map",
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minify: CssMinimizerPlugin.swcMinify,
+        // Uncomment this line for options
+        // minimizerOptions: {},
+      }),
+    ],
+  },
+};
+```
+
 ## Contributing
 
 Please take a moment to read our contributing guidelines if you haven't yet done so.
