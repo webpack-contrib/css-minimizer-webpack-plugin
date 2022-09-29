@@ -84,3 +84,14 @@ export function lightningCssMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions
 ): Promise<MinimizedResult>;
+/**
+ * @param {Input} input
+ * @param {RawSourceMap | undefined} sourceMap
+ * @param {CustomOptions} minimizerOptions
+ * @return {Promise<MinimizedResult>}
+ */
+export function swcMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
