@@ -1,6 +1,6 @@
 {
   "name": "css-minimizer-webpack-plugin",
-  "version": "4.2.1",
+  "version": "4.2.2",
   "description": "cssnano plugin for Webpack",
   "license": "MIT",
   "repository": "webpack-contrib/css-minimizer-webpack-plugin",

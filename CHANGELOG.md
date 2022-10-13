@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.2](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v4.2.1...v4.2.2) (2022-10-13)
+
+
+### Bug Fixes
+
+* handle `swc` errors ([#202](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/202)) ([b1ce195](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/b1ce195a0de508217ea1a91d7f8e2683e77b495a))
+
 ### [4.2.1](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v4.2.0...v4.2.1) (2022-10-06)
 
 
