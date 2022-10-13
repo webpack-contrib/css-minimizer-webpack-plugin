@@ -474,6 +474,19 @@ async function swcMinify(input, sourceMap, minimizerOptions) {
     code: result.code.toString(),
     // eslint-disable-next-line no-undefined
     map: result.map ? JSON.parse(result.map.toString()) : undefined,
+    errors: result.errors
+      ? result.errors.map((diagnostic) => {
+          const error = new Error(diagnostic.message);
+
+          // @ts-ignore
+          error.span = diagnostic.span;
+          // @ts-ignore
+          error.level = diagnostic.level;
+
+          return error;
+        })
+      : // eslint-disable-next-line no-undefined
+        undefined,
   };
 }
 
