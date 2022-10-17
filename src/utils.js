@@ -446,8 +446,8 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
 async function swcMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
-   * @param {*} [swcOptions={}]
-   * @returns {*}
+   * @param {Partial<import("@swc/css").Options>} [swcOptions={}]
+   * @returns {import("@swc/css").Options}
    */
   const buildSwcOptions = (swcOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
