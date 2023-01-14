@@ -111,7 +111,7 @@
     "sass-loader": "^13.2.0",
     "standard-version": "^9.5.0",
     "sugarss": "^4.0.1",
-    "typescript": "^4.6.4",
+    "typescript": "^4.9.4",
     "webpack": "^5.75.0"
   },
   "keywords": [

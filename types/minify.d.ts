@@ -9,9 +9,7 @@ export type InternalResult = import("./index.js").InternalResult;
  * @param {import("./index.js").InternalOptions<T>} options
  * @returns {Promise<InternalResult>}
  */
-export function minify<T>(
-  options: import("./index.js").InternalOptions<T>
-): Promise<InternalResult>;
+export function minify<T>(options: import("./index.js").InternalOptions<T>): Promise<InternalResult>;
 /**
  * @param {string} options
  * @returns {Promise<InternalResult>}
