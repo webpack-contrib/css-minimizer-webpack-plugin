@@ -24,46 +24,74 @@ export function throttleAll<T>(limit: number, tasks: Task<T>[]): Promise<T[]>;
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function cssnanoMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions?: CustomOptions): Promise<MinimizedResult>;
+export function cssnanoMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions?: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function cssoMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function cssoMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function cleanCssMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function cleanCssMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function esbuildMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function esbuildMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function parcelCssMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function parcelCssMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function lightningCssMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function lightningCssMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
  * @return {Promise<MinimizedResult>}
  */
-export function swcMinify(input: Input, sourceMap: RawSourceMap | undefined, minimizerOptions: CustomOptions): Promise<MinimizedResult>;
+export function swcMinify(
+  input: Input,
+  sourceMap: RawSourceMap | undefined,
+  minimizerOptions: CustomOptions
+): Promise<MinimizedResult>;
