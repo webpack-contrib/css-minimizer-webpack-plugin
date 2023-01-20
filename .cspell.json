@@ -43,6 +43,9 @@
     "dist/**",
     "**/__snapshots__/**",
     "package-lock.json",
-    "*.pack"
+    "*.pack",
+    "node_modules",
+    "coverage",
+    "*.log"
   ]
 }
