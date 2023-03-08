@@ -83,7 +83,7 @@
     "@swc/css": "^0.0.18",
     "@types/clean-css": "^4.2.5",
     "@types/csso": "^5.0.0",
-    "@types/node": "^18.14.2",
+    "@types/node": "^18.11.18",
     "@types/serialize-javascript": "^5.0.2",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^29.4.3",
