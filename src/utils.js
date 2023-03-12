@@ -358,8 +358,8 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
 async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
-   * @param {Partial<import("@parcel/css").TransformOptions>} [parcelCssOptions={}]
-   * @returns {import("@parcel/css").TransformOptions}
+   * @param {Partial<import("@parcel/css").TransformOptions<any>>} [parcelCssOptions={}]
+   * @returns {import("@parcel/css").TransformOptions<any>}
    */
   const buildParcelCssOptions = (parcelCssOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -402,8 +402,8 @@ async function parcelCssMinify(input, sourceMap, minimizerOptions) {
 async function lightningCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
-   * @param {Partial<import("lightningcss").TransformOptions>} [lightningCssOptions={}]
-   * @returns {import("lightningcss").TransformOptions}
+   * @param {Partial<import("lightningcss").TransformOptions<any>>} [lightningCssOptions={}]
+   * @returns {import("lightningcss").TransformOptions<any>}
    */
   const buildLightningCssOptions = (lightningCssOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
