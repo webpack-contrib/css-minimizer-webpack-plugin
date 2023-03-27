@@ -54,8 +54,8 @@ jobs:
       - name: Check types
         run: if [ -n "$(git status types --porcelain)" ]; then echo "Missing types. Update types by running 'npm run build:types'"; exit 1; else echo "All types are valid"; fi
 
-      # - name: Security audit
-      #  run: npm run security
+      - name: Security audit
+        run: npm run security
 
       - name: Check commit message
         uses: wagoid/commitlint-github-action@v5
