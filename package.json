@@ -66,7 +66,7 @@
     }
   },
   "dependencies": {
-    "cssnano": "^5.1.15",
+    "cssnano": "^6.0.0",
     "jest-worker": "^29.4.3",
     "postcss": "^8.4.21",
     "schema-utils": "^4.0.0",
@@ -80,7 +80,7 @@
     "@commitlint/cli": "^17.4.4",
     "@commitlint/config-conventional": "^17.4.4",
     "@parcel/css": "^1.8.3",
-    "@swc/css": "^0.0.18",
+    "@swc/css": "^0.0.20",
     "@types/clean-css": "^4.2.5",
     "@types/csso": "^5.0.0",
     "@types/node": "^18.11.18",
@@ -96,7 +96,7 @@
     "csso": "^5.0.3",
     "del": "^6.1.0",
     "del-cli": "^5.0.0",
-    "esbuild": "^0.15.18",
+    "esbuild": "^0.17.14",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
@@ -112,7 +112,7 @@
     "sass-loader": "^13.2.0",
     "standard-version": "^9.5.0",
     "sugarss": "^4.0.1",
-    "typescript": "^4.9.5",
+    "typescript": "^5.0.2",
     "webpack": "^5.75.0"
   },
   "keywords": [
@@ -120,6 +120,7 @@
     "css",
     "csso",
     "clean-css",
+    "swc",
     "esbuild",
     "webpack",
     "webpack-plugin",

@@ -405,9 +405,9 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: assets 1`] = `
 {
-  "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
+  "foo/foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -417,9 +417,9 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: assets 1`] = `
 {
-  "foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
+  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCCnB,IAAI,CAAE,KACC,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -439,7 +439,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: assets 1`] = `
 {
-  "foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}",
+  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}",
 }
 `;
 
