@@ -80,6 +80,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: git config --global core.autocrlf input
 
+      - name: Remove lock file (bug in npm)
+        if: matrix.node-version == '14.x'
+        run: rm -rf package-lock.json
+
       - uses: actions/checkout@v3
 
       - name: Use Node.js ${{ matrix.node-version }}
