@@ -34,7 +34,10 @@
     "pathinfo",
     "commitlint",
     "memfs",
-    "colortable"
+    "colortable",
+    "wagoid",
+    "autocrlf",
+    "codecov"
   ],
 
   "ignorePaths": [
