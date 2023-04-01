@@ -75,15 +75,15 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.21.0",
-    "@babel/core": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
-    "@commitlint/cli": "^17.4.4",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@commitlint/cli": "^17.5.1",
     "@commitlint/config-conventional": "^17.4.4",
     "@parcel/css": "^1.8.3",
     "@swc/css": "^0.0.20",
     "@types/clean-css": "^4.2.5",
     "@types/csso": "^5.0.0",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.15.11",
     "@types/serialize-javascript": "^5.0.2",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
     "babel-jest": "^29.4.3",
@@ -97,7 +97,7 @@
     "del": "^6.1.0",
     "del-cli": "^5.0.0",
     "esbuild": "^0.17.14",
-    "eslint": "^8.35.0",
+    "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "husky": "^8.0.3",
@@ -113,7 +113,7 @@
     "standard-version": "^9.5.0",
     "sugarss": "^4.0.1",
     "typescript": "^5.0.2",
-    "webpack": "^5.75.0"
+    "webpack": "^5.77.0"
   },
   "keywords": [
     "cssnano",
