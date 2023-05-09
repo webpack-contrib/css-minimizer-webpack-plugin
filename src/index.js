@@ -114,17 +114,15 @@ const { minify: minifyWorker } = require("./minify");
 
 /** @typedef {undefined | boolean | number} Parallel */
 
-/** @typedef {RegExp | string} Rule */
-
-/** @typedef {Rule[] | Rule} Rules */
+/** @typedef {string | RegExp | string[] | RegExp[]} Rule */
 
 /** @typedef {(warning: Warning | WarningObject | string, file: string, source?: string) => boolean} WarningsFilter */
 
 /**
  * @typedef {Object} BasePluginOptions
- * @property {Rules} [test]
- * @property {Rules} [include]
- * @property {Rules} [exclude]
+ * @property {Rule} [test]
+ * @property {Rule} [include]
+ * @property {Rule} [exclude]
  * @property {WarningsFilter} [warningsFilter]
  * @property {Parallel} [parallel]
  */

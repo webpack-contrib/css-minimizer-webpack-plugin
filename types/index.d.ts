@@ -97,7 +97,6 @@ declare namespace CssMinimizerPlugin {
     InternalResult,
     Parallel,
     Rule,
-    Rules,
     WarningsFilter,
     BasePluginOptions,
     MinimizerWorker,
@@ -112,9 +111,9 @@ type CssNanoOptionsExtended = CssNanoOptions & {
 };
 type Compiler = import("webpack").Compiler;
 type BasePluginOptions = {
-  test?: Rules | undefined;
-  include?: Rules | undefined;
-  exclude?: Rules | undefined;
+  test?: Rule | undefined;
+  include?: Rule | undefined;
+  exclude?: Rule | undefined;
   warningsFilter?: WarningsFilter | undefined;
   parallel?: Parallel;
 };
@@ -214,8 +213,7 @@ type InternalResult = {
   errors: Array<Error | ErrorObject | string>;
 };
 type Parallel = undefined | boolean | number;
-type Rule = RegExp | string;
-type Rules = Rule[] | Rule;
+type Rule = string | RegExp | string[] | RegExp[];
 type WarningsFilter = (
   warning: Warning | WarningObject | string,
   file: string,
