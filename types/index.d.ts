@@ -97,6 +97,7 @@ declare namespace CssMinimizerPlugin {
     InternalResult,
     Parallel,
     Rule,
+    Rules,
     WarningsFilter,
     BasePluginOptions,
     MinimizerWorker,
@@ -213,7 +214,8 @@ type InternalResult = {
   errors: Array<Error | ErrorObject | string>;
 };
 type Parallel = undefined | boolean | number;
-type Rule = string | RegExp | string[] | RegExp[];
+type Rule = RegExp | string;
+type Rules = Rule[] | Rule;
 type WarningsFilter = (
   warning: Warning | WarningObject | string,
   file: string,

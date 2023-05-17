@@ -116,7 +116,7 @@
     "standard-version": "^9.5.0",
     "sugarss": "^4.0.1",
     "typescript": "^5.0.4",
-    "webpack": "^5.81.0"
+    "webpack": "^5.83.1"
   },
   "keywords": [
     "cssnano",
