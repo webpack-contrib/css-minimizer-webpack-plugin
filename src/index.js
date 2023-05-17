@@ -114,7 +114,8 @@ const { minify: minifyWorker } = require("./minify");
 
 /** @typedef {undefined | boolean | number} Parallel */
 
-/** @typedef {string | RegExp | string[] | RegExp[]} Rule */
+/** @typedef {RegExp | string} Rule */
+/** @typedef {Rule[] | Rule} Rules */
 
 /** @typedef {(warning: Warning | WarningObject | string, file: string, source?: string) => boolean} WarningsFilter */
 
