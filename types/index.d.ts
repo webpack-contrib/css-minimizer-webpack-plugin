@@ -189,14 +189,10 @@ type BasicMinimizerImplementation<T> = (
   minifyOptions: InferDefaultType<T>
 ) => Promise<MinimizedResult>;
 type MinimizerImplementation<T> = T extends any[]
-  ? T extends infer T_1 extends any[]
-    ? { [P in keyof T_1]: BasicMinimizerImplementation<T[P]> }
-    : never
+  ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
   : BasicMinimizerImplementation<T>;
 type MinimizerOptions<T> = T extends any[]
-  ? T extends infer T_1 extends any[]
-    ? { [P in keyof T_1]?: InferDefaultType<T[P]> | undefined }
-    : never
+  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
   : InferDefaultType<T>;
 type InternalOptions<T> = {
   name: string;
