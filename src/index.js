@@ -1,9 +1,6 @@
 const os = require("os");
 
-const { SourceMapConsumer } = require("source-map");
 const { validate } = require("schema-utils");
-const serialize = require("serialize-javascript");
-const { Worker } = require("jest-worker");
 
 const {
   throttleAll,
@@ -24,12 +21,13 @@ const { minify: minifyWorker } = require("./minify");
 /** @typedef {import("webpack").Compilation} Compilation */
 /** @typedef {import("webpack").WebpackError} WebpackError */
 /** @typedef {import("jest-worker").Worker} JestWorker */
-/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
+/** @typedef {import("@jridgewell/trace-mapping").EncodedSourceMap} RawSourceMap */
 /** @typedef {import("webpack").Asset} Asset */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
 /** @typedef {import("postcss").Syntax} Syntax */
 /** @typedef {import("postcss").Parser} Parser */
 /** @typedef {import("postcss").Stringifier} Stringifier */
+/** @typedef {import("@jridgewell/trace-mapping").TraceMap} TraceMap */
 
 /**
  * @typedef {Object} CssNanoOptions
@@ -154,6 +152,40 @@ const { minify: minifyWorker } = require("./minify");
 const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
 /**
+ * @template T
+ * @param fn {(function(): any) | undefined}
+ * @returns {function(): T}
+ */
+const memoize = (fn) => {
+  let cache = false;
+  /** @type {T} */
+  let result;
+
+  return () => {
+    if (cache) {
+      return result;
+    }
+    result = /** @type {function(): any} */ (fn)();
+    cache = true;
+    // Allow to clean up memory for fn
+    // and all dependent resources
+    // eslint-disable-next-line no-undefined, no-param-reassign
+    fn = undefined;
+
+    return result;
+  };
+};
+
+const getSerializeJavascript = memoize(() =>
+  // eslint-disable-next-line global-require
+  require("serialize-javascript")
+);
+const getTraceMapping = memoize(() =>
+  // eslint-disable-next-line global-require
+  require("@jridgewell/trace-mapping")
+);
+
+/**
  * @template [T=CssNanoOptionsExtended]
  */
 class CssMinimizerPlugin {
@@ -215,7 +247,7 @@ class CssMinimizerPlugin {
    * @param {Warning | WarningObject | string} warning
    * @param {string} file
    * @param {WarningsFilter} [warningsFilter]
-   * @param {SourceMapConsumer} [sourceMap]
+   * @param {TraceMap} [sourceMap]
    * @param {Compilation["requestShortener"]} [requestShortener]
    * @returns {Error & { hideStack?: boolean, file?: string } | undefined}
    */
@@ -251,10 +283,12 @@ class CssMinimizerPlugin {
       }
 
       if (line && column) {
-        const original = sourceMap.originalPositionFor({
-          line,
-          column,
-        });
+        const original =
+          sourceMap &&
+          getTraceMapping().originalPositionFor(sourceMap, {
+            line,
+            column,
+          });
 
         if (
           original &&
@@ -297,7 +331,7 @@ class CssMinimizerPlugin {
    * @private
    * @param {Error | ErrorObject | string} error
    * @param {string} file
-   * @param {SourceMapConsumer} [sourceMap]
+   * @param {TraceMap} [sourceMap]
    * @param {Compilation["requestShortener"]} [requestShortener]
    * @returns {Error}
    */
@@ -322,7 +356,8 @@ class CssMinimizerPlugin {
         /** @type {ErrorObject & { line: number, column: number }} */ (error);
 
       const original =
-        sourceMap && sourceMap.originalPositionFor({ line, column });
+        sourceMap &&
+        getTraceMapping().originalPositionFor(sourceMap, { line, column });
 
       if (original && original.source && requestShortener) {
         builtError = new Error(
@@ -460,6 +495,9 @@ class CssMinimizerPlugin {
           return initializedWorker;
         }
 
+        // eslint-disable-next-line global-require
+        const { Worker } = require("jest-worker");
+
         initializedWorker = /** @type {MinimizerWorker<T>} */ (
           new Worker(require.resolve("./minify"), {
             numWorkers: numberOfWorkers,
@@ -535,7 +573,7 @@ class CssMinimizerPlugin {
 
           try {
             result = await (getWorker
-              ? getWorker().transform(serialize(options))
+              ? getWorker().transform(getSerializeJavascript()(options))
               : minifyWorker(options));
           } catch (error) {
             const hasSourceMap =
@@ -547,7 +585,7 @@ class CssMinimizerPlugin {
                   /** @type {any} */ (error),
                   name,
                   hasSourceMap
-                    ? new SourceMapConsumer(
+                    ? new (getTraceMapping().TraceMap)(
                         /** @type {RawSourceMap} */ (inputSourceMap)
                       )
                     : // eslint-disable-next-line no-undefined
@@ -600,7 +638,7 @@ class CssMinimizerPlugin {
                   error,
                   name,
                   hasSourceMap
-                    ? new SourceMapConsumer(
+                    ? new (getTraceMapping().TraceMap)(
                         /** @type {RawSourceMap} */ (inputSourceMap)
                       )
                     : // eslint-disable-next-line no-undefined
@@ -622,7 +660,7 @@ class CssMinimizerPlugin {
                 name,
                 this.options.warningsFilter,
                 hasSourceMap
-                  ? new SourceMapConsumer(
+                  ? new (getTraceMapping().TraceMap)(
                       /** @type {RawSourceMap} */ (inputSourceMap)
                     )
                   : // eslint-disable-next-line no-undefined

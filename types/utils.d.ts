@@ -1,7 +1,6 @@
 export type Task<T> = () => Promise<T>;
 export type Input = import("./index.js").Input;
-export type RawSourceMap = import("source-map").RawSourceMap;
-export type SourceMapGenerator = import("source-map").SourceMapGenerator;
+export type RawSourceMap = import("@jridgewell/trace-mapping").EncodedSourceMap;
 export type MinimizedResult = import("./index.js").MinimizedResult;
 export type CustomOptions = import("./index.js").CustomOptions;
 export type ProcessOptions = import("postcss").ProcessOptions;

@@ -37,7 +37,8 @@
     "colortable",
     "wagoid",
     "autocrlf",
-    "codecov"
+    "codecov",
+    "jridgewell"
   ],
 
   "ignorePaths": [
