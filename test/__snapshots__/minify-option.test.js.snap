@@ -341,7 +341,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 
 exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify" minifier and options for "lightningcss": assets 1`] = `
 {
-  "foo.css": "table.colortable td{text-align:center}table.colortable td.c{text-transform:uppercase}table.colortable td:first-child,table.colortable td:first-child+td{border:1px solid #000}table.colortable th{text-align:center;color:#fff;background:#000}.example{user-select:none;background:linear-gradient(#fff,#000);transition:all .5s;display:grid}",
+  "foo.css": "table.colortable td{text-align:center}table.colortable td.c{text-transform:uppercase}table.colortable td:first-child+td{border:1px solid #000}table.colortable td:first-child{border:1px solid #000}table.colortable th{text-align:center;color:#fff;background:#000}.example{user-select:none;background:linear-gradient(#fff,#000);transition:all .5s;display:grid}",
 }
 `;
 
@@ -385,7 +385,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 
 exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" minifier and options for "@parcel/css": assets 1`] = `
 {
-  "foo.css": "table.colortable td{text-align:center}table.colortable td.c{text-transform:uppercase}table.colortable td:first-child,table.colortable td:first-child+td{border:1px solid #000}table.colortable th{text-align:center;color:#fff;background:#000}.example{user-select:none;background:linear-gradient(#fff,#000);transition:all .5s;display:grid}",
+  "foo.css": "table.colortable td{text-align:center}table.colortable td.c{text-transform:uppercase}table.colortable td:first-child+td{border:1px solid #000}table.colortable td:first-child{border:1px solid #000}table.colortable th{text-align:center;color:#fff;background:#000}.example{user-select:none;background:linear-gradient(#fff,#000);transition:all .5s;display:grid}",
 }
 `;
 
