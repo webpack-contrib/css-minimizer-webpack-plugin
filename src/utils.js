@@ -1,6 +1,5 @@
 /** @typedef {import("./index.js").Input} Input */
-/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
-/** @typedef {import("source-map").SourceMapGenerator} SourceMapGenerator */
+/** @typedef {import("@jridgewell/trace-mapping").EncodedSourceMap} RawSourceMap */
 /** @typedef {import("./index.js").MinimizedResult} MinimizedResult */
 /** @typedef {import("./index.js").CustomOptions} CustomOptions */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
@@ -178,6 +177,7 @@ async function cssnanoMinify(
 
   return {
     code: result.css,
+    // @ts-ignore
     map: result.map
       ? result.map.toJSON()
       : // eslint-disable-next-line no-undefined
@@ -206,7 +206,7 @@ async function cssoMinify(input, sourceMap, minimizerOptions) {
   return {
     code: result.css,
     map: result.map
-      ? /** @type {SourceMapGenerator & { toJSON(): RawSourceMap }} */
+      ? /** @type {any & { toJSON(): RawSourceMap }} */
         (result.map).toJSON()
       : // eslint-disable-next-line no-undefined
         undefined,
@@ -232,7 +232,7 @@ async function cleanCssMinify(input, sourceMap, minimizerOptions) {
 
   const generatedSourceMap =
     result.sourceMap &&
-    /** @type {SourceMapGenerator & { toJSON(): RawSourceMap }} */
+    /** @type {any & { toJSON(): RawSourceMap }} */
     (result.sourceMap).toJSON();
 
   // workaround for source maps on windows

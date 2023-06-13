@@ -1,6 +1,6 @@
 import path from "path";
 
-import { SourceMapConsumer } from "source-map";
+import { TraceMap } from "@jridgewell/trace-mapping";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import RequestShortener from "webpack/lib/RequestShortener";
@@ -152,7 +152,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildError(
         errorWithLineAndCol,
         "test.css",
-        new SourceMapConsumer(rawSourceMap)
+        new TraceMap(rawSourceMap)
       )
     ).toMatchSnapshot();
 
@@ -166,7 +166,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildError(
         otherErrorWithLineAndCol,
         "test.css",
-        new SourceMapConsumer(rawSourceMap),
+        new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
@@ -193,7 +193,7 @@ describe("CssMinimizerPlugin", () => {
         "test.css",
         // eslint-disable-next-line no-undefined
         undefined,
-        new SourceMapConsumer(rawSourceMap)
+        new TraceMap(rawSourceMap)
       )
     ).toMatchSnapshot();
     expect(
@@ -202,7 +202,7 @@ describe("CssMinimizerPlugin", () => {
         "test.css",
         // eslint-disable-next-line no-undefined
         undefined,
-        new SourceMapConsumer(rawSourceMap),
+        new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
@@ -211,7 +211,7 @@ describe("CssMinimizerPlugin", () => {
         "Warning test.css:1:1",
         "test.css",
         () => true,
-        new SourceMapConsumer(rawSourceMap),
+        new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
@@ -220,7 +220,7 @@ describe("CssMinimizerPlugin", () => {
         "Warning test.css:1:1",
         "test.css",
         () => false,
-        new SourceMapConsumer(rawSourceMap),
+        new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();
@@ -234,7 +234,7 @@ describe("CssMinimizerPlugin", () => {
         "test.css",
         // eslint-disable-next-line no-undefined
         undefined,
-        new SourceMapConsumer(rawSourceMap),
+        new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/")
       )
     ).toMatchSnapshot();

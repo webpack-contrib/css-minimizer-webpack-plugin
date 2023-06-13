@@ -1,5 +1,4 @@
 /** @typedef {import("./index.js").MinimizedResult} MinimizedResult */
-/** @typedef {import("source-map").RawSourceMap} RawSourceMap */
 /** @typedef {import("./index.js").InternalResult} InternalResult */
 
 /**
