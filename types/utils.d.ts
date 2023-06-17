@@ -18,6 +18,12 @@ export type Postcss = import("postcss").Postcss;
  */
 export function throttleAll<T>(limit: number, tasks: Task<T>[]): Promise<T[]>;
 /**
+ * @template T
+ * @param fn {(function(): any) | undefined}
+ * @returns {function(): T}
+ */
+export function memoize<T>(fn: (() => any) | undefined): () => T;
+/**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {CustomOptions} minimizerOptions
