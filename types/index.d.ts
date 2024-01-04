@@ -108,26 +108,6 @@ declare namespace CssMinimizerPlugin {
     InternalPluginOptions,
   };
 }
-type CssNanoOptionsExtended = CssNanoOptions & {
-  processorOptions?: ProcessOptionsExtender;
-};
-type Compiler = import("webpack").Compiler;
-type BasePluginOptions = {
-  test?: Rule | undefined;
-  include?: Rule | undefined;
-  exclude?: Rule | undefined;
-  warningsFilter?: WarningsFilter | undefined;
-  parallel?: Parallel;
-};
-type DefinedDefaultMinimizerAndOptions<T> = T extends CssNanoOptionsExtended
-  ? {
-      minify?: MinimizerImplementation<T> | undefined;
-      minimizerOptions?: MinimizerOptions<T> | undefined;
-    }
-  : {
-      minify: MinimizerImplementation<T>;
-      minimizerOptions?: MinimizerOptions<T> | undefined;
-    };
 import { cssnanoMinify } from "./utils";
 import { cssoMinify } from "./utils";
 import { cleanCssMinify } from "./utils";
@@ -136,6 +116,7 @@ import { parcelCssMinify } from "./utils";
 import { lightningCssMinify } from "./utils";
 import { swcMinify } from "./utils";
 type Schema = import("schema-utils/declarations/validate").Schema;
+type Compiler = import("webpack").Compiler;
 type Compilation = import("webpack").Compilation;
 type WebpackError = import("webpack").WebpackError;
 type JestWorker = import("jest-worker").Worker;
@@ -219,6 +200,13 @@ type WarningsFilter = (
   file: string,
   source?: string
 ) => boolean;
+type BasePluginOptions = {
+  test?: Rule | undefined;
+  include?: Rule | undefined;
+  exclude?: Rule | undefined;
+  warningsFilter?: WarningsFilter | undefined;
+  parallel?: Parallel;
+};
 type MinimizerWorker<T> = import("jest-worker").Worker & {
   transform: (options: string) => InternalResult;
   minify: (options: InternalOptions<T>) => InternalResult;
@@ -231,6 +219,18 @@ type ProcessOptionsExtender =
       parser?: string | Syntax | Parser;
       stringifier?: string | Syntax | Stringifier;
       syntax?: string | Syntax;
+    };
+type CssNanoOptionsExtended = CssNanoOptions & {
+  processorOptions?: ProcessOptionsExtender;
+};
+type DefinedDefaultMinimizerAndOptions<T> = T extends CssNanoOptionsExtended
+  ? {
+      minify?: MinimizerImplementation<T> | undefined;
+      minimizerOptions?: MinimizerOptions<T> | undefined;
+    }
+  : {
+      minify: MinimizerImplementation<T>;
+      minimizerOptions?: MinimizerOptions<T> | undefined;
     };
 type InternalPluginOptions<T> = BasePluginOptions & {
   minimizer: {
