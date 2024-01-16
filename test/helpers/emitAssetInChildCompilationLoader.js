@@ -12,7 +12,7 @@ class PreCopyPlugin {
       compilation.hooks.additionalAssets.tapAsync(plugin, (callback) => {
         compilation.emitAsset(
           "entry.css",
-          new RawSource(".entry {\n  text-align: center;\n}\n\n")
+          new RawSource(".entry {\n  text-align: center;\n}\n\n"),
         );
 
         callback();
@@ -26,7 +26,7 @@ export default function loader() {
 
   const childCompiler = this._compilation.createChildCompiler(
     `preloader`,
-    this.options
+    this.options,
   );
 
   new PreCopyPlugin().apply(childCompiler);

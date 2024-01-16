@@ -262,7 +262,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings: assets 1`] = `
 {
-  "foo.css": "width: calc(100px + 100);{}
+  "foo.css": "width: calc(100px + 100) ;{}
 ",
 }
 `;
@@ -283,7 +283,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
   "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,gBCCF,KACE,UACA,OACE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,YAAa,GCCf,MACE,MAAO,GAGT,CAFE,OACE,WAAY,MAIhB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -296,7 +296,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
   "foo.css": "body{color:red}a{color:#00f}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KACE,UAEF,EACE","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\n  color: red;\\n}\\na {\\n  color: blue;\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KACE,MAAO,GACT,CACA,EACE,MAAO,IACT","sources":["webpack:///./foo.css"],"sourcesContent":["body {\\n  color: red;\\n}\\na {\\n  color: blue;\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -459,13 +459,28 @@ exports[`"minify" option should work with "clean-css" minifier: warning 1`] = `[
 
 exports[`"minify" option should work with "csso" minifier: assets 1`] = `
 {
-  "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
+  "foo.css": "body {
+  font-weight: bold;
+}
+
+body {
+  color: red;
+}
+body a {
+  text-align: center;
+}
+
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
 }
 `;
 
-exports[`"minify" option should work with "csso" minifier: error 1`] = `[]`;
+exports[`"minify" option should work with "csso" minifier: error 1`] = `
+[
+  "Error: foo.css from Css Minimizer plugin
+TypeError: aSourceMapConsumer.originalPositionFor is not a function",
+]
+`;
 
 exports[`"minify" option should work with "csso" minifier: warning 1`] = `[]`;
 

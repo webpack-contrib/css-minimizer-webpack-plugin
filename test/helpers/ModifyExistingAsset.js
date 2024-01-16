@@ -12,7 +12,7 @@ export default class ExistingCommentsFile {
         // eslint-disable-next-line no-param-reassign
         compilation.assets[this.options.name] = new ConcatSource(
           `a { color: red; }`,
-          compilation.assets[this.options.name]
+          compilation.assets[this.options.name],
         );
       });
     });

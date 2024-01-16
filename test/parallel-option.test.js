@@ -40,7 +40,7 @@ jest.mock("jest-worker", () => {
         // eslint-disable-next-line global-require, import/no-dynamic-require
         transform: (workerTransform = jest.fn((data) =>
           // eslint-disable-next-line global-require, import/no-dynamic-require
-          require(workerPath).transform(data)
+          require(workerPath).transform(data),
         )),
         end: (workerEnd = jest.fn()),
         getStderr: jest.fn(),
@@ -79,7 +79,7 @@ describe("parallel option", () => {
       numWorkers: os.cpus().length - 1,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -111,7 +111,7 @@ describe("parallel option", () => {
       numWorkers: Math.min(4, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -131,7 +131,7 @@ describe("parallel option", () => {
       numWorkers: 2,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -155,7 +155,7 @@ describe("parallel option", () => {
       numWorkers: Math.min(1, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -183,7 +183,7 @@ describe("parallel option", () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -211,7 +211,7 @@ describe("parallel option", () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 
@@ -250,7 +250,7 @@ describe("parallel option", () => {
       numWorkers: Math.min(Object.keys(entries).length, os.cpus().length - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
-      Object.keys(readAssets(compiler, stats, /\.css$/)).length
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
     );
     expect(workerEnd).toHaveBeenCalledTimes(1);
 

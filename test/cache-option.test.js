@@ -15,15 +15,15 @@ import {
 describe('"cache" option', () => {
   const fileSystemCacheDirectory = path.resolve(
     __dirname,
-    "./outputs/type-filesystem"
+    "./outputs/type-filesystem",
   );
   const fileSystemCacheDirectory1 = path.resolve(
     __dirname,
-    "./outputs/type-filesystem-1"
+    "./outputs/type-filesystem-1",
   );
   const fileSystemCacheDirectory2 = path.resolve(
     __dirname,
-    "./outputs/type-filesystem-2"
+    "./outputs/type-filesystem-2",
   );
 
   beforeAll(() =>
@@ -31,7 +31,7 @@ describe('"cache" option', () => {
       del(fileSystemCacheDirectory),
       del(fileSystemCacheDirectory1),
       del(fileSystemCacheDirectory2),
-    ])
+    ]),
   );
 
   it('should work with the "false" value for the "cache" option', async () => {
@@ -56,7 +56,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           getCounter += 1;
         }
-      }
+      },
     );
 
     let storeCounter = 0;
@@ -67,7 +67,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           storeCounter += 1;
         }
-      }
+      },
     );
 
     const stats = await compile(compiler);
@@ -124,7 +124,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           getCounter += 1;
         }
-      }
+      },
     );
 
     let storeCounter = 0;
@@ -135,7 +135,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           storeCounter += 1;
         }
-      }
+      },
     );
 
     const stats = await compile(compiler);
@@ -193,7 +193,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           getCounter += 1;
         }
-      }
+      },
     );
 
     let storeCounter = 0;
@@ -204,7 +204,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           storeCounter += 1;
         }
-      }
+      },
     );
 
     const stats = await compile(compiler);
@@ -263,7 +263,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           getCounter += 1;
         }
-      }
+      },
     );
 
     let storeCounter = 0;
@@ -274,7 +274,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           storeCounter += 1;
         }
-      }
+      },
     );
 
     const stats = await compile(compiler);
@@ -284,7 +284,7 @@ describe('"cache" option', () => {
     // Store cached assets
     expect(storeCounter).toBe(5);
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
@@ -299,7 +299,7 @@ describe('"cache" option', () => {
     // No need to store, we got cached assets
     expect(storeCounter).toBe(0);
     expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(newStats)).toMatchSnapshot("errors");
     expect(getWarnings(newStats)).toMatchSnapshot("warnings");
@@ -365,7 +365,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           getCounter += 1;
         }
-      }
+      },
     );
 
     let storeCounter = 0;
@@ -376,7 +376,7 @@ describe('"cache" option', () => {
         if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
           storeCounter += 1;
         }
-      }
+      },
     );
 
     const stats = await compile(compiler);

@@ -120,16 +120,16 @@ describe("CssMinimizerPlugin", () => {
     expect(CssMinimizerPlugin.isSourceMap({ sources: "" })).toBe(false);
     expect(CssMinimizerPlugin.isSourceMap({ mappings: [] })).toBe(false);
     expect(CssMinimizerPlugin.isSourceMap({ version: 3, sources: "" })).toBe(
-      false
+      false,
     );
     expect(CssMinimizerPlugin.isSourceMap({ version: 3, mappings: [] })).toBe(
-      false
+      false,
     );
     expect(CssMinimizerPlugin.isSourceMap({ sources: "", mappings: [] })).toBe(
-      false
+      false,
     );
     expect(
-      CssMinimizerPlugin.isSourceMap({ version: 3, sources: "", mappings: [] })
+      CssMinimizerPlugin.isSourceMap({ version: 3, sources: "", mappings: [] }),
     ).toBe(false);
     expect(CssMinimizerPlugin.isSourceMap(rawSourceMap)).toBe(true);
     expect(CssMinimizerPlugin.isSourceMap(emptyRawSourceMap)).toBe(true);
@@ -152,8 +152,8 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildError(
         errorWithLineAndCol,
         "test.css",
-        new TraceMap(rawSourceMap)
-      )
+        new TraceMap(rawSourceMap),
+      ),
     ).toMatchSnapshot();
 
     const otherErrorWithLineAndCol = new Error("Message");
@@ -167,8 +167,8 @@ describe("CssMinimizerPlugin", () => {
         otherErrorWithLineAndCol,
         "test.css",
         new TraceMap(rawSourceMap),
-        new RequestShortener("/example.com/www/js/")
-      )
+        new RequestShortener("/example.com/www/js/"),
+      ),
     ).toMatchSnapshot();
 
     const errorWithStack = new Error("Message");
@@ -176,25 +176,16 @@ describe("CssMinimizerPlugin", () => {
     errorWithStack.stack = "Stack";
 
     expect(
-      CssMinimizerPlugin.buildError(errorWithStack, "test.css")
+      CssMinimizerPlugin.buildError(errorWithStack, "test.css"),
     ).toMatchSnapshot();
   });
 
   it("buildWarning method", () => {
     expect(
-      CssMinimizerPlugin.buildWarning("Warning test.css:1:1")
+      CssMinimizerPlugin.buildWarning("Warning test.css:1:1"),
     ).toMatchSnapshot();
     expect(
-      CssMinimizerPlugin.buildWarning("Warning test.css:1:1", "test.css")
-    ).toMatchSnapshot();
-    expect(
-      CssMinimizerPlugin.buildWarning(
-        "Warning test.css:1:1",
-        "test.css",
-        // eslint-disable-next-line no-undefined
-        undefined,
-        new TraceMap(rawSourceMap)
-      )
+      CssMinimizerPlugin.buildWarning("Warning test.css:1:1", "test.css"),
     ).toMatchSnapshot();
     expect(
       CssMinimizerPlugin.buildWarning(
@@ -203,8 +194,17 @@ describe("CssMinimizerPlugin", () => {
         // eslint-disable-next-line no-undefined
         undefined,
         new TraceMap(rawSourceMap),
-        new RequestShortener("/example.com/www/js/")
-      )
+      ),
+    ).toMatchSnapshot();
+    expect(
+      CssMinimizerPlugin.buildWarning(
+        "Warning test.css:1:1",
+        "test.css",
+        // eslint-disable-next-line no-undefined
+        undefined,
+        new TraceMap(rawSourceMap),
+        new RequestShortener("/example.com/www/js/"),
+      ),
     ).toMatchSnapshot();
     expect(
       CssMinimizerPlugin.buildWarning(
@@ -212,8 +212,8 @@ describe("CssMinimizerPlugin", () => {
         "test.css",
         () => true,
         new TraceMap(rawSourceMap),
-        new RequestShortener("/example.com/www/js/")
-      )
+        new RequestShortener("/example.com/www/js/"),
+      ),
     ).toMatchSnapshot();
     expect(
       CssMinimizerPlugin.buildWarning(
@@ -221,8 +221,8 @@ describe("CssMinimizerPlugin", () => {
         "test.css",
         () => false,
         new TraceMap(rawSourceMap),
-        new RequestShortener("/example.com/www/js/")
-      )
+        new RequestShortener("/example.com/www/js/"),
+      ),
     ).toMatchSnapshot();
     expect(
       CssMinimizerPlugin.buildWarning(
@@ -235,8 +235,8 @@ describe("CssMinimizerPlugin", () => {
         // eslint-disable-next-line no-undefined
         undefined,
         new TraceMap(rawSourceMap),
-        new RequestShortener("/example.com/www/js/")
-      )
+        new RequestShortener("/example.com/www/js/"),
+      ),
     ).toMatchSnapshot();
   });
 
@@ -409,7 +409,7 @@ describe("CssMinimizerPlugin", () => {
               {
                 loader: path.resolve(
                   __dirname,
-                  "./helpers/emitAssetInChildCompilationLoader"
+                  "./helpers/emitAssetInChildCompilationLoader",
                 ),
               },
             ],
@@ -545,7 +545,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(0);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -600,7 +600,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(0);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -657,7 +657,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(1);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -703,7 +703,7 @@ describe("CssMinimizerPlugin", () => {
     expect(stats.compilation.emittedAssets.size).toBe(8);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
@@ -714,7 +714,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(0);
 
       expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -760,7 +760,7 @@ describe("CssMinimizerPlugin", () => {
     expect(stats.compilation.emittedAssets.size).toBe(8);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
@@ -773,7 +773,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(2);
 
       expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -857,7 +857,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(0);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -943,7 +943,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(1);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");
@@ -998,7 +998,7 @@ describe("CssMinimizerPlugin", () => {
       expect(newStats.compilation.emittedAssets.size).toBe(5);
 
       expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets"
+        "assets",
       );
       expect(getWarnings(newStats)).toMatchSnapshot("warnings");
       expect(getErrors(newStats)).toMatchSnapshot("errors");

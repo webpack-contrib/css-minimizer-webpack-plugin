@@ -30,12 +30,12 @@ const minify = async (options) => {
     const minifyResult = await minifyFn(
       { [options.name]: code },
       map,
-      minifyOptions
+      minifyOptions,
     );
 
     if (typeof minifyResult.code !== "string") {
       throw new Error(
-        "minimizer function doesn't return the 'code' property or result is not a string value"
+        "minimizer function doesn't return the 'code' property or result is not a string value",
       );
     }
 
@@ -75,7 +75,7 @@ async function transform(options) {
     "module",
     "__filename",
     "__dirname",
-    `'use strict'\nreturn ${options}`
+    `'use strict'\nreturn ${options}`,
   )(exports, require, module, __filename, __dirname);
 
   return minify(evaluatedOptions);
