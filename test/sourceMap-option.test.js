@@ -58,7 +58,7 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
@@ -74,7 +74,7 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
@@ -90,7 +90,7 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
@@ -131,7 +131,7 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
@@ -174,9 +174,9 @@ describe('when applied with "sourceMap" option', () => {
                     };
                   },
                 };
-              }
+              },
             );
-          }
+          },
         );
       }
     })();
@@ -202,12 +202,12 @@ describe('when applied with "sourceMap" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(stats.compilation.warnings[0].toString()).toMatch(
-      "contains invalid source map"
+      "contains invalid source map",
     );
   });
 
@@ -249,9 +249,9 @@ describe('when applied with "sourceMap" option', () => {
                     };
                   },
                 };
-              }
+              },
             );
-          }
+          },
         );
       }
     })();

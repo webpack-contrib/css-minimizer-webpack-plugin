@@ -22,7 +22,7 @@ const notSettled = Symbol(`not-settled`);
 function throttleAll(limit, tasks) {
   if (!Number.isInteger(limit) || limit < 1) {
     throw new TypeError(
-      `Expected \`limit\` to be a finite number > 0, got \`${limit}\` (${typeof limit})`
+      `Expected \`limit\` to be a finite number > 0, got \`${limit}\` (${typeof limit})`,
     );
   }
 
@@ -31,7 +31,7 @@ function throttleAll(limit, tasks) {
     !tasks.every((task) => typeof task === `function`)
   ) {
     throw new TypeError(
-      `Expected \`tasks\` to be a list of functions returning a promise`
+      `Expected \`tasks\` to be a list of functions returning a promise`,
     );
   }
 
@@ -76,7 +76,7 @@ function throttleAll(limit, tasks) {
 async function cssnanoMinify(
   input,
   sourceMap,
-  minimizerOptions = { preset: "default" }
+  minimizerOptions = { preset: "default" },
 ) {
   /**
    * @template T
@@ -129,7 +129,7 @@ async function cssnanoMinify(
       throw new Error(
         `Loading PostCSS "${postcssOptions.parser}" parser failed: ${
           /** @type {Error} */ (error).message
-        }\n\n(@${name})`
+        }\n\n(@${name})`,
       );
     }
   }
@@ -141,7 +141,7 @@ async function cssnanoMinify(
       throw new Error(
         `Loading PostCSS "${postcssOptions.stringifier}" stringifier failed: ${
           /** @type {Error} */ (error).message
-        }\n\n(@${name})`
+        }\n\n(@${name})`,
       );
     }
   }
@@ -153,7 +153,7 @@ async function cssnanoMinify(
       throw new Error(
         `Loading PostCSS "${postcssOptions.syntax}" syntax failed: ${
           /** @type {Error} */ (error).message
-        }\n\n(@${name})`
+        }\n\n(@${name})`,
       );
     }
   }
@@ -172,7 +172,7 @@ async function cssnanoMinify(
   // Types are broken
   const result = await postcss([cssnano(minimizerOptions)]).process(
     code,
-    postcssOptions
+    postcssOptions,
   );
 
   return {
@@ -245,7 +245,7 @@ async function cleanCssMinify(input, sourceMap, minimizerOptions) {
        * @param {string} item
        * @returns {string}
        */
-      (item) => (isWindowsPathSep ? item.replace(/\\/g, "/") : item)
+      (item) => (isWindowsPathSep ? item.replace(/\\/g, "/") : item),
     );
   }
 
@@ -336,7 +336,7 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
                             note.location
                               ? `\nLine text:\n${note.location.lineText}\n`
                               : ""
-                          }`
+                          }`,
                       )
                       .join("\n")}`
                   : ""
@@ -446,8 +446,8 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
 async function swcMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
-   * @param {Partial<import("@swc/css").Options>} [swcOptions={}]
-   * @returns {import("@swc/css").Options}
+   * @param {Partial<import("@swc/css").MinifyOptions>} [swcOptions={}]
+   * @returns {import("@swc/css").MinifyOptions}
    */
   const buildSwcOptions = (swcOptions = {}) => {
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366

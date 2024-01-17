@@ -40,7 +40,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   constructor(
     options?:
       | (BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>)
-      | undefined
+      | undefined,
   );
   /**
    * @private
@@ -167,7 +167,7 @@ type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
 type BasicMinimizerImplementation<T> = (
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minifyOptions: InferDefaultType<T>
+  minifyOptions: InferDefaultType<T>,
 ) => Promise<MinimizedResult>;
 type MinimizerImplementation<T> = T extends any[]
   ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
@@ -198,7 +198,7 @@ type Rules = Rule[] | Rule;
 type WarningsFilter = (
   warning: Warning | WarningObject | string,
   file: string,
-  source?: string
+  source?: string,
 ) => boolean;
 type BasePluginOptions = {
   test?: Rule | undefined;

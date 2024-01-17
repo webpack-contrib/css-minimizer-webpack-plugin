@@ -154,11 +154,11 @@ const warningRegex = /\s.+:+([0-9]+):+([0-9]+)/;
 
 const getSerializeJavascript = memoize(() =>
   // eslint-disable-next-line global-require
-  require("serialize-javascript")
+  require("serialize-javascript"),
 );
 const getTraceMapping = memoize(() =>
   // eslint-disable-next-line global-require
-  require("@jridgewell/trace-mapping")
+  require("@jridgewell/trace-mapping"),
 );
 
 /**
@@ -214,7 +214,7 @@ class CssMinimizerPlugin {
         input.version &&
         input.sources &&
         Array.isArray(input.sources) &&
-        typeof input.mappings === "string"
+        typeof input.mappings === "string",
     );
   }
 
@@ -232,7 +232,7 @@ class CssMinimizerPlugin {
     file,
     warningsFilter,
     sourceMap,
-    requestShortener
+    requestShortener,
   ) {
     let warningMessage =
       typeof warning === "string"
@@ -292,7 +292,7 @@ class CssMinimizerPlugin {
     const builtWarning = new Error(
       `${file} from Css Minimizer plugin\n${warningMessage}${
         locationMessage ? ` ${locationMessage}` : ""
-      }`
+      }`,
     );
 
     builtWarning.name = "Warning";
@@ -345,7 +345,7 @@ class CssMinimizerPlugin {
             error.stack
               ? `\n${error.stack.split("\n").slice(1).join("\n")}`
               : ""
-          }`
+          }`,
         );
         builtError.file = file;
 
@@ -357,7 +357,7 @@ class CssMinimizerPlugin {
           error.message
         } [${file}:${line},${column}]${
           error.stack ? `\n${error.stack.split("\n").slice(1).join("\n")}` : ""
-        }`
+        }`,
       );
       builtError.file = file;
 
@@ -366,7 +366,7 @@ class CssMinimizerPlugin {
 
     if (error.stack) {
       builtError = new Error(
-        `${file} from Css Minimizer plugin\n${error.stack}`
+        `${file} from Css Minimizer plugin\n${error.stack}`,
       );
       builtError.file = file;
 
@@ -374,7 +374,7 @@ class CssMinimizerPlugin {
     }
 
     builtError = new Error(
-      `${file} from Css Minimizer plugin\n${error.message}`
+      `${file} from Css Minimizer plugin\n${error.message}`,
     );
     builtError.file = file;
 
@@ -423,7 +423,7 @@ class CssMinimizerPlugin {
             !compiler.webpack.ModuleFilenameHelpers.matchObject.bind(
               // eslint-disable-next-line no-undefined
               undefined,
-              this.options
+              this.options,
             )(name)
           ) {
             return false;
@@ -445,7 +445,7 @@ class CssMinimizerPlugin {
           }
 
           return { name, info, inputSource: source, output, cacheItem };
-        })
+        }),
     );
 
     if (assetsForMinify.length === 0) {
@@ -463,7 +463,7 @@ class CssMinimizerPlugin {
       // Do not create unnecessary workers when the number of files is less than the available cores, it saves memory
       numberOfWorkers = Math.min(
         numberOfAssetsForMinify,
-        optimizeOptions.availableNumberOfCores
+        optimizeOptions.availableNumberOfCores,
       );
 
       getWorker = () => {
@@ -521,7 +521,7 @@ class CssMinimizerPlugin {
               compilation.warnings.push(
                 /** @type {WebpackError} */ (
                   new Error(`${name} contains invalid source map`)
-                )
+                ),
               );
             } else {
               inputSourceMap = /** @type {RawSourceMap} */ (map);
@@ -562,14 +562,14 @@ class CssMinimizerPlugin {
                   name,
                   hasSourceMap
                     ? new (getTraceMapping().TraceMap)(
-                        /** @type {RawSourceMap} */ (inputSourceMap)
+                        /** @type {RawSourceMap} */ (inputSourceMap),
                       )
                     : // eslint-disable-next-line no-undefined
                       undefined,
                   // eslint-disable-next-line no-undefined
-                  hasSourceMap ? compilation.requestShortener : undefined
+                  hasSourceMap ? compilation.requestShortener : undefined,
                 )
-              )
+              ),
             );
 
             return;
@@ -597,7 +597,7 @@ class CssMinimizerPlugin {
                 item.map,
                 originalSource,
                 innerSourceMap,
-                true
+                true,
               );
             } else {
               output.source = new RawSource(item.code);
@@ -615,13 +615,13 @@ class CssMinimizerPlugin {
                   name,
                   hasSourceMap
                     ? new (getTraceMapping().TraceMap)(
-                        /** @type {RawSourceMap} */ (inputSourceMap)
+                        /** @type {RawSourceMap} */ (inputSourceMap),
                       )
                     : // eslint-disable-next-line no-undefined
                       undefined,
                   // eslint-disable-next-line no-undefined
-                  hasSourceMap ? compilation.requestShortener : undefined
-                )
+                  hasSourceMap ? compilation.requestShortener : undefined,
+                ),
               );
             }
           }
@@ -637,12 +637,12 @@ class CssMinimizerPlugin {
                 this.options.warningsFilter,
                 hasSourceMap
                   ? new (getTraceMapping().TraceMap)(
-                      /** @type {RawSourceMap} */ (inputSourceMap)
+                      /** @type {RawSourceMap} */ (inputSourceMap),
                     )
                   : // eslint-disable-next-line no-undefined
                     undefined,
                 // eslint-disable-next-line no-undefined
-                hasSourceMap ? compilation.requestShortener : undefined
+                hasSourceMap ? compilation.requestShortener : undefined,
               );
 
               if (buildWarning) {
@@ -696,7 +696,7 @@ class CssMinimizerPlugin {
   apply(compiler) {
     const pluginName = this.constructor.name;
     const availableNumberOfCores = CssMinimizerPlugin.getAvailableNumberOfCores(
-      this.options.parallel
+      this.options.parallel,
     );
 
     compiler.hooks.compilation.tap(pluginName, (compilation) => {
@@ -710,7 +710,7 @@ class CssMinimizerPlugin {
         (assets) =>
           this.optimize(compiler, compilation, assets, {
             availableNumberOfCores,
-          })
+          }),
       );
 
       compilation.hooks.statsPrinter.tap(pluginName, (stats) => {
@@ -722,9 +722,9 @@ class CssMinimizerPlugin {
               // eslint-disable-next-line no-undefined
               minimized
                 ? /** @type {Function} */ (green)(
-                    /** @type {Function} */ (formatFlag)("minimized")
+                    /** @type {Function} */ (formatFlag)("minimized"),
                   )
-                : ""
+                : "",
           );
       });
     });

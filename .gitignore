@@ -4,6 +4,7 @@ coverage
 logs
 *.log
 npm-debug.log*
+.cspellcache
 .eslintcache
 /coverage
 /dist

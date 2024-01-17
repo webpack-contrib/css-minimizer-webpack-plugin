@@ -32,7 +32,7 @@ export function memoize<T>(fn: (() => any) | undefined): () => T;
 export function cssnanoMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions?: CustomOptions
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -43,7 +43,7 @@ export function cssnanoMinify(
 export function cssoMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -54,7 +54,7 @@ export function cssoMinify(
 export function cleanCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -65,7 +65,7 @@ export function cleanCssMinify(
 export function esbuildMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -76,7 +76,7 @@ export function esbuildMinify(
 export function parcelCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -87,7 +87,7 @@ export function parcelCssMinify(
 export function lightningCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
 /**
  * @param {Input} input
@@ -98,5 +98,5 @@ export function lightningCssMinify(
 export function swcMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions
+  minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;

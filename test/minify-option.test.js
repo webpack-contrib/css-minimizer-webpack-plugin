@@ -34,24 +34,15 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
+      parallel: false,
       minify: async (data, inputSourceMap) => {
         // eslint-disable-next-line global-require
         const csso = require("csso");
-        // eslint-disable-next-line global-require
-        const sourcemap = require("source-map");
-
         const [[filename, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
           filename,
           sourceMap: inputSourceMap,
         });
-
-        if (inputSourceMap) {
-          minifiedCss.map.applySourceMap(
-            new sourcemap.SourceMapConsumer(inputSourceMap),
-            filename
-          );
-        }
 
         return {
           code: minifiedCss.css,
@@ -63,9 +54,9 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
-    expect(getErrors(stats)).toMatchSnapshot("error");
+    expect(stats.compilation.errors).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
   });
 
@@ -103,7 +94,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -128,7 +119,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -188,7 +179,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -244,7 +235,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -279,7 +270,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -315,7 +306,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -357,7 +348,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -433,7 +424,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -466,7 +457,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -505,7 +496,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -525,7 +516,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -546,7 +537,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -585,7 +576,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -617,7 +608,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -648,7 +639,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -669,7 +660,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -708,7 +699,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -732,7 +723,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -757,7 +748,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -790,7 +781,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -824,7 +815,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -866,7 +857,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -905,7 +896,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -938,7 +929,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -972,7 +963,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1014,7 +1005,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1053,7 +1044,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1086,7 +1077,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1121,7 +1112,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1161,7 +1152,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1194,7 +1185,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1230,7 +1221,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1267,7 +1258,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");
@@ -1305,7 +1296,7 @@ describe('"minify" option', () => {
     const stats = await compile(compiler);
 
     expect(readAssets(compiler, stats, /\.css(\.map)?$/)).toMatchSnapshot(
-      "assets"
+      "assets",
     );
     expect(getErrors(stats)).toMatchSnapshot("error");
     expect(getWarnings(stats)).toMatchSnapshot("warning");

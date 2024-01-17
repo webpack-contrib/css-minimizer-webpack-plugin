@@ -106,7 +106,7 @@ describe('when applied with "minimizerOptions" option', () => {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(
-          `default-preset`
+          `default-preset`,
         );
       }
     });
@@ -119,7 +119,7 @@ describe('when applied with "minimizerOptions" option', () => {
         // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler2, stats)).toMatchSnapshot(
-          `preset-simple`
+          `preset-simple`,
         );
       }
     });

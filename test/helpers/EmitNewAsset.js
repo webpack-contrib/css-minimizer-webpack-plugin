@@ -23,9 +23,9 @@ export default class EmitNewAsset {
   display: block;
   color: coral;
 }
-            `)
+            `),
           );
-        }
+        },
       );
     });
   }
