@@ -13,9 +13,9 @@ exports[`when applied with "minimizerOptions" option matches snapshot for "disca
 
 exports[`when applied with "minimizerOptions" option matches snapshot for "discardComments" option (enable, with "removeAll" option): entry.css 1`] = `"body{color:red}"`;
 
-exports[`when applied with "minimizerOptions" option matches snapshot for "discardEmpty" option (disable): entry.css 1`] = `"body{color:red}a{}"`;
+exports[`when applied with "minimizerOptions" option matches snapshot for "discardEmpty" option (disable): entry.css 1`] = `"@layer ui-components, foo-bar;body{color:red}a{}.foo{color:#000;& .class{color:#fff}}@layer ui-components{}"`;
 
-exports[`when applied with "minimizerOptions" option matches snapshot for "discardEmpty" option (enable [default]): entry.css 1`] = `"body{color:red}"`;
+exports[`when applied with "minimizerOptions" option matches snapshot for "discardEmpty" option (enable [default]): entry.css 1`] = `"@layer ui-components, foo-bar;body{color:red}.foo{color:#000;& .class{color:#fff}}@layer ui-components{}"`;
 
 exports[`when applied with "minimizerOptions" option matches snapshot for "mergeRules" option (disable): entry.css 1`] = `"body{color:red}body{font-weight:700}"`;
 
