@@ -1,6 +1,19 @@
+@layer ui-components, foo-bar;
+
 body {
   color: red;
 }
 
 a {
+}
+
+.foo {
+  color: black;
+
+  & .class {
+    color: white;
+  }
+}
+
+@layer ui-components {
 }
