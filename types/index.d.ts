@@ -207,7 +207,7 @@ type BasePluginOptions = {
   warningsFilter?: WarningsFilter | undefined;
   parallel?: Parallel;
 };
-type MinimizerWorker<T> = import("jest-worker").Worker & {
+type MinimizerWorker<T> = JestWorker & {
   transform: (options: string) => InternalResult;
   minify: (options: InternalOptions<T>) => InternalResult;
 };
