@@ -13,7 +13,7 @@
 
 # css-minimizer-webpack-plugin
 
-This plugin uses [cssnano](https://cssnano.co) to optimize and minify your CSS.
+This plugin uses [cssnano](https://cssnano.github.io/cssnano/) to optimize and minify your CSS.
 
 Just like [optimize-css-assets-webpack-plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin) but more accurate with source maps and assets using query string, allows caching and works in parallel mode.
 
