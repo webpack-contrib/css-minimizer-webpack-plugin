@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.25",
-    "cssnano": "^6.1.2",
+    "cssnano": "^7.0.1",
     "jest-worker": "^29.7.0",
     "postcss": "^8.4.38",
     "schema-utils": "^4.2.0",
