@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.0.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v6.0.0...v7.0.0) (2024-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* update cssnano to 7.0 ([#263](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/issues/263)) ([a252ce9](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/a252ce91aad42181af0e4c71f1a00990c1efeeeb))
+
 ## [6.0.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v5.0.1...v6.0.0) (2024-01-17)
 
 

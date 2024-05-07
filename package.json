@@ -1,6 +1,6 @@
 {
   "name": "css-minimizer-webpack-plugin",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "description": "CSS minimizer (minifier) plugin for Webpack",
   "license": "MIT",
   "repository": "webpack-contrib/css-minimizer-webpack-plugin",
