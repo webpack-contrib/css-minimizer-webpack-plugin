@@ -238,7 +238,7 @@ Possible options:
 - `CssMinimizerPlugin.lightningCssMinify` (previously`CssMinimizerPlugin.parcelCssMinify`, the package was renamed, but we keep it for backward compatibility)
 - `async (data, inputMap, minimizerOptions) => {return {code: "a{color: red}", map: "...", warnings: [], errors: []}}`
 
-> **Warning**
+> [!WARNING]
 >
 > **Always use `require` inside `minify` function when `parallel` option enabled**.
 
@@ -362,7 +362,7 @@ Default: `{ from: assetName }`
 Allows filtering options [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano.
 The `parser`,` stringifier` and `syntax` can be either a function or a string indicating the module that will be imported.
 
-> **Warning**
+> [!WARNING]
 >
 > **If a function is passed, the `parallel` option must be disabled.**.
 
@@ -411,7 +411,7 @@ Default: `() => true`
 Allow filtering css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
 Return `true` to keep the warning, a falsy value (`false`/`null`/`undefined`) otherwise.
 
-> **Warning**
+> [!WARNING]
 >
 > The `source` argument will contain `undefined` if you don't use source maps.
 
