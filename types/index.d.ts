@@ -173,7 +173,7 @@ type MinimizerImplementation<T> = T extends any[]
   ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
   : BasicMinimizerImplementation<T>;
 type MinimizerOptions<T> = T extends any[]
-  ? { [P in keyof T]?: InferDefaultType<T[P]> | undefined }
+  ? { [P in keyof T]?: InferDefaultType<T[P]> }
   : InferDefaultType<T>;
 type InternalOptions<T> = {
   name: string;
