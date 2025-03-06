@@ -14,8 +14,11 @@ import {
 
 jest.mock("os", () => {
   const actualOs = jest.requireActual("os");
+  const isAvailableParallelism =
+    typeof actualOs.availableParallelism !== "undefined";
 
   const mocked = {
+    availableParallelism: isAvailableParallelism ? jest.fn(() => 4) : undefined,
     cpus: jest.fn(() => {
       return { length: 4 };
     }),
@@ -52,6 +55,14 @@ jest.mock("jest-worker", () => {
 
 const workerPath = require.resolve("../src/minify");
 
+const getParallelism = () => {
+  if (typeof os.availableParallelism !== "undefined") {
+    return os.availableParallelism();
+  }
+
+  return os.cpus().length;
+};
+
 describe("parallel option", () => {
   let compiler;
 
@@ -76,7 +87,7 @@ describe("parallel option", () => {
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
       enableWorkerThreads: ENABLE_WORKER_THREADS,
-      numWorkers: os.cpus().length - 1,
+      numWorkers: getParallelism() - 1,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
       Object.keys(readAssets(compiler, stats, /\.css$/)).length,
@@ -108,7 +119,27 @@ describe("parallel option", () => {
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
       enableWorkerThreads: ENABLE_WORKER_THREADS,
-      numWorkers: Math.min(4, os.cpus().length - 1),
+      numWorkers: Math.min(4, getParallelism() - 1),
+    });
+    expect(workerTransform).toHaveBeenCalledTimes(
+      Object.keys(readAssets(compiler, stats, /\.css$/)).length,
+    );
+    expect(workerEnd).toHaveBeenCalledTimes(1);
+
+    expect(readAssets(compiler, stats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getErrors(stats)).toMatchSnapshot("errors");
+    expect(getWarnings(stats)).toMatchSnapshot("warnings");
+  });
+
+  it('should match snapshot for the "undefined" value', async () => {
+    new CssMinimizerPlugin({ parallel: undefined }).apply(compiler);
+
+    const stats = await compile(compiler);
+
+    expect(Worker).toHaveBeenCalledTimes(1);
+    expect(Worker).toHaveBeenLastCalledWith(workerPath, {
+      enableWorkerThreads: ENABLE_WORKER_THREADS,
+      numWorkers: Math.min(4, getParallelism() - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
       Object.keys(readAssets(compiler, stats, /\.css$/)).length,
@@ -152,7 +183,7 @@ describe("parallel option", () => {
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
       enableWorkerThreads: ENABLE_WORKER_THREADS,
-      numWorkers: Math.min(1, os.cpus().length - 1),
+      numWorkers: Math.min(1, getParallelism() - 1),
     });
     expect(workerTransform).toHaveBeenCalledTimes(
       Object.keys(readAssets(compiler, stats, /\.css$/)).length,
