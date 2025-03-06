@@ -69,7 +69,7 @@ function throttleAll(limit, tasks) {
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -191,7 +191,7 @@ cssnanoMinify.supportsWorkerThreads = () => true;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -220,7 +220,7 @@ cssoMinify.supportsWorkerThreads = () => true;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -265,7 +265,7 @@ cleanCssMinify.supportsWorkerThreads = () => true;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -359,7 +359,7 @@ esbuildMinify.supportsWorkerThreads = () => false;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -405,7 +405,7 @@ parcelCssMinify.supportsWorkerThreads = () => false;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
@@ -451,7 +451,7 @@ lightningCssMinify.supportsWorkerThreads = () => false;
 /* istanbul ignore next */
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */

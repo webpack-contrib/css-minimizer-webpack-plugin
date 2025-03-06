@@ -222,8 +222,8 @@ type BasePluginOptions = {
   parallel?: Parallel;
 };
 type MinimizerWorker<T> = JestWorker & {
-  transform: (options: string) => InternalResult;
-  minify: (options: InternalOptions<T>) => InternalResult;
+  transform: (options: string) => Promise<InternalResult>;
+  minify: (options: InternalOptions<T>) => Promise<InternalResult>;
 };
 type ProcessOptionsExtender =
   | ProcessOptions

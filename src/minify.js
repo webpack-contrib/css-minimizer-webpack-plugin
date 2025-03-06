@@ -6,7 +6,7 @@
  * @param {import("./index.js").InternalOptions<T>} options
  * @returns {Promise<InternalResult>}
  */
-const minify = async (options) => {
+async function minify(options) {
   const minifyFns = Array.isArray(options.minimizer.implementation)
     ? options.minimizer.implementation
     : [options.minimizer.implementation];
@@ -59,7 +59,7 @@ const minify = async (options) => {
   }
 
   return result;
-};
+}
 
 /**
  * @param {string} options

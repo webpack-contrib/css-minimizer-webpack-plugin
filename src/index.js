@@ -15,7 +15,7 @@ const {
 } = require("./utils");
 
 const schema = require("./options.json");
-const { minify: minifyWorker } = require("./minify");
+const { minify } = require("./minify");
 
 /** @typedef {import("schema-utils/declarations/validate").Schema} Schema */
 /** @typedef {import("webpack").Compiler} Compiler */
@@ -134,7 +134,7 @@ const { minify: minifyWorker } = require("./minify");
 
 /**
  * @template T
- * @typedef {JestWorker & { transform: (options: string) => InternalResult, minify: (options: InternalOptions<T>) => InternalResult }} MinimizerWorker
+ * @typedef {JestWorker & { transform: (options: string) => Promise<InternalResult>, minify: (options: InternalOptions<T>) => Promise<InternalResult> }} MinimizerWorker
  */
 
 /**
@@ -578,7 +578,7 @@ class CssMinimizerPlugin {
           try {
             result = await (getWorker
               ? getWorker().transform(getSerializeJavascript()(options))
-              : minifyWorker(options));
+              : minify(options));
           } catch (error) {
             const hasSourceMap =
               inputSourceMap && CssMinimizerPlugin.isSourceMap(inputSourceMap);

@@ -25,13 +25,13 @@ export function throttleAll<T>(limit: number, tasks: Task<T>[]): Promise<T[]>;
 export function memoize<T>(fn: (() => any) | undefined): () => T;
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cssnanoMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cssnanoMinify {
@@ -39,13 +39,13 @@ export namespace cssnanoMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cssoMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cssoMinify {
@@ -53,13 +53,13 @@ export namespace cssoMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cleanCssMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cleanCssMinify {
@@ -67,13 +67,13 @@ export namespace cleanCssMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function esbuildMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace esbuildMinify {
@@ -81,13 +81,13 @@ export namespace esbuildMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function parcelCssMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace parcelCssMinify {
@@ -95,13 +95,13 @@ export namespace parcelCssMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function lightningCssMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace lightningCssMinify {
@@ -109,13 +109,13 @@ export namespace lightningCssMinify {
 }
 /**
  * @param {Input} input
- * @param {RawSourceMap | undefined} sourceMap
+ * @param {RawSourceMap} [sourceMap]
  * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function swcMinify(
   input: Input,
-  sourceMap: RawSourceMap | undefined,
+  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
   minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace swcMinify {
