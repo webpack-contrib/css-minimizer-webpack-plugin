@@ -179,7 +179,7 @@ type BasicMinimizerImplementation<T> = (
   input: Input,
   sourceMap: RawSourceMap | undefined,
   minifyOptions: InferDefaultType<T>,
-) => Promise<MinimizedResult>;
+) => Promise<MinimizedResult> | MinimizedResult;
 type MinimizeFunctionHelpers = {
   supportsWorkerThreads?: (() => boolean | undefined) | undefined;
 };

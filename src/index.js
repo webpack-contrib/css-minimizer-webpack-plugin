@@ -87,7 +87,7 @@ const { minify: minifyWorker } = require("./minify");
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
  * @param {InferDefaultType<T>} minifyOptions
- * @returns {Promise<MinimizedResult>}
+ * @returns {Promise<MinimizedResult> | MinimizedResult}
  */
 
 /**
