@@ -70,7 +70,7 @@ function throttleAll(limit, tasks) {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function cssnanoMinify(
@@ -192,7 +192,7 @@ cssnanoMinify.supportsWorkerThreads = () => true;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function cssoMinify(input, sourceMap, minimizerOptions) {
@@ -221,7 +221,7 @@ cssoMinify.supportsWorkerThreads = () => true;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function cleanCssMinify(input, sourceMap, minimizerOptions) {
@@ -266,7 +266,7 @@ cleanCssMinify.supportsWorkerThreads = () => true;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function esbuildMinify(input, sourceMap, minimizerOptions) {
@@ -360,7 +360,7 @@ esbuildMinify.supportsWorkerThreads = () => false;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function parcelCssMinify(input, sourceMap, minimizerOptions) {
@@ -406,7 +406,7 @@ parcelCssMinify.supportsWorkerThreads = () => false;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function lightningCssMinify(input, sourceMap, minimizerOptions) {
@@ -452,7 +452,7 @@ lightningCssMinify.supportsWorkerThreads = () => false;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 async function swcMinify(input, sourceMap, minimizerOptions) {

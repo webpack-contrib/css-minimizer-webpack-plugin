@@ -26,13 +26,13 @@ export function memoize<T>(fn: (() => any) | undefined): () => T;
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cssnanoMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions?: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cssnanoMinify {
   function supportsWorkerThreads(): boolean;
@@ -40,13 +40,13 @@ export namespace cssnanoMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cssoMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cssoMinify {
   function supportsWorkerThreads(): boolean;
@@ -54,13 +54,13 @@ export namespace cssoMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function cleanCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace cleanCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -68,13 +68,13 @@ export namespace cleanCssMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function esbuildMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace esbuildMinify {
   function supportsWorkerThreads(): boolean;
@@ -82,13 +82,13 @@ export namespace esbuildMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function parcelCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace parcelCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -96,13 +96,13 @@ export namespace parcelCssMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function lightningCssMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace lightningCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -110,13 +110,13 @@ export namespace lightningCssMinify {
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
- * @param {CustomOptions} minimizerOptions
+ * @param {CustomOptions} [minimizerOptions]
  * @return {Promise<MinimizedResult>}
  */
 export function swcMinify(
   input: Input,
   sourceMap: RawSourceMap | undefined,
-  minimizerOptions: CustomOptions,
+  minimizerOptions?: import("./index.js").CustomOptions | undefined,
 ): Promise<MinimizedResult>;
 export namespace swcMinify {
   function supportsWorkerThreads(): boolean;

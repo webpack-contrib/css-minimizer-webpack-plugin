@@ -152,7 +152,7 @@ describe('"minify" option', () => {
         { test: ".three{background: white;}" },
       ],
       minify: [
-        async (data, inputMap, minimizerOptions) => {
+        (data, inputMap, minimizerOptions) => {
           const [input] = Object.values(data);
           return {
             code: `${input}\n.one{color: red;}\n${minimizerOptions.test}\n`,
