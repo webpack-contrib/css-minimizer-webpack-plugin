@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.1](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v7.0.0...v7.0.1) (2025-03-06)
+
+
+### Bug Fixes
+
+* better support worker threads ([eeaa5e1](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/eeaa5e16861614c54568db35c17a2e8cad0d3c26))
+* use os.availableParallelism() for parallelism when it is available ([b07feeb](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/commit/b07feeb3e46e6a3d6ab9a32ca19711559b3afb3a))
+
 ## [7.0.0](https://github.com/webpack-contrib/css-minimizer-webpack-plugin/compare/v6.0.0...v7.0.0) (2024-05-07)
 
 
