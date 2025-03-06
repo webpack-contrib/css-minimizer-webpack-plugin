@@ -35,6 +35,13 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    */
   private static getAvailableNumberOfCores;
   /**
+   * @private
+   * @template T
+   * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation
+   * @returns {boolean}
+   */
+  private static isSupportsWorkerThreads;
+  /**
    * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
    */
   constructor(
@@ -91,9 +98,10 @@ declare namespace CssMinimizerPlugin {
     Input,
     CustomOptions,
     InferDefaultType,
-    BasicMinimizerImplementation,
-    MinimizerImplementation,
     MinimizerOptions,
+    BasicMinimizerImplementation,
+    MinimizeFunctionHelpers,
+    MinimizerImplementation,
     InternalOptions,
     InternalResult,
     Parallel,
@@ -164,17 +172,23 @@ type CustomOptions = {
   [key: string]: any;
 };
 type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
+type MinimizerOptions<T> = T extends any[]
+  ? { [P in keyof T]?: InferDefaultType<T[P]> }
+  : InferDefaultType<T>;
 type BasicMinimizerImplementation<T> = (
   input: Input,
   sourceMap: RawSourceMap | undefined,
   minifyOptions: InferDefaultType<T>,
 ) => Promise<MinimizedResult>;
+type MinimizeFunctionHelpers = {
+  supportsWorkerThreads?: (() => boolean | undefined) | undefined;
+};
 type MinimizerImplementation<T> = T extends any[]
-  ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> }
-  : BasicMinimizerImplementation<T>;
-type MinimizerOptions<T> = T extends any[]
-  ? { [P in keyof T]?: InferDefaultType<T[P]> }
-  : InferDefaultType<T>;
+  ? {
+      [P in keyof T]: BasicMinimizerImplementation<T[P]> &
+        MinimizeFunctionHelpers;
+    }
+  : BasicMinimizerImplementation<T> & MinimizeFunctionHelpers;
 type InternalOptions<T> = {
   name: string;
   input: string;
