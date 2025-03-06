@@ -177,7 +177,7 @@ Type: `Boolean|Number`
 Default: `true`
 
 Use multi-process parallel running to improve the build speed.
-Default number of concurrent runs: `os.cpus().length - 1`.
+Default number of concurrent runs: `os.cpus().length - 1` or `os.availableParallelism() - 1` (if this function is supported).
 
 > ℹ️ Parallelization can speed up your build significantly and is therefore **highly recommended**.
 > If a parallelization is enabled, the packages in `minimizerOptions` must be required via strings (`packageName` or `require.resolve(packageName)`). Read more in [`minimizerOptions`](#minimizeroptions)

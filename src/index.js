@@ -389,11 +389,14 @@ class CssMinimizerPlugin {
   static getAvailableNumberOfCores(parallel) {
     // In some cases cpus() returns undefined
     // https://github.com/nodejs/node/issues/19022
-    const cpus = os.cpus() || { length: 1 };
+    const cpus =
+      typeof os.availableParallelism === "function"
+        ? { length: os.availableParallelism() }
+        : os.cpus() || { length: 1 };
 
-    return parallel === true
+    return parallel === true || typeof parallel === "undefined"
       ? cpus.length - 1
-      : Math.min(Number(parallel) || 0, cpus.length - 1);
+      : Math.min(parallel || 0, cpus.length - 1);
   }
 
   /**
@@ -681,7 +684,6 @@ class CssMinimizerPlugin {
       getWorker && numberOfAssetsForMinify > 0
         ? /** @type {number} */ (numberOfWorkers)
         : scheduledTasks.length;
-
     await throttleAll(limit, scheduledTasks);
 
     if (initializedWorker) {

@@ -90,6 +90,19 @@ exports[`parallel option should match snapshot for the "true" value: errors 1`] 
 
 exports[`parallel option should match snapshot for the "true" value: warnings 1`] = `[]`;
 
+exports[`parallel option should match snapshot for the "undefined" value: assets 1`] = `
+{
+  "four.css": "body{color:red}a{color:blue}",
+  "one.css": "body{color:red}a{color:blue}",
+  "three.css": "body{color:red}a{color:blue}",
+  "two.css": "body{color:red}a{color:blue}",
+}
+`;
+
+exports[`parallel option should match snapshot for the "undefined" value: errors 1`] = `[]`;
+
+exports[`parallel option should match snapshot for the "undefined" value: warnings 1`] = `[]`;
+
 exports[`parallel option should match snapshot when a value is not specify: assets 1`] = `
 {
   "four.css": "body{color:red}a{color:blue}",
