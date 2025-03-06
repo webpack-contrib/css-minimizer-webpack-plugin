@@ -186,6 +186,8 @@ async function cssnanoMinify(
   };
 }
 
+cssnanoMinify.supportsWorkerThreads = () => true;
+
 /* istanbul ignore next */
 /**
  * @param {Input} input
@@ -212,6 +214,8 @@ async function cssoMinify(input, sourceMap, minimizerOptions) {
         undefined,
   };
 }
+
+cssoMinify.supportsWorkerThreads = () => true;
 
 /* istanbul ignore next */
 /**
@@ -255,6 +259,8 @@ async function cleanCssMinify(input, sourceMap, minimizerOptions) {
     warnings: result.warnings,
   };
 }
+
+cleanCssMinify.supportsWorkerThreads = () => true;
 
 /* istanbul ignore next */
 /**
@@ -347,6 +353,8 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+esbuildMinify.supportsWorkerThreads = () => false;
+
 // TODO remove in the next major release
 /* istanbul ignore next */
 /**
@@ -392,6 +400,8 @@ async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   };
 }
 
+parcelCssMinify.supportsWorkerThreads = () => false;
+
 /* istanbul ignore next */
 /**
  * @param {Input} input
@@ -435,6 +445,8 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
     map: result.map ? JSON.parse(result.map.toString()) : undefined,
   };
 }
+
+lightningCssMinify.supportsWorkerThreads = () => false;
 
 /* istanbul ignore next */
 /**
@@ -489,6 +501,8 @@ async function swcMinify(input, sourceMap, minimizerOptions) {
         undefined,
   };
 }
+
+swcMinify.supportsWorkerThreads = () => false;
 
 /**
  * @template T

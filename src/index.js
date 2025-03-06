@@ -78,6 +78,11 @@ const { minify: minifyWorker } = require("./minify");
 
 /**
  * @template T
+ * @typedef {T extends any[] ? { [P in keyof T]?: InferDefaultType<T[P]> } : InferDefaultType<T>} MinimizerOptions
+ */
+
+/**
+ * @template T
  * @callback BasicMinimizerImplementation
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -86,13 +91,13 @@ const { minify: minifyWorker } = require("./minify");
  */
 
 /**
- * @template T
- * @typedef {T extends any[] ? { [P in keyof T]: BasicMinimizerImplementation<T[P]>; } : BasicMinimizerImplementation<T>} MinimizerImplementation
+ * @typedef {object} MinimizeFunctionHelpers
+ * @property {() => boolean | undefined} [supportsWorkerThreads]
  */
 
 /**
  * @template T
- * @typedef {T extends any[] ? { [P in keyof T]?: InferDefaultType<T[P]> } : InferDefaultType<T>} MinimizerOptions
+ * @typedef {T extends any[] ? { [P in keyof T]: BasicMinimizerImplementation<T[P]> & MinimizeFunctionHelpers; } : BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} MinimizerImplementation
  */
 
 /**
@@ -401,6 +406,18 @@ class CssMinimizerPlugin {
 
   /**
    * @private
+   * @template T
+   * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation
+   * @returns {boolean}
+   */
+  static isSupportsWorkerThreads(implementation) {
+    return typeof implementation.supportsWorkerThreads !== "undefined"
+      ? implementation.supportsWorkerThreads() !== false
+      : true;
+  }
+
+  /**
+   * @private
    * @param {Compiler} compiler
    * @param {Compilation} compilation
    * @param {Record<string, import("webpack").sources.Source>} assets
@@ -480,7 +497,15 @@ class CssMinimizerPlugin {
         initializedWorker = /** @type {MinimizerWorker<T>} */ (
           new Worker(require.resolve("./minify"), {
             numWorkers: numberOfWorkers,
-            enableWorkerThreads: true,
+            enableWorkerThreads: Array.isArray(
+              this.options.minimizer.implementation,
+            )
+              ? this.options.minimizer.implementation.every((item) =>
+                  CssMinimizerPlugin.isSupportsWorkerThreads(item),
+                )
+              : CssMinimizerPlugin.isSupportsWorkerThreads(
+                  this.options.minimizer.implementation,
+                ),
           })
         );
 

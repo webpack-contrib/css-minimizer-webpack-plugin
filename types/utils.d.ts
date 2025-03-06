@@ -34,6 +34,9 @@ export function cssnanoMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace cssnanoMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -45,6 +48,9 @@ export function cssoMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace cssoMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -56,6 +62,9 @@ export function cleanCssMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace cleanCssMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -67,6 +76,9 @@ export function esbuildMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace esbuildMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -78,6 +90,9 @@ export function parcelCssMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace parcelCssMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -89,6 +104,9 @@ export function lightningCssMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace lightningCssMinify {
+  function supportsWorkerThreads(): boolean;
+}
 /**
  * @param {Input} input
  * @param {RawSourceMap | undefined} sourceMap
@@ -100,3 +118,6 @@ export function swcMinify(
   sourceMap: RawSourceMap | undefined,
   minimizerOptions: CustomOptions,
 ): Promise<MinimizedResult>;
+export namespace swcMinify {
+  function supportsWorkerThreads(): boolean;
+}
