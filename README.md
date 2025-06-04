@@ -91,10 +91,13 @@ Finally, run Webpack using your preferred method.
 Why? Because CSS support only these source map types.
 
 The plugin respects the [`devtool`](https://webpack.js.org/configuration/devtool/) setting and uses the `SourceMapDevToolPlugin` internally.
+
 Using a supported `devtool` value enables source map generation.
+
 Enabling the `columns` option in `SourceMapDevToolPlugin` also allows source map generation.
 
 Use source maps to map error message locations to their original modules (note that this may slow down compilation).
+
 If you use your own `minify` function please refer to the `minify` section for correct handling of source maps.
 
 ## Options
@@ -179,6 +182,7 @@ module.exports = {
 - Default: `true`
 
 Use multi-process parallel running to improve the build speed.
+
 The default number of concurrent runs: `os.cpus().length - 1` or `os.availableParallelism() - 1` (if this function is supported).
 
 > ℹ️ Parallelization can speed up your build significantly and is therefore **highly recommended**.
@@ -228,8 +232,10 @@ module.exports = {
 - Default: `CssMinimizerPlugin.cssnanoMinify`
 
 Overrides the default minify function.
+
 By default, plugin uses [cssnano](https://github.com/cssnano/cssnano) package.
-This is useful when using or testing unpublished versions or forks.
+
+> This is useful when using or testing unpublished versions or forks.
 
 Possible options:
 
@@ -271,6 +277,7 @@ module.exports = {
 #### `Array`
 
 If an array of functions is passed to the `minify` option, the `minimizerOptions` must also be an array.
+
 The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
 
 **webpack.config.js**
@@ -337,6 +344,7 @@ module.exports = {
 #### `Array`
 
 The function index in the `minify` array corresponds to the options object with the same index in the `minimizerOptions` array.
+
 If you use `minimizerOptions` like object, all `minify` function accept it.
 
 > If parallelization is enabled, the packages in `minimizerOptions` must be referenced via strings (`packageName` or `require.resolve(packageName)`). In this case, we shouldn't use `require`/`import`.
@@ -362,6 +370,7 @@ module.exports = {
 - Default: `{ from: assetName }`
 
 Allows filtering options [`processoptions`](https://postcss.org/api/#processoptions) for the cssnano.
+
 The `parser`,` stringifier` and `syntax` can be either a function or a string indicating the module that will be imported.
 
 > [!WARNING]
@@ -411,6 +420,7 @@ module.exports = {
 - Default: `() => true`
 
 Filter css-minimizer warnings (By default [cssnano](https://github.com/cssnano/cssnano)).
+
 Return `true` to keep the warning, or a falsy value (`false`/`null`/`undefined`) to suppress it.
 
 > [!WARNING]
@@ -603,6 +613,7 @@ module.exports = {
 ## Contributing
 
 We welcome all contributions!
+
 If you're new here, please take a moment to review our contributing guidelines.
 
 [CONTRIBUTING](./.github/CONTRIBUTING.md)
