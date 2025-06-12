@@ -71,7 +71,7 @@
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.25",
     "cssnano": "^7.0.4",
-    "jest-worker": "^29.7.0",
+    "jest-worker": "^30.0.0",
     "postcss": "^8.4.40",
     "schema-utils": "^4.2.0",
     "serialize-javascript": "^6.0.2"
@@ -89,7 +89,7 @@
     "@types/node": "^20.14.9",
     "@types/serialize-javascript": "^5.0.4",
     "@webpack-contrib/eslint-config-webpack": "^3.0.0",
-    "babel-jest": "^29.7.0",
+    "babel-jest": "^30.0.0",
     "clean-css": "^5.3.3",
     "copy-webpack-plugin": "^9.1.0",
     "cross-env": "^7.0.3",
