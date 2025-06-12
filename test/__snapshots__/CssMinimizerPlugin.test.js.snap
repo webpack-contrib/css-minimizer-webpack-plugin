@@ -55,7 +55,7 @@ warning http://example.com/www/js/one.css:1:1]
 exports[`CssMinimizerPlugin should build error: error 1`] = `
 [
   "Error: error.css from Css Minimizer plugin
-/error.css:1:1: Unknown word [error.css:1,1]",
+/error.css:1:1: Unknown word null [error.css:1,1]",
 ]
 `;
 

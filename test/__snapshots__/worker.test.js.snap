@@ -2,7 +2,7 @@
 
 exports[`worker should emit error: error 1`] = `
 [
-  "/entry.css:1:1: Unknown word",
+  "/entry.css:1:1: Unknown word false",
 ]
 `;
 
