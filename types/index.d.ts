@@ -45,9 +45,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
    */
   constructor(
-    options?:
-      | (BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>)
-      | undefined,
+    options?: BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>,
   );
   /**
    * @private
