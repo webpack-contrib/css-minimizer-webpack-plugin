@@ -3,7 +3,6 @@ class PreCopyPlugin {
     this.options = options.options || {};
   }
 
-  // eslint-disable-next-line class-methods-use-this
   apply(compiler) {
     const plugin = { name: "PreCopyPlugin" };
     const { RawSource } = compiler.webpack.sources;
@@ -21,11 +20,14 @@ class PreCopyPlugin {
   }
 }
 
+/**
+ * @returns {string} - Loader result
+ */
 export default function loader() {
   const callback = this.async();
 
   const childCompiler = this._compilation.createChildCompiler(
-    `preloader`,
+    "preloader",
     this.options,
   );
 

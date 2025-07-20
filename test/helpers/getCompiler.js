@@ -1,9 +1,13 @@
-import path from "path";
+import path from "node:path";
 
-import webpack from "webpack";
+import { Volume, createFsFromVolume } from "memfs";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { createFsFromVolume, Volume } from "memfs";
+import webpack from "webpack";
 
+/**
+ * @param {import("webpack").Configuration} config Webpack configuration
+ * @returns {import("webpack").Compiler} - Webpack compiler
+ */
 export default function getCompiler(config) {
   const compiler = webpack({
     mode: "development",

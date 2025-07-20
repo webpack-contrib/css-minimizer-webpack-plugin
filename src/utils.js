@@ -5,7 +5,7 @@
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
 /** @typedef {import("postcss").Postcss} Postcss */
 
-const notSettled = Symbol(`not-settled`);
+const notSettled = Symbol("not-settled");
 
 /**
  * @template T
@@ -15,8 +15,8 @@ const notSettled = Symbol(`not-settled`);
 /**
  * Run tasks with limited concurrency.
  * @template T
- * @param {number} limit - Limit of tasks that run at once.
- * @param {Task<T>[]} tasks - List of tasks to run.
+ * @param {number} limit Limit of tasks that run at once.
+ * @param {Task<T>[]} tasks List of tasks to run.
  * @returns {Promise<T[]>} A promise that fulfills to an array of the results
  */
 function throttleAll(limit, tasks) {
@@ -28,15 +28,15 @@ function throttleAll(limit, tasks) {
 
   if (
     !Array.isArray(tasks) ||
-    !tasks.every((task) => typeof task === `function`)
+    !tasks.every((task) => typeof task === "function")
   ) {
     throw new TypeError(
-      `Expected \`tasks\` to be a list of functions returning a promise`,
+      "Expected `tasks` to be a list of functions returning a promise",
     );
   }
 
   return new Promise((resolve, reject) => {
-    const result = Array(tasks.length).fill(notSettled);
+    const result = Array.from({ length: tasks.length }).fill(notSettled);
     const entries = tasks.entries();
     const next = () => {
       const { done, value } = entries.next();
@@ -52,26 +52,28 @@ function throttleAll(limit, tasks) {
       const [index, task] = value;
 
       /**
-       * @param {T} x
+       * @param {T} resultValue Result value
        */
-      const onFulfilled = (x) => {
-        result[index] = x;
+      const onFulfilled = (resultValue) => {
+        result[index] = resultValue;
         next();
       };
 
       task().then(onFulfilled, reject);
     };
 
-    Array(limit).fill(0).forEach(next);
+    for (let i = 0; i < limit; i++) {
+      next();
+    }
   });
 }
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function cssnanoMinify(
   input,
@@ -80,30 +82,29 @@ async function cssnanoMinify(
 ) {
   /**
    * @template T
-   * @param {string} module
-   * @returns {Promise<T>}
+   * @param {string} module Module to load
+   * @returns {Promise<T>} - Promise with loaded module
    */
   const load = async (module) => {
     let exports;
 
     try {
-      // eslint-disable-next-line import/no-dynamic-require, global-require
       exports = require(module);
 
       return exports;
-    } catch (requireError) {
+    } catch (err) {
       let importESM;
 
       try {
         // eslint-disable-next-line no-new-func
         importESM = new Function("id", "return import(id);");
-      } catch (e) {
+      } catch {
         importESM = null;
       }
 
       if (
         /** @type {Error & {code: string}} */
-        (requireError).code === "ERR_REQUIRE_ESM" &&
+        (err).code === "ERR_REQUIRE_ESM" &&
         importESM
       ) {
         exports = await importESM(module);
@@ -111,7 +112,7 @@ async function cssnanoMinify(
         return exports.default;
       }
 
-      throw requireError;
+      throw err;
     }
   };
 
@@ -119,7 +120,8 @@ async function cssnanoMinify(
   /** @type {ProcessOptions} */
   const postcssOptions = {
     from: name,
-    ...minimizerOptions.processorOptions,
+    // eslint-disable-next-line unicorn/no-useless-fallback-in-spread
+    ...(minimizerOptions.processorOptions || {}),
   };
 
   if (typeof postcssOptions.parser === "string") {
@@ -163,12 +165,11 @@ async function cssnanoMinify(
   }
 
   /** @type {Postcss} */
-  // eslint-disable-next-line global-require
+
   const postcss = require("postcss").default;
-  // @ts-ignore
-  // eslint-disable-next-line global-require
+
   const cssnano = require("cssnano");
-  // @ts-ignore
+
   // Types are broken
   const result = await postcss([cssnano(minimizerOptions)]).process(
     code,
@@ -177,11 +178,12 @@ async function cssnanoMinify(
 
   return {
     code: result.css,
-    // @ts-ignore
+
     map: result.map
-      ? result.map.toJSON()
-      : // eslint-disable-next-line no-undefined
-        undefined,
+      ? /** @type {RawSourceMap} */ (
+          /** @type {unknown} */ (result.map.toJSON())
+        )
+      : undefined,
     warnings: result.warnings().map(String),
   };
 }
@@ -190,14 +192,14 @@ cssnanoMinify.supportsWorkerThreads = () => true;
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function cssoMinify(input, sourceMap, minimizerOptions) {
-  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const csso = require("csso");
+
   const [[filename, code]] = Object.entries(input);
   const result = csso.minify(code, {
     filename,
@@ -208,10 +210,10 @@ async function cssoMinify(input, sourceMap, minimizerOptions) {
   return {
     code: result.css,
     map: result.map
-      ? /** @type {any & { toJSON(): RawSourceMap }} */
-        (result.map).toJSON()
-      : // eslint-disable-next-line no-undefined
-        undefined,
+      ? /** @type {RawSourceMap} */ (
+          /** @type {{ toJSON(): RawSourceMap }} */ (result.map).toJSON()
+        )
+      : undefined,
   };
 }
 
@@ -219,14 +221,14 @@ cssoMinify.supportsWorkerThreads = () => true;
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function cleanCssMinify(input, sourceMap, minimizerOptions) {
-  // eslint-disable-next-line global-require,import/no-extraneous-dependencies
   const CleanCSS = require("clean-css");
+
   const [[name, code]] = Object.entries(input);
   const result = await new CleanCSS({
     sourceMap: Boolean(sourceMap),
@@ -234,22 +236,24 @@ async function cleanCssMinify(input, sourceMap, minimizerOptions) {
     returnPromise: true,
   }).minify({ [name]: { styles: code } });
 
-  const generatedSourceMap =
-    result.sourceMap &&
-    /** @type {any & { toJSON(): RawSourceMap }} */
-    (result.sourceMap).toJSON();
+  const generatedSourceMap = result.sourceMap
+    ? /** @type {RawSourceMap} */ (
+        // eslint-disable-next-line jsdoc/no-restricted-syntax
+        /** @type {any} */ (result.sourceMap).toJSON()
+      )
+    : undefined;
 
   // workaround for source maps on windows
   if (generatedSourceMap) {
-    // eslint-disable-next-line global-require
-    const isWindowsPathSep = require("path").sep === "\\";
+    const isWindowsPathSep = require("node:path").sep === "\\";
 
     generatedSourceMap.sources = generatedSourceMap.sources.map(
       /**
-       * @param {string} item
-       * @returns {string}
+       * @param {string | null} item Path item
+       * @returns {string} - Normalized path
        */
-      (item) => (isWindowsPathSep ? item.replace(/\\/g, "/") : item),
+      (item) =>
+        isWindowsPathSep ? (item || "").replaceAll("\\", "/") : item || "",
     );
   }
 
@@ -264,28 +268,26 @@ cleanCssMinify.supportsWorkerThreads = () => true;
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function esbuildMinify(input, sourceMap, minimizerOptions) {
   /**
-   * @param {import("esbuild").TransformOptions} [esbuildOptions={}]
-   * @returns {import("esbuild").TransformOptions}
+   * @param {import("esbuild").TransformOptions=} esbuildOptions ESBuild options
+   * @returns {import("esbuild").TransformOptions} - Built ESBuild options
    */
-  const buildEsbuildOptions = (esbuildOptions = {}) => {
+  const buildEsbuildOptions = (esbuildOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
-    return {
+    ({
       loader: "css",
       minify: true,
       legalComments: "inline",
       ...esbuildOptions,
       sourcemap: false,
-    };
-  };
+    });
 
-  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const esbuild = require("esbuild");
 
   // Copy `esbuild` options
@@ -305,50 +307,46 @@ async function esbuildMinify(input, sourceMap, minimizerOptions) {
 
   return {
     code: result.code,
-    // eslint-disable-next-line no-undefined
+
     map: result.map ? JSON.parse(result.map) : undefined,
     warnings:
       result.warnings.length > 0
-        ? result.warnings.map((item) => {
-            return {
-              source: item.location && item.location.file,
-              line:
-                item.location && item.location.line
-                  ? item.location.line
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
-              column:
-                item.location && item.location.column
-                  ? item.location.column
-                  : // eslint-disable-next-line no-undefined
-                    undefined,
-              plugin: item.pluginName,
-              message: `${item.text}${
-                item.detail ? `\nDetails:\n${item.detail}` : ""
-              }${
-                item.notes.length > 0
-                  ? `\n\nNotes:\n${item.notes
-                      .map(
-                        (note) =>
-                          `${
-                            note.location
-                              ? `[${note.location.file}:${note.location.line}:${note.location.column}] `
-                              : ""
-                          }${note.text}${
-                            note.location
-                              ? `\nSuggestion: ${note.location.suggestion}`
-                              : ""
-                          }${
-                            note.location
-                              ? `\nLine text:\n${note.location.lineText}\n`
-                              : ""
-                          }`,
-                      )
-                      .join("\n")}`
-                  : ""
-              }`,
-            };
-          })
+        ? result.warnings.map((item) => ({
+            source: item.location && item.location.file,
+            line:
+              item.location && item.location.line
+                ? item.location.line
+                : undefined,
+            column:
+              item.location && item.location.column
+                ? item.location.column
+                : undefined,
+            plugin: item.pluginName,
+            message: `${item.text}${
+              item.detail ? `\nDetails:\n${item.detail}` : ""
+            }${
+              item.notes.length > 0
+                ? `\n\nNotes:\n${item.notes
+                    .map(
+                      (note) =>
+                        `${
+                          note.location
+                            ? `[${note.location.file}:${note.location.line}:${note.location.column}] `
+                            : ""
+                        }${note.text}${
+                          note.location
+                            ? `\nSuggestion: ${note.location.suggestion}`
+                            : ""
+                        }${
+                          note.location
+                            ? `\nLine text:\n${note.location.lineText}\n`
+                            : ""
+                        }`,
+                    )
+                    .join("\n")}`
+                : ""
+            }`,
+          }))
         : [],
   };
 }
@@ -358,29 +356,28 @@ esbuildMinify.supportsWorkerThreads = () => false;
 // TODO remove in the next major release
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
+  // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
-   * @param {Partial<import("@parcel/css").TransformOptions<any>>} [parcelCssOptions={}]
-   * @returns {import("@parcel/css").TransformOptions<any>}
+   * @param {Partial<import("@parcel/css").TransformOptions<any>>=} parcelCssOptions Parcel CSS options
+   * @returns {import("@parcel/css").TransformOptions<any>} - Built Parcel CSS options
    */
-  const buildParcelCssOptions = (parcelCssOptions = {}) => {
+  const buildParcelCssOptions = (parcelCssOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
-    return {
+    ({
       minify: true,
       ...parcelCssOptions,
       sourceMap: false,
       filename,
-      code: Buffer.from(code),
-    };
-  };
+      code: new Uint8Array(Buffer.from(code)),
+    });
 
-  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const parcelCss = require("@parcel/css");
 
   // Copy `parcel-css` options
@@ -395,7 +392,7 @@ async function parcelCssMinify(input, sourceMap, minimizerOptions) {
 
   return {
     code: result.code.toString(),
-    // eslint-disable-next-line no-undefined
+
     map: result.map ? JSON.parse(result.map.toString()) : undefined,
   };
 }
@@ -404,29 +401,28 @@ parcelCssMinify.supportsWorkerThreads = () => false;
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function lightningCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
+  // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
-   * @param {Partial<import("lightningcss").TransformOptions<any>>} [lightningCssOptions={}]
-   * @returns {import("lightningcss").TransformOptions<any>}
+   * @param {Partial<import("lightningcss").TransformOptions<any>>=} lightningCssOptions Lightning CSS options
+   * @returns {import("lightningcss").TransformOptions<any>} - Built Lightning CSS options
    */
-  const buildLightningCssOptions = (lightningCssOptions = {}) => {
+  const buildLightningCssOptions = (lightningCssOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
-    return {
+    ({
       minify: true,
       ...lightningCssOptions,
       sourceMap: false,
       filename,
-      code: Buffer.from(code),
-    };
-  };
+      code: new Uint8Array(Buffer.from(code)),
+    });
 
-  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const lightningCss = require("lightningcss");
 
   // Copy `lightningCss` options
@@ -441,7 +437,7 @@ async function lightningCssMinify(input, sourceMap, minimizerOptions) {
 
   return {
     code: result.code.toString(),
-    // eslint-disable-next-line no-undefined
+
     map: result.map ? JSON.parse(result.map.toString()) : undefined,
   };
 }
@@ -450,26 +446,24 @@ lightningCssMinify.supportsWorkerThreads = () => false;
 
 /* istanbul ignore next */
 /**
- * @param {Input} input
- * @param {RawSourceMap} [sourceMap]
- * @param {CustomOptions} [minimizerOptions]
- * @return {Promise<MinimizedResult>}
+ * @param {Input} input Input
+ * @param {RawSourceMap=} sourceMap Source map
+ * @param {CustomOptions=} minimizerOptions Minimizer options
+ * @returns {Promise<MinimizedResult>} - Promise with minimized result
  */
 async function swcMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
-   * @param {Partial<import("@swc/css").MinifyOptions>} [swcOptions={}]
-   * @returns {import("@swc/css").MinifyOptions}
+   * @param {Partial<import("@swc/css").MinifyOptions>=} swcOptions SWC options
+   * @returns {import("@swc/css").MinifyOptions} - Built SWC options
    */
-  const buildSwcOptions = (swcOptions = {}) => {
+  const buildSwcOptions = (swcOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
-    return {
+    ({
       ...swcOptions,
       filename,
-    };
-  };
+    });
 
-  // eslint-disable-next-line import/no-extraneous-dependencies, global-require
   const swc = require("@swc/css");
 
   // Copy `swc` options
@@ -484,21 +478,21 @@ async function swcMinify(input, sourceMap, minimizerOptions) {
 
   return {
     code: result.code.toString(),
-    // eslint-disable-next-line no-undefined
+
     map: result.map ? JSON.parse(result.map.toString()) : undefined,
     errors: result.errors
       ? result.errors.map((diagnostic) => {
           const error = new Error(diagnostic.message);
 
-          // @ts-ignore
-          error.span = diagnostic.span;
-          // @ts-ignore
-          error.level = diagnostic.level;
+          // eslint-disable-next-line jsdoc/no-restricted-syntax
+          /** @type {any} */ (error).span = diagnostic.span;
+
+          // eslint-disable-next-line jsdoc/no-restricted-syntax
+          /** @type {any} */ (error).level = diagnostic.level;
 
           return error;
         })
-      : // eslint-disable-next-line no-undefined
-        undefined,
+      : undefined,
   };
 }
 
@@ -506,8 +500,8 @@ swcMinify.supportsWorkerThreads = () => false;
 
 /**
  * @template T
- * @param fn {(function(): any) | undefined}
- * @returns {function(): T}
+ * @param {(() => unknown) | undefined} fn Function to memoize
+ * @returns {() => T} - Memoized function
  */
 function memoize(fn) {
   let cache = false;
@@ -518,11 +512,11 @@ function memoize(fn) {
     if (cache) {
       return result;
     }
-    result = /** @type {function(): any} */ (fn)();
+    result = /** @type {T} */ (/** @type {() => unknown} */ (fn)());
     cache = true;
     // Allow to clean up memory for fn
     // and all dependent resources
-    // eslint-disable-next-line no-undefined, no-param-reassign
+
     fn = undefined;
 
     return result;
@@ -530,13 +524,13 @@ function memoize(fn) {
 }
 
 module.exports = {
-  throttleAll,
-  memoize,
+  cleanCssMinify,
   cssnanoMinify,
   cssoMinify,
-  cleanCssMinify,
   esbuildMinify,
-  parcelCssMinify,
   lightningCssMinify,
+  memoize,
+  parcelCssMinify,
   swcMinify,
+  throttleAll,
 };

@@ -1,16 +1,23 @@
+import path from "node:path";
+
 import CopyPlugin from "copy-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import sugarss from "sugarss";
 
 import CssMinimizerPlugin from "../src/index";
 
-import { getCompiler, compile, readAsset } from "./helpers";
+import { compile, getCompiler, readAsset } from "./helpers";
 
 describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardComments" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/discardComments.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "discardComments.css",
+        ),
       },
     });
     new CssMinimizerPlugin().apply(compiler);
@@ -20,7 +27,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -30,7 +36,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardComments" option (disable)', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/discardComments.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "discardComments.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
@@ -44,7 +55,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -54,7 +64,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardComments" option (enable, with "removeAll" option)', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/discardComments.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "discardComments.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
@@ -68,7 +83,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -78,22 +92,34 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "preset" option with require.resolve "String" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/order.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "order.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
+        // eslint-disable-next-line n/no-extraneous-require
         preset: require.resolve("cssnano-preset-default"),
       },
     }).apply(compiler);
 
     const compiler2 = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/order.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "order.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
       minimizerOptions: {
+        // eslint-disable-next-line n/no-extraneous-require
         preset: require.resolve("cssnano-preset-default"),
       },
     }).apply(compiler2);
@@ -103,10 +129,9 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(
-          `default-preset`,
+          "default-preset",
         );
       }
     });
@@ -116,10 +141,9 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler2, stats)).toMatchSnapshot(
-          `preset-simple`,
+          "preset-simple",
         );
       }
     });
@@ -130,7 +154,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "mergeRules" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/mergeRules.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "mergeRules.css",
+        ),
       },
     });
     new CssMinimizerPlugin().apply(compiler);
@@ -140,7 +169,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -150,7 +178,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "mergeRules" option (disable)', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/mergeRules.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "mergeRules.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
@@ -164,7 +197,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -174,7 +206,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardEmpty" option (enable [default])', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/discardEmpty.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "discardEmpty.css",
+        ),
       },
     });
     new CssMinimizerPlugin().apply(compiler);
@@ -184,7 +221,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -194,7 +230,12 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "discardEmpty" option (disable)', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/minimizerOptions/discardEmpty.css`,
+        entry: path.join(
+          __dirname,
+          "fixtures",
+          "minimizerOptions",
+          "discardEmpty.css",
+        ),
       },
     });
     new CssMinimizerPlugin({
@@ -208,7 +249,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -218,15 +258,15 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "parser" option with "Function" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/sugarss.js`,
+        entry: path.join(__dirname, "fixtures", "sugarss.js"),
       },
       module: {},
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/sss`,
-              from: `index.sss`,
+              context: path.join(__dirname, "fixtures", "sss"),
+              from: "index.sss",
             },
           ],
         }),
@@ -250,7 +290,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -260,15 +299,15 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "parser" option with "String" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/sugarss.js`,
+        entry: path.join(__dirname, "fixtures", "sugarss.js"),
       },
       module: {},
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/sss`,
-              from: `index.sss`,
+              context: path.join(__dirname, "fixtures", "sss"),
+              from: "index.sss",
             },
           ],
         }),
@@ -291,7 +330,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -301,7 +339,7 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "stringifier" option with "Function" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/entry.js`,
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
     new CssMinimizerPlugin({
@@ -318,7 +356,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -328,7 +365,7 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "stringifier" option with "String" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/entry.js`,
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
     new CssMinimizerPlugin({
@@ -344,7 +381,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -354,15 +390,15 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "syntax" option with "Function" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/sugarss.js`,
+        entry: path.join(__dirname, "fixtures", "sugarss.js"),
       },
       module: {},
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/sss`,
-              from: `index.sss`,
+              context: path.join(__dirname, "fixtures", "sss"),
+              from: "index.sss",
             },
           ],
         }),
@@ -386,7 +422,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -396,15 +431,15 @@ describe('when applied with "minimizerOptions" option', () => {
   it('matches snapshot for "syntax" option with "String" value', () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/sugarss.js`,
+        entry: path.join(__dirname, "fixtures", "sugarss.js"),
       },
       module: {},
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/sss`,
-              from: `index.sss`,
+              context: path.join(__dirname, "fixtures", "sss"),
+              from: "index.sss",
             },
           ],
         }),
@@ -427,7 +462,6 @@ describe('when applied with "minimizerOptions" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }

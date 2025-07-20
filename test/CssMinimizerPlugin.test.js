@@ -1,21 +1,21 @@
-import path from "path";
+import path from "node:path";
 
 import { TraceMap } from "@jridgewell/trace-mapping";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import CopyPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import RequestShortener from "webpack/lib/RequestShortener";
 
 import CssMinimizerPlugin from "../src/index";
 
 import {
+  EmitNewAsset,
+  ModifyExistingAsset,
+  compile,
   getCompiler,
   getErrors,
   getWarnings,
-  compile,
-  readAssets,
   readAsset,
-  ModifyExistingAsset,
-  EmitNewAsset,
+  readAssets,
 } from "./helpers";
 
 describe("CssMinimizerPlugin", () => {
@@ -48,7 +48,7 @@ describe("CssMinimizerPlugin", () => {
         hashSalt: "salt",
       },
       entry: {
-        entry: `${__dirname}/fixtures/test/foo.css`,
+        entry: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
     });
     new CssMinimizerPlugin({
@@ -81,17 +81,16 @@ describe("CssMinimizerPlugin", () => {
 
     const compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/entry.js`,
-        two: `${__dirname}/fixtures/entry.js`,
+        one: path.join(__dirname, "fixtures", "entry.js"),
+        two: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
 
     new CssMinimizerPlugin({
       parallel: true,
       minify: () => {
-        // eslint-disable-next-line no-console
         process.stdout.write("stdout\n");
-        // eslint-disable-next-line no-console
+
         process.stderr.write("stderr\n");
 
         return { code: ".minify {};" };
@@ -191,7 +190,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
-        // eslint-disable-next-line no-undefined
+
         undefined,
         new TraceMap(rawSourceMap),
       ),
@@ -200,7 +199,7 @@ describe("CssMinimizerPlugin", () => {
       CssMinimizerPlugin.buildWarning(
         "Warning test.css:1:1",
         "test.css",
-        // eslint-disable-next-line no-undefined
+
         undefined,
         new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/"),
@@ -232,7 +231,7 @@ describe("CssMinimizerPlugin", () => {
           column: 1,
         },
         "test.css",
-        // eslint-disable-next-line no-undefined
+
         undefined,
         new TraceMap(rawSourceMap),
         new RequestShortener("/example.com/www/js/"),
@@ -243,14 +242,14 @@ describe("CssMinimizerPlugin", () => {
   it("should build error", () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/test/foo.css`,
+        foo: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/test`,
-              from: `error.css`,
+              context: path.join(__dirname, "fixtures", "test"),
+              from: "error.css",
             },
           ],
         }),
@@ -273,14 +272,14 @@ describe("CssMinimizerPlugin", () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/test/foo.css`,
+        foo: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
     });
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
+
         const plugin = () => {
           let erroredDecl;
 
@@ -315,29 +314,25 @@ describe("CssMinimizerPlugin", () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/test/foo.css`,
+        foo: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
     });
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
-        const plugin = () => {
-          let rule;
 
-          return {
-            postcssPlugin: "warning-plugin",
-            Declaration(decl, { result }) {
-              result.warn("Warning", {
-                node: rule,
-                word: "warning_word",
-                index: 2,
-                plugin: "warning-plugin",
-              });
-            },
-          };
-        };
+        const plugin = () => ({
+          postcssPlugin: "warning-plugin",
+          Declaration(decl, { result }) {
+            result.warn("Warning", {
+              node: decl,
+              word: "warning_word",
+              index: 2,
+              plugin: "warning-plugin",
+            });
+          },
+        });
 
         plugin.postcss = true;
 
@@ -345,13 +340,11 @@ describe("CssMinimizerPlugin", () => {
 
         return postcss([plugin])
           .process(input, { from: filename, to: filename })
-          .then((result) => {
-            return {
-              code: result.css,
-              map: result.map,
-              warnings: result.warnings(),
-            };
-          });
+          .then((result) => ({
+            code: result.css,
+            map: result.map,
+            warnings: result.warnings(),
+          }));
       },
     }).apply(compiler);
 
@@ -365,7 +358,7 @@ describe("CssMinimizerPlugin", () => {
     const config = {
       devtool: "source-map",
       entry: {
-        entry: `${__dirname}/fixtures/foo.css`,
+        entry: path.join(__dirname, "fixtures", "foo.css"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -383,7 +376,6 @@ describe("CssMinimizerPlugin", () => {
       expect(stats.compilation.errors).toEqual([]);
       expect(stats.compilation.warnings).toEqual([]);
 
-      // eslint-disable-next-line guard-for-in
       for (const file in stats.compilation.assets) {
         if (/\.css\?/.test(file)) {
           expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
@@ -399,7 +391,7 @@ describe("CssMinimizerPlugin", () => {
   it("should work with child compilation", async () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/entry.js`,
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
       module: {
         rules: [
@@ -433,7 +425,7 @@ describe("CssMinimizerPlugin", () => {
   it("should work and show minimized assets in stats", async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/entry.js`,
+        foo: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
 
@@ -452,7 +444,7 @@ describe("CssMinimizerPlugin", () => {
   it("should work and generate real content hash", async () => {
     const compiler = getCompiler({
       entry: {
-        entry: `${__dirname}/fixtures/entry.js`,
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
       output: {
         pathinfo: false,
@@ -485,7 +477,7 @@ describe("CssMinimizerPlugin", () => {
     for (const assetName of Object.keys(assets)) {
       const [, webpackHash] = assetName.match(/^.+?\.(.+?)\..+$/);
       const { hashDigestLength, hashDigest, hashFunction } = output;
-      // eslint-disable-next-line global-require
+
       const cryptoHash = require("webpack")
         .util.createHash(hashFunction)
         .update(readAsset(assetName, compiler, stats))
@@ -503,7 +495,7 @@ describe("CssMinimizerPlugin", () => {
   it("should work and use memory cache out of box", async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -539,26 +531,20 @@ describe("CssMinimizerPlugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(0);
+    expect(newStats.compilation.emittedAssets.size).toBe(0);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work and use memory cache when the "cache" option is "true"', async () => {
     const compiler = getCompiler({
       cache: true,
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -594,26 +580,20 @@ describe("CssMinimizerPlugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(0);
+    expect(newStats.compilation.emittedAssets.size).toBe(0);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
     const compiler = getCompiler({
       cache: true,
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -651,26 +631,20 @@ describe("CssMinimizerPlugin", () => {
 
     new ModifyExistingAsset({ name: "foo.css" }).apply(compiler);
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(1);
+    expect(newStats.compilation.emittedAssets.size).toBe(1);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work with source map and use memory cache when the "cache" option is "true"', async () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -708,26 +682,22 @@ describe("CssMinimizerPlugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(0);
+    expect(newStats.compilation.emittedAssets.size).toBe(0);
 
-      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets",
+    );
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work with source map and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -767,25 +737,21 @@ describe("CssMinimizerPlugin", () => {
 
     new ModifyExistingAsset({ name: "foo.css" }).apply(compiler);
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(2);
+    expect(newStats.compilation.emittedAssets.size).toBe(2);
 
-      expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css(\.map)?$/)).toMatchSnapshot(
+      "assets",
+    );
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work with warnings and use memory cache when the "cache" option is "true"', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -813,33 +779,29 @@ describe("CssMinimizerPlugin", () => {
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
+
         const [[fileName, input]] = Object.entries(data);
 
-        const plugin = () => {
-          return {
-            postcssPlugin: "warning-plugin",
-            OnceExit(decl, { result }) {
-              result.warn(`Warning from ${result.opts.from}`, {
-                plugin: "warning-plugin",
-              });
-            },
-          };
-        };
+        const plugin = () => ({
+          postcssPlugin: "warning-plugin",
+          OnceExit(decl, { result }) {
+            result.warn(`Warning from ${result.opts.from}`, {
+              plugin: "warning-plugin",
+            });
+          },
+        });
 
         plugin.postcss = true;
 
         return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
-          .then((result) => {
-            return {
-              code: result.css,
-              map: result.map,
-              error: result.error,
-              warnings: result.warnings(),
-            };
-          });
+          .then((result) => ({
+            code: result.css,
+            map: result.map,
+            error: result.error,
+            warnings: result.warnings(),
+          }));
       },
     }).apply(compiler);
 
@@ -851,25 +813,19 @@ describe("CssMinimizerPlugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(0);
+    expect(newStats.compilation.emittedAssets.size).toBe(0);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work with warnings and use memory cache when the "cache" option is "true" and the asset has been changed', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -897,33 +853,29 @@ describe("CssMinimizerPlugin", () => {
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
+
         const [[fileName, input]] = Object.entries(data);
 
-        const plugin = () => {
-          return {
-            postcssPlugin: "warning-plugin",
-            OnceExit(decl, { result }) {
-              result.warn(`Warning from ${result.opts.from}`, {
-                plugin: "warning-plugin",
-              });
-            },
-          };
-        };
+        const plugin = () => ({
+          postcssPlugin: "warning-plugin",
+          OnceExit(decl, { result }) {
+            result.warn(`Warning from ${result.opts.from}`, {
+              plugin: "warning-plugin",
+            });
+          },
+        });
 
         plugin.postcss = true;
 
         return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
-          .then((result) => {
-            return {
-              code: result.css,
-              map: result.map,
-              error: result.error,
-              warnings: result.warnings(),
-            };
-          });
+          .then((result) => ({
+            code: result.css,
+            map: result.map,
+            error: result.error,
+            warnings: result.warnings(),
+          }));
       },
     }).apply(compiler);
 
@@ -937,26 +889,20 @@ describe("CssMinimizerPlugin", () => {
 
     new ModifyExistingAsset({ name: "foo.css" }).apply(compiler);
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(1);
+    expect(newStats.compilation.emittedAssets.size).toBe(1);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it('should work and do not use memory cache when the "cache" option is "false"', async () => {
     const compiler = getCompiler({
       cache: false,
       entry: {
-        foo: `${__dirname}/fixtures/simple.js`,
+        foo: path.join(__dirname, "fixtures", "simple.js"),
       },
       plugins: [
         new MiniCssExtractPlugin({
@@ -992,19 +938,13 @@ describe("CssMinimizerPlugin", () => {
     expect(getWarnings(stats)).toMatchSnapshot("errors");
     expect(getErrors(stats)).toMatchSnapshot("warnings");
 
-    await new Promise(async (resolve) => {
-      const newStats = await compile(compiler);
+    const newStats = await compile(compiler);
 
-      expect(newStats.compilation.emittedAssets.size).toBe(5);
+    expect(newStats.compilation.emittedAssets.size).toBe(5);
 
-      expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot(
-        "assets",
-      );
-      expect(getWarnings(newStats)).toMatchSnapshot("warnings");
-      expect(getErrors(newStats)).toMatchSnapshot("errors");
-
-      resolve();
-    });
+    expect(readAssets(compiler, newStats, /\.css$/)).toMatchSnapshot("assets");
+    expect(getWarnings(newStats)).toMatchSnapshot("warnings");
+    expect(getErrors(newStats)).toMatchSnapshot("errors");
   });
 
   it("should run plugin against assets added later by plugins", async () => {
@@ -1016,7 +956,7 @@ describe("CssMinimizerPlugin", () => {
         chunkFilename: "[id].[name].js",
       },
       entry: {
-        entry: `${__dirname}/fixtures/test/foo.css`,
+        entry: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
       module: {
         rules: [

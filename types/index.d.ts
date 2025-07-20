@@ -5,44 +5,44 @@ export = CssMinimizerPlugin;
 declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   /**
    * @private
-   * @param {any} input
-   * @returns {boolean}
+   * @param {unknown} input Input to check
+   * @returns {boolean} - Whether input is a source map
    */
   private static isSourceMap;
   /**
    * @private
-   * @param {Warning | WarningObject | string} warning
-   * @param {string} file
-   * @param {WarningsFilter} [warningsFilter]
-   * @param {TraceMap} [sourceMap]
-   * @param {Compilation["requestShortener"]} [requestShortener]
-   * @returns {Error & { hideStack?: boolean, file?: string } | undefined}
+   * @param {Warning | WarningObject | string} warning Warning
+   * @param {string} file File name
+   * @param {WarningsFilter=} warningsFilter Warnings filter
+   * @param {TraceMap=} sourceMap Source map
+   * @param {Compilation["requestShortener"]=} requestShortener Request shortener
+   * @returns {Error & { hideStack?: boolean, file?: string } | undefined} - Built warning
    */
   private static buildWarning;
   /**
    * @private
-   * @param {Error | ErrorObject | string} error
-   * @param {string} file
-   * @param {TraceMap} [sourceMap]
-   * @param {Compilation["requestShortener"]} [requestShortener]
-   * @returns {Error}
+   * @param {Error | ErrorObject | string} error Error
+   * @param {string} file File name
+   * @param {TraceMap=} sourceMap Source map
+   * @param {Compilation["requestShortener"]=} requestShortener Request shortener
+   * @returns {Error} - Built error
    */
   private static buildError;
   /**
    * @private
-   * @param {Parallel} parallel
-   * @returns {number}
+   * @param {Parallel} parallel Parallel option
+   * @returns {number} - Available number of cores
    */
   private static getAvailableNumberOfCores;
   /**
    * @private
    * @template T
-   * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation
-   * @returns {boolean}
+   * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation Implementation
+   * @returns {boolean} - Whether worker threads are supported
    */
   private static isSupportsWorkerThreads;
   /**
-   * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>} [options]
+   * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>=} options Plugin options
    */
   constructor(
     options?: BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>,
@@ -54,16 +54,16 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   private options;
   /**
    * @private
-   * @param {Compiler} compiler
-   * @param {Compilation} compilation
-   * @param {Record<string, import("webpack").sources.Source>} assets
-   * @param {{availableNumberOfCores: number}} optimizeOptions
-   * @returns {Promise<void>}
+   * @param {Compiler} compiler Compiler
+   * @param {Compilation} compilation Compilation
+   * @param {Record<string, import("webpack").sources.Source>} assets Assets
+   * @param {{availableNumberOfCores: number}} optimizeOptions Optimize options
+   * @returns {Promise<void>} - Promise
    */
   private optimize;
   /**
-   * @param {Compiler} compiler
-   * @returns {void}
+   * @param {Compiler} compiler Compiler
+   * @returns {void} - Void
    */
   apply(compiler: Compiler): void;
 }
@@ -133,10 +133,7 @@ type Syntax = import("postcss").Syntax;
 type Parser = import("postcss").Parser;
 type Stringifier = import("postcss").Stringifier;
 type TraceMap = import("@jridgewell/trace-mapping").TraceMap;
-type CssNanoOptions = {
-  configFile?: string | undefined;
-  preset?: [string, object] | string | undefined;
-};
+type CssNanoOptions = Record<string, unknown>;
 type Warning =
   | (Error & {
       plugin?: string;
@@ -145,29 +142,68 @@ type Warning =
     })
   | string;
 type WarningObject = {
+  /**
+   * - Warning message
+   */
   message: string;
+  /**
+   * - Plugin name
+   */
   plugin?: string | undefined;
+  /**
+   * - Warning text
+   */
   text?: string | undefined;
+  /**
+   * - Line number
+   */
   line?: number | undefined;
+  /**
+   * - Column number
+   */
   column?: number | undefined;
 };
 type ErrorObject = {
+  /**
+   * - Error message
+   */
   message: string;
+  /**
+   * - Line number
+   */
   line?: number | undefined;
+  /**
+   * - Column number
+   */
   column?: number | undefined;
+  /**
+   * - Error stack trace
+   */
   stack?: string | undefined;
 };
 type MinimizedResult = {
+  /**
+   * - Minimized code
+   */
   code: string;
-  map?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined;
-  errors?: (string | Error | ErrorObject)[] | undefined;
-  warnings?: (Warning | WarningObject)[] | undefined;
+  /**
+   * - Source map
+   */
+  map?: RawSourceMap | undefined;
+  /**
+   * - Errors
+   */
+  errors?: Array<Error | ErrorObject | string> | undefined;
+  /**
+   * - Warnings
+   */
+  warnings?: Array<Warning | WarningObject | string> | undefined;
 };
 type Input = {
   [file: string]: string;
 };
 type CustomOptions = {
-  [key: string]: any;
+  [key: string]: unknown;
 };
 type InferDefaultType<T> = T extends infer U ? U : CustomOptions;
 type MinimizerOptions<T> = T extends any[]
@@ -179,6 +215,9 @@ type BasicMinimizerImplementation<T> = (
   minifyOptions: InferDefaultType<T>,
 ) => Promise<MinimizedResult> | MinimizedResult;
 type MinimizeFunctionHelpers = {
+  /**
+   * - Check if worker threads are supported
+   */
   supportsWorkerThreads?: (() => boolean | undefined) | undefined;
 };
 type MinimizerImplementation<T> = T extends any[]
@@ -188,20 +227,41 @@ type MinimizerImplementation<T> = T extends any[]
     }
   : BasicMinimizerImplementation<T> & MinimizeFunctionHelpers;
 type InternalOptions<T> = {
+  /**
+   * - Name
+   */
   name: string;
+  /**
+   * - Input
+   */
   input: string;
+  /**
+   * - Input source map
+   */
   inputSourceMap: RawSourceMap | undefined;
+  /**
+   * - Minimizer
+   */
   minimizer: {
     implementation: MinimizerImplementation<T>;
     options: MinimizerOptions<T>;
   };
 };
 type InternalResult = {
+  /**
+   * - Outputs
+   */
   outputs: Array<{
     code: string;
     map: RawSourceMap | undefined;
   }>;
+  /**
+   * - Warnings
+   */
   warnings: Array<Warning | WarningObject | string>;
+  /**
+   * - Errors
+   */
   errors: Array<Error | ErrorObject | string>;
 };
 type Parallel = undefined | boolean | number;
@@ -213,11 +273,26 @@ type WarningsFilter = (
   source?: string,
 ) => boolean;
 type BasePluginOptions = {
+  /**
+   * - Test rule
+   */
   test?: Rule | undefined;
+  /**
+   * - Include rule
+   */
   include?: Rule | undefined;
+  /**
+   * - Exclude rule
+   */
   exclude?: Rule | undefined;
+  /**
+   * - Warnings filter
+   */
   warningsFilter?: WarningsFilter | undefined;
-  parallel?: Parallel;
+  /**
+   * - Parallel option
+   */
+  parallel?: Parallel | undefined;
 };
 type MinimizerWorker<T> = JestWorker & {
   transform: (options: string) => Promise<InternalResult>;

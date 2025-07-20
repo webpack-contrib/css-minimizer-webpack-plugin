@@ -1,5 +1,7 @@
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import path from "node:path";
+
 import CopyPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 import CssMinimizerPlugin from "../src";
 
@@ -17,7 +19,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -36,8 +38,8 @@ describe('"minify" option', () => {
     new CssMinimizerPlugin({
       parallel: false,
       minify: async (data, inputSourceMap) => {
-        // eslint-disable-next-line global-require
         const csso = require("csso");
+
         const [[filename, input]] = Object.entries(data);
         const minifiedCss = csso.minify(input, {
           filename,
@@ -64,14 +66,14 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
     new CssMinimizerPlugin({
       minify: async (data) => {
-        // eslint-disable-next-line global-require
         const CleanCSS = require("clean-css");
+
         const [[filename, input]] = Object.entries(data);
 
         // Bug in `clean-css`
@@ -104,16 +106,14 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
     new CssMinimizerPlugin({
-      minify: async () => {
-        return {
-          code: "",
-        };
-      },
+      minify: async () => ({
+        code: "",
+      }),
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -129,7 +129,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -189,7 +189,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -244,7 +244,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.cssnanoMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -280,7 +280,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -316,7 +316,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -358,15 +358,15 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        entry: `${__dirname}/fixtures/sugarss.js`,
+        entry: path.join(__dirname, "fixtures", "sugarss.js"),
       },
       module: {},
       plugins: [
         new CopyPlugin({
           patterns: [
             {
-              context: `${__dirname}/fixtures/sss`,
-              from: `index.sss`,
+              context: path.join(__dirname, "fixtures", "sss"),
+              from: "index.sss",
             },
           ],
         }),
@@ -391,7 +391,6 @@ describe('"minify" option', () => {
       expect(stats.compilation.warnings).toEqual([]);
 
       for (const file in stats.compilation.assets) {
-        // eslint-disable-next-line no-continue
         if (/\.js$/.test(file)) continue;
         expect(readAsset(file, compiler, stats)).toMatchSnapshot(file);
       }
@@ -401,7 +400,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.cssoMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -434,7 +433,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -467,7 +466,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -505,7 +504,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.cleanCssMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
@@ -526,7 +525,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
@@ -547,7 +546,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -585,7 +584,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.esbuildMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -617,7 +616,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.esbuildMinify" minifier and emit warnings', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/wrong-calc.css`,
+        foo: path.join(__dirname, "fixtures", "wrong-calc.css"),
       },
       module: {
         rules: [
@@ -649,7 +648,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
@@ -670,7 +669,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -708,7 +707,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.cssnanoMinify", "CssMinimizerPlugin.cssoMinify" and "CssMinimizerPlugin.cleanCssMinify" minifiers', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
@@ -733,7 +732,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 
@@ -757,7 +756,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.parcelCssMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -791,7 +790,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -825,7 +824,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -866,7 +865,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.parcelCssMinify" minifier and options for "@parcel/css"', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/nesting.css`,
+        foo: path.join(__dirname, "fixtures", "nesting.css"),
       },
       module: {
         rules: [
@@ -905,7 +904,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.lightningCssMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -939,7 +938,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -973,7 +972,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1014,7 +1013,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.lightningCssMinify" minifier and options for "lightningcss"', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/nesting.css`,
+        foo: path.join(__dirname, "fixtures", "nesting.css"),
       },
       module: {
         rules: [
@@ -1053,7 +1052,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.swcMinify" minifier', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1088,7 +1087,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1122,7 +1121,7 @@ describe('"minify" option', () => {
     const compiler = getCompiler({
       devtool: "source-map",
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1162,7 +1161,7 @@ describe('"minify" option', () => {
   it('should work with "CssMinimizerPlugin.swcMinify" minifier and options for "swcMinify"', async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/nesting.css`,
+        foo: path.join(__dirname, "fixtures", "nesting.css"),
       },
       module: {
         rules: [
@@ -1194,7 +1193,7 @@ describe('"minify" option', () => {
   it("should work throw an error if minimizer function doesn't return", async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1211,11 +1210,9 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async () => {
-        return {
-          code: null,
-        };
-      },
+      minify: async () => ({
+        code: null,
+      }),
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -1230,7 +1227,7 @@ describe('"minify" option', () => {
   it("should work throw an error if minimizer function doesn't return #2", async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1247,12 +1244,9 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async () => {
-        return {
-          // eslint-disable-next-line no-undefined
-          code: undefined,
-        };
-      },
+      minify: async () => ({
+        code: undefined,
+      }),
     }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -1267,7 +1261,7 @@ describe('"minify" option', () => {
   it("should work and allow to return errors and warnings from custom function", async () => {
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/sourcemap/foo.scss`,
+        foo: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
       },
       module: {
         rules: [
@@ -1284,13 +1278,11 @@ describe('"minify" option', () => {
     });
 
     new CssMinimizerPlugin({
-      minify: async () => {
-        return {
-          code: `.test { color: red; }`,
-          warnings: ["Warning 1", new Error("Warning 2")],
-          errors: ["Error 1", new Error("Error 2")],
-        };
-      },
+      minify: async () => ({
+        code: ".test { color: red; }",
+        warnings: ["Warning 1", new Error("Warning 2")],
+        errors: ["Error 1", new Error("Error 2")],
+      }),
     }).apply(compiler);
 
     const stats = await compile(compiler);
