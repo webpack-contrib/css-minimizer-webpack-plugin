@@ -17,6 +17,10 @@ export default defineConfig([
           ignores: ["os.availableParallelism"],
         },
       ],
+      // Disable problematic unicorn rules to work around security vulnerabilities
+      "unicorn/no-unnecessary-array-flat-depth": "off",
+      "unicorn/no-unnecessary-array-splice-count": "off",
+      "unicorn/no-useless-fallback-in-spread": "off",
     },
   },
 ]);
