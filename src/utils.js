@@ -120,7 +120,6 @@ async function cssnanoMinify(
   /** @type {ProcessOptions} */
   const postcssOptions = {
     from: name,
-    // eslint-disable-next-line unicorn/no-useless-fallback-in-spread
     ...(minimizerOptions.processorOptions || {}),
   };
 
