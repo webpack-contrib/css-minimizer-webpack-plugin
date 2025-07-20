@@ -296,15 +296,14 @@ module.exports = {
         minify: [
           CssMinimizerPlugin.cssnanoMinify,
           CssMinimizerPlugin.cleanCssMinify,
-          async (data, inputMap, minimizerOptions) => 
+          async (data, inputMap, minimizerOptions) =>
             //  Custom minifier function
-             ({
+            ({
               code: "a{color: red}",
-              map: "{\"version\": \"3\", ...}",
+              map: '{"version": "3", ...}',
               warnings: [],
               errors: [],
-            })
-          ,
+            }),
         ],
       }),
     ],
