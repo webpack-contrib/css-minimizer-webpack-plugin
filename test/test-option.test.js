@@ -1,11 +1,13 @@
+import path from "node:path";
+
 import CssMinimizerPlugin from "../src/index";
 
 import {
-  getCompiler,
   compile,
-  readAssets,
+  getCompiler,
   getErrors,
   getWarnings,
+  readAssets,
 } from "./helpers";
 
 describe('when applied with "test" option', () => {
@@ -14,9 +16,9 @@ describe('when applied with "test" option', () => {
   beforeEach(() => {
     compiler = getCompiler({
       entry: {
-        bar1: `${__dirname}/fixtures/test/bar1.css`,
-        bar2: `${__dirname}/fixtures/test/bar2.css`,
-        foo: `${__dirname}/fixtures/test/foo.css`,
+        bar1: path.join(__dirname, "fixtures", "test", "bar1.css"),
+        bar2: path.join(__dirname, "fixtures", "test", "bar2.css"),
+        foo: path.join(__dirname, "fixtures", "test", "foo.css"),
       },
     });
   });

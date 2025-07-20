@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 
 import del from "del";
 
@@ -37,11 +37,11 @@ describe('"cache" option', () => {
   it('should work with the "false" value for the "cache" option', async () => {
     const compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/cache.js`,
-        two: `${__dirname}/fixtures/cache-1.js`,
-        three: `${__dirname}/fixtures/cache-2.js`,
-        four: `${__dirname}/fixtures/cache-3.js`,
-        five: `${__dirname}/fixtures/cache-4.js`,
+        one: path.join(__dirname, "fixtures", "cache.js"),
+        two: path.join(__dirname, "fixtures", "cache-1.js"),
+        three: path.join(__dirname, "fixtures", "cache-2.js"),
+        four: path.join(__dirname, "fixtures", "cache-3.js"),
+        five: path.join(__dirname, "fixtures", "cache-4.js"),
       },
       cache: false,
     });
@@ -53,7 +53,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.get.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           getCounter += 1;
         }
       },
@@ -64,7 +64,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.store.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           storeCounter += 1;
         }
       },
@@ -103,11 +103,11 @@ describe('"cache" option', () => {
   it('should work with the "memory" value for the "cache.type" option', async () => {
     const compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/cache.js`,
-        two: `${__dirname}/fixtures/cache-1.js`,
-        three: `${__dirname}/fixtures/cache-2.js`,
-        four: `${__dirname}/fixtures/cache-3.js`,
-        five: `${__dirname}/fixtures/cache-4.js`,
+        one: path.join(__dirname, "fixtures", "cache.js"),
+        two: path.join(__dirname, "fixtures", "cache-1.js"),
+        three: path.join(__dirname, "fixtures", "cache-2.js"),
+        four: path.join(__dirname, "fixtures", "cache-3.js"),
+        five: path.join(__dirname, "fixtures", "cache-4.js"),
       },
       cache: {
         type: "memory",
@@ -121,7 +121,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.get.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           getCounter += 1;
         }
       },
@@ -132,7 +132,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.store.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           storeCounter += 1;
         }
       },
@@ -171,11 +171,11 @@ describe('"cache" option', () => {
   it('should work with the "filesystem" value for the "cache.type" option', async () => {
     const compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/cache.js`,
-        two: `${__dirname}/fixtures/cache-1.js`,
-        three: `${__dirname}/fixtures/cache-2.js`,
-        four: `${__dirname}/fixtures/cache-3.js`,
-        five: `${__dirname}/fixtures/cache-4.js`,
+        one: path.join(__dirname, "fixtures", "cache.js"),
+        two: path.join(__dirname, "fixtures", "cache-1.js"),
+        three: path.join(__dirname, "fixtures", "cache-2.js"),
+        four: path.join(__dirname, "fixtures", "cache-3.js"),
+        five: path.join(__dirname, "fixtures", "cache-4.js"),
       },
       cache: {
         type: "filesystem",
@@ -190,7 +190,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.get.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           getCounter += 1;
         }
       },
@@ -201,7 +201,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.store.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           storeCounter += 1;
         }
       },
@@ -260,7 +260,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.get.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           getCounter += 1;
         }
       },
@@ -271,7 +271,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.store.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           storeCounter += 1;
         }
       },
@@ -328,32 +328,28 @@ describe('"cache" option', () => {
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
+
         const [[fileName, input]] = Object.entries(data);
-        const plugin = () => {
-          return {
-            postcssPlugin: "warning-plugin",
-            OnceExit(decl, { result }) {
-              result.warn(`Warning from ${result.opts.from}`, {
-                plugin: "warning-plugin",
-              });
-            },
-          };
-        };
+        const plugin = () => ({
+          postcssPlugin: "warning-plugin",
+          OnceExit(decl, { result }) {
+            result.warn(`Warning from ${result.opts.from}`, {
+              plugin: "warning-plugin",
+            });
+          },
+        });
 
         plugin.postcss = true;
 
         return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
-          .then((result) => {
-            return {
-              code: result.css,
-              map: result.map,
-              error: result.error,
-              warnings: result.warnings(),
-            };
-          });
+          .then((result) => ({
+            code: result.css,
+            map: result.map,
+            error: result.error,
+            warnings: result.warnings(),
+          }));
       },
     }).apply(compiler);
 
@@ -362,7 +358,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.get.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           getCounter += 1;
         }
       },
@@ -373,7 +369,7 @@ describe('"cache" option', () => {
     compiler.cache.hooks.store.tap(
       { name: "TestCache", stage: -100 },
       (identifier) => {
-        if (identifier.indexOf("CssMinimizerWebpackPlugin") !== -1) {
+        if (identifier.includes("CssMinimizerWebpackPlugin")) {
           storeCounter += 1;
         }
       },

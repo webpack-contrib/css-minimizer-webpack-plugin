@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import CssMinimizerPlugin from "../src/index";
 
 import {
@@ -14,9 +16,9 @@ describe("include option", () => {
   beforeEach(() => {
     compiler = getCompiler({
       entry: {
-        included1: `${__dirname}/fixtures/included1.js`,
-        included2: `${__dirname}/fixtures/included2.js`,
-        entry: `${__dirname}/fixtures/entry.js`,
+        included1: path.join(__dirname, "fixtures", "included1.js"),
+        included2: path.join(__dirname, "fixtures", "included2.js"),
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
   });

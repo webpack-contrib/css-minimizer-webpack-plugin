@@ -1,14 +1,16 @@
-import webpack from "webpack";
+import path from "node:path";
+
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import webpack from "webpack";
 
 import CssMinimizerPlugin from "../src/index";
 
 import {
-  getCompiler,
   compile,
-  readAssets,
+  getCompiler,
   getErrors,
   getWarnings,
+  readAssets,
 } from "./helpers";
 
 expect.addSnapshotSerializer({
@@ -20,7 +22,7 @@ expect.addSnapshotSerializer({
 
     try {
       return typeof JSON.parse(value) === "object";
-    } catch (e) {
+    } catch {
       return false;
     }
   },
@@ -31,8 +33,8 @@ describe('when applied with "sourceMap" option', () => {
   const baseConfig = {
     devtool: "source-map",
     entry: {
-      entry: `${__dirname}/fixtures/sourcemap/foo.scss`,
-      entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
+      entry: path.join(__dirname, "fixtures", "sourcemap", "foo.scss"),
+      entry2: path.join(__dirname, "fixtures", "sourcemap", "foo.css"),
     },
     module: {
       rules: [
@@ -153,7 +155,6 @@ describe('when applied with "sourceMap" option', () => {
 
                 const assetContent = ".bar {color: red};";
 
-                // eslint-disable-next-line no-param-reassign
                 compilation.assets["broken-source-map.css"] = {
                   size() {
                     return assetContent.length;
@@ -184,7 +185,7 @@ describe('when applied with "sourceMap" option', () => {
     const config = Object.assign(baseConfig, {
       devtool: "source-map",
       entry: {
-        entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
+        entry2: path.join(__dirname, "fixtures", "sourcemap", "foo.css"),
       },
       plugins: [
         emitBrokenSourceMapPlugin,
@@ -227,7 +228,6 @@ describe('when applied with "sourceMap" option', () => {
 
                 const assetContent = ".bar {color: red};";
 
-                // eslint-disable-next-line no-param-reassign
                 compilation.assets["broken-source-map.css"] = {
                   size() {
                     return assetContent.length;
@@ -259,7 +259,7 @@ describe('when applied with "sourceMap" option', () => {
     const config = Object.assign(baseConfig, {
       devtool: "source-map",
       entry: {
-        entry2: `${__dirname}/fixtures/sourcemap/foo.css`,
+        entry2: path.join(__dirname, "fixtures", "sourcemap", "foo.css"),
       },
       plugins: [
         emitBrokenSourceMapPlugin,
@@ -274,7 +274,6 @@ describe('when applied with "sourceMap" option', () => {
 
     new CssMinimizerPlugin({
       minify: (data) => {
-        // eslint-disable-next-line global-require
         const postcss = require("postcss");
 
         const plugin = () => {
@@ -311,7 +310,7 @@ describe('when applied with "sourceMap" option', () => {
     const compiler = getCompiler({
       devtool: false,
       entry: {
-        foo: `${__dirname}/fixtures/foo.css`,
+        foo: path.join(__dirname, "fixtures", "foo.css"),
       },
     });
 

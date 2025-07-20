@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import postcss from "postcss";
 
 import CssMinimizerPlugin from "../src/index";
@@ -12,24 +14,22 @@ import {
 
 describe("warningsFilter option", () => {
   it('should match snapshot for a "function" value', async () => {
-    const plugin = () => {
-      return {
-        postcssPlugin: "warning-plugin",
-        Once(root, { result }) {
-          result.warn(`Warning from ${result.opts.from}`, {
-            plugin: "warning-plugin",
-          });
-        },
-      };
-    };
+    const plugin = () => ({
+      postcssPlugin: "warning-plugin",
+      Once(root, { result }) {
+        result.warn(`Warning from ${result.opts.from}`, {
+          plugin: "warning-plugin",
+        });
+      },
+    });
 
     plugin.postcss = true;
 
     const compiler = getCompiler({
       entry: {
-        foo: `${__dirname}/fixtures/test/foo.css`,
-        bar1: `${__dirname}/fixtures/test/bar1.css`,
-        bar2: `${__dirname}/fixtures/test/bar2.css`,
+        foo: path.join(__dirname, "fixtures", "test", "foo.css"),
+        bar1: path.join(__dirname, "fixtures", "test", "bar1.css"),
+        bar2: path.join(__dirname, "fixtures", "test", "bar2.css"),
       },
     });
 
@@ -40,14 +40,12 @@ describe("warningsFilter option", () => {
 
         return postcss([plugin])
           .process(input, { from: fileName, to: fileName })
-          .then((result) => {
-            return {
-              code: result.css,
-              map: result.map,
-              error: result.error,
-              warnings: result.warnings(),
-            };
-          });
+          .then((result) => ({
+            code: result.css,
+            map: result.map,
+            error: result.error,
+            warnings: result.warnings(),
+          }));
       },
       warningsFilter(warning, file) {
         if (/foo/.test(file)) {

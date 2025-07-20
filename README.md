@@ -42,8 +42,8 @@ Then add the plugin to your `webpack` configuration. For example:
 **webpack.config.js**
 
 ```js
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   module: {
@@ -296,15 +296,15 @@ module.exports = {
         minify: [
           CssMinimizerPlugin.cssnanoMinify,
           CssMinimizerPlugin.cleanCssMinify,
-          async (data, inputMap, minimizerOptions) => {
+          async (data, inputMap, minimizerOptions) => 
             //  Custom minifier function
-            return {
-              code: `a{color: red}`,
-              map: `{"version": "3", ...}`,
+             ({
+              code: "a{color: red}",
+              map: "{\"version\": \"3\", ...}",
               warnings: [],
               errors: [],
-            };
-          },
+            })
+          ,
         ],
       }),
     ],
