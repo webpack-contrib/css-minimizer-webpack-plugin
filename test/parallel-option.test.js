@@ -18,6 +18,7 @@ jest.mock("os", () => {
     typeof actualOs.availableParallelism !== "undefined";
 
   const mocked = {
+    // eslint-disable-next-line no-undefined
     availableParallelism: isAvailableParallelism ? jest.fn(() => 4) : undefined,
     cpus: jest.fn(() => {
       return { length: 4 };
@@ -132,6 +133,7 @@ describe("parallel option", () => {
   });
 
   it('should match snapshot for the "undefined" value', async () => {
+    // eslint-disable-next-line no-undefined
     new CssMinimizerPlugin({ parallel: undefined }).apply(compiler);
 
     const stats = await compile(compiler);
