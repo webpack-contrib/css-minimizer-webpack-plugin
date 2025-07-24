@@ -71,6 +71,7 @@
   "dependencies": {
     "@jridgewell/trace-mapping": "^0.3.25",
     "cssnano": "^7.0.4",
+    "jest-worker": "^30.0.5",
     "postcss": "^8.4.40",
     "schema-utils": "^4.2.0",
     "serialize-javascript": "^6.0.2"

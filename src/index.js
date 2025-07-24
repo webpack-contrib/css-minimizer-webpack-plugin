@@ -180,7 +180,9 @@ class CssMinimizerPlugin {
     });
 
     const {
-      minify = /** @type {BasicMinimizerImplementation<T>} */ (cssnanoMinify),
+      minify: minifyOption = /** @type {BasicMinimizerImplementation<T>} */ (
+        cssnanoMinify
+      ),
       minimizerOptions = /** @type {MinimizerOptions<T>} */ ({}),
       test = /\.css(\?.*)?$/i,
       warningsFilter = () => true,
@@ -188,6 +190,9 @@ class CssMinimizerPlugin {
       include,
       exclude,
     } = options || {};
+
+    // Avoid shadowing by assigning to a new variable
+    const defaultMinify = minifyOption;
 
     /**
      * @private
@@ -200,7 +205,9 @@ class CssMinimizerPlugin {
       include,
       exclude,
       minimizer: {
-        implementation: /** @type {MinimizerImplementation<T>} */ (minify),
+        implementation: /** @type {MinimizerImplementation<T>} */ (
+          defaultMinify
+        ),
         options: minimizerOptions,
       },
     };
