@@ -31,35 +31,35 @@ const {
 
 /**
  * @typedef {Record<string, unknown>} CssNanoOptions
- * @property {string=} configFile - Configuration file path
- * @property {string | [string, Record<string, unknown>] | undefined=} preset - CSS nano preset
+ * @property {string=} configFile Configuration file path
+ * @property {string | [string, Record<string, unknown>] | undefined=} preset CSS nano preset
  */
 
 /** @typedef {Error & { plugin?: string, text?: string, source?: string } | string} Warning */
 
 /**
  * @typedef {object} WarningObject
- * @property {string} message - Warning message
- * @property {string=} plugin - Plugin name
- * @property {string=} text - Warning text
- * @property {number=} line - Line number
- * @property {number=} column - Column number
+ * @property {string} message Warning message
+ * @property {string=} plugin Plugin name
+ * @property {string=} text Warning text
+ * @property {number=} line Line number
+ * @property {number=} column Column number
  */
 
 /**
  * @typedef {object} ErrorObject
- * @property {string} message - Error message
- * @property {number=} line - Line number
- * @property {number=} column - Column number
- * @property {string=} stack - Error stack trace
+ * @property {string} message Error message
+ * @property {number=} line Line number
+ * @property {number=} column Column number
+ * @property {string=} stack Error stack trace
  */
 
 /**
  * @typedef {object} MinimizedResult
- * @property {string} code - Minimized code
- * @property {RawSourceMap=} map - Source map
- * @property {Array<Error | ErrorObject| string>=} errors - Errors
- * @property {Array<Warning | WarningObject | string>=} warnings - Warnings
+ * @property {string} code Minimized code
+ * @property {RawSourceMap=} map Source map
+ * @property {Array<Error | ErrorObject| string>=} errors Errors
+ * @property {Array<Warning | WarningObject | string>=} warnings Warnings
  */
 
 /**
@@ -91,7 +91,7 @@ const {
 
 /**
  * @typedef {object} MinimizeFunctionHelpers
- * @property {() => boolean | undefined=} supportsWorkerThreads - Check if worker threads are supported
+ * @property {() => boolean | undefined=} supportsWorkerThreads Check if worker threads are supported
  */
 
 /**
@@ -102,10 +102,10 @@ const {
 /**
  * @template T
  * @typedef {object} InternalOptions
- * @property {string} name - Name
- * @property {string} input - Input
- * @property {RawSourceMap | undefined} inputSourceMap - Input source map
- * @property {{ implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> }} minimizer - Minimizer
+ * @property {string} name Name
+ * @property {string} input Input
+ * @property {RawSourceMap | undefined} inputSourceMap Input source map
+ * @property {{ implementation: MinimizerImplementation<T>, options: MinimizerOptions<T> }} minimizer Minimizer
  */
 
 /**
@@ -124,11 +124,11 @@ const {
 
 /**
  * @typedef {object} BasePluginOptions
- * @property {Rule=} test - Test rule
- * @property {Rule=} include - Include rule
- * @property {Rule=} exclude - Exclude rule
- * @property {WarningsFilter=} warningsFilter - Warnings filter
- * @property {Parallel=} parallel - Parallel option
+ * @property {Rule=} test Test rule
+ * @property {Rule=} include Include rule
+ * @property {Rule=} exclude Exclude rule
+ * @property {WarningsFilter=} warningsFilter Warnings filter
+ * @property {Parallel=} parallel Parallel option
  */
 
 /**
@@ -202,7 +202,7 @@ class CssMinimizerPlugin {
   /**
    * @private
    * @param {unknown} input Input to check
-   * @returns {boolean} - Whether input is a source map
+   * @returns {boolean} Whether input is a source map
    */
   static isSourceMap(input) {
     // All required options for `new SourceMapConsumer(...options)`
@@ -226,7 +226,7 @@ class CssMinimizerPlugin {
    * @param {WarningsFilter=} warningsFilter Warnings filter
    * @param {TraceMap=} sourceMap Source map
    * @param {Compilation["requestShortener"]=} requestShortener Request shortener
-   * @returns {Error & { hideStack?: boolean, file?: string } | undefined} - Built warning
+   * @returns {Error & { hideStack?: boolean, file?: string } | undefined} Built warning
    */
   static buildWarning(
     warning,
@@ -309,7 +309,7 @@ class CssMinimizerPlugin {
    * @param {string} file File name
    * @param {TraceMap=} sourceMap Source map
    * @param {Compilation["requestShortener"]=} requestShortener Request shortener
-   * @returns {Error} - Built error
+   * @returns {Error} Built error
    */
   static buildError(error, file, sourceMap, requestShortener) {
     /**
@@ -384,15 +384,17 @@ class CssMinimizerPlugin {
   /**
    * @private
    * @param {Parallel} parallel Parallel option
-   * @returns {number} - Available number of cores
+   * @returns {number} Available number of cores
    */
   static getAvailableNumberOfCores(parallel) {
     // In some cases cpus() returns undefined
     // https://github.com/nodejs/node/issues/19022
 
     const cpus =
+      // eslint-disable-next-line n/no-unsupported-features/node-builtins
       typeof os.availableParallelism === "function"
-        ? { length: os.availableParallelism() }
+        ? // eslint-disable-next-line n/no-unsupported-features/node-builtins
+          { length: os.availableParallelism() }
         : os.cpus() || { length: 1 };
 
     return parallel === true || typeof parallel === "undefined"
@@ -404,7 +406,7 @@ class CssMinimizerPlugin {
    * @private
    * @template T
    * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation Implementation
-   * @returns {boolean} - Whether worker threads are supported
+   * @returns {boolean} Whether worker threads are supported
    */
   static isSupportsWorkerThreads(implementation) {
     return typeof implementation.supportsWorkerThreads !== "undefined"
@@ -418,7 +420,7 @@ class CssMinimizerPlugin {
    * @param {Compilation} compilation Compilation
    * @param {Record<string, import("webpack").sources.Source>} assets Assets
    * @param {{availableNumberOfCores: number}} optimizeOptions Optimize options
-   * @returns {Promise<void>} - Promise
+   * @returns {Promise<void>} Promise
    */
   async optimize(compiler, compilation, assets, optimizeOptions) {
     const cache = compilation.getCache("CssMinimizerWebpackPlugin");
@@ -709,7 +711,7 @@ class CssMinimizerPlugin {
 
   /**
    * @param {Compiler} compiler Compiler
-   * @returns {void} - Void
+   * @returns {void} Void
    */
   apply(compiler) {
     const pluginName = this.constructor.name;

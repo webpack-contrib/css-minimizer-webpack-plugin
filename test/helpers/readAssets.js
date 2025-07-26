@@ -4,7 +4,7 @@ import readAsset from "./readAsset";
  * @param {import("webpack").Compiler} compiler Webpack compiler
  * @param {import("webpack").Stats} stats Webpack stats
  * @param {RegExp=} extension File extension filter
- * @returns {Record<string, string>} - Assets map
+ * @returns {Record<string, string>} Assets map
  */
 export default function readAssets(compiler, stats, extension) {
   const assets = {};

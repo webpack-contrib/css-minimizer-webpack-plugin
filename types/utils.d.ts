@@ -9,7 +9,7 @@ export type Postcss = import("postcss").Postcss;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function cleanCssMinify(
   input: Input,
@@ -23,7 +23,7 @@ export namespace cleanCssMinify {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function cssnanoMinify(
   input: Input,
@@ -37,7 +37,7 @@ export namespace cssnanoMinify {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function cssoMinify(
   input: Input,
@@ -51,7 +51,7 @@ export namespace cssoMinify {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function esbuildMinify(
   input: Input,
@@ -65,7 +65,7 @@ export namespace esbuildMinify {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function lightningCssMinify(
   input: Input,
@@ -78,14 +78,14 @@ export namespace lightningCssMinify {
 /**
  * @template T
  * @param {(() => unknown) | undefined} fn Function to memoize
- * @returns {() => T} - Memoized function
+ * @returns {() => T} Memoized function
  */
 export function memoize<T>(fn: (() => unknown) | undefined): () => T;
 /**
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function parcelCssMinify(
   input: Input,
@@ -99,7 +99,7 @@ export namespace parcelCssMinify {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 export function swcMinify(
   input: Input,

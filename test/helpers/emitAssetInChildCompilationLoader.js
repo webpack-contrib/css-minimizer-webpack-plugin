@@ -21,7 +21,7 @@ class PreCopyPlugin {
 }
 
 /**
- * @returns {string} - Loader result
+ * @returns {string} Loader result
  */
 export default function loader() {
   const callback = this.async();
