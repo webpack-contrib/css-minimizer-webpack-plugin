@@ -6,7 +6,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
   /**
    * @private
    * @param {unknown} input Input to check
-   * @returns {boolean} - Whether input is a source map
+   * @returns {boolean} Whether input is a source map
    */
   private static isSourceMap;
   /**
@@ -16,7 +16,7 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    * @param {WarningsFilter=} warningsFilter Warnings filter
    * @param {TraceMap=} sourceMap Source map
    * @param {Compilation["requestShortener"]=} requestShortener Request shortener
-   * @returns {Error & { hideStack?: boolean, file?: string } | undefined} - Built warning
+   * @returns {Error & { hideStack?: boolean, file?: string } | undefined} Built warning
    */
   private static buildWarning;
   /**
@@ -25,20 +25,20 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    * @param {string} file File name
    * @param {TraceMap=} sourceMap Source map
    * @param {Compilation["requestShortener"]=} requestShortener Request shortener
-   * @returns {Error} - Built error
+   * @returns {Error} Built error
    */
   private static buildError;
   /**
    * @private
    * @param {Parallel} parallel Parallel option
-   * @returns {number} - Available number of cores
+   * @returns {number} Available number of cores
    */
   private static getAvailableNumberOfCores;
   /**
    * @private
    * @template T
    * @param {BasicMinimizerImplementation<T> & MinimizeFunctionHelpers} implementation Implementation
-   * @returns {boolean} - Whether worker threads are supported
+   * @returns {boolean} Whether worker threads are supported
    */
   private static isSupportsWorkerThreads;
   /**
@@ -58,12 +58,12 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    * @param {Compilation} compilation Compilation
    * @param {Record<string, import("webpack").sources.Source>} assets Assets
    * @param {{availableNumberOfCores: number}} optimizeOptions Optimize options
-   * @returns {Promise<void>} - Promise
+   * @returns {Promise<void>} Promise
    */
   private optimize;
   /**
    * @param {Compiler} compiler Compiler
-   * @returns {void} - Void
+   * @returns {void} Void
    */
   apply(compiler: Compiler): void;
 }

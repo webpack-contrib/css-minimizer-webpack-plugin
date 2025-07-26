@@ -6,7 +6,7 @@ import webpack from "webpack";
 
 /**
  * @param {import("webpack").Configuration} config Webpack configuration
- * @returns {import("webpack").Compiler} - Webpack compiler
+ * @returns {import("webpack").Compiler} Webpack compiler
  */
 export default function getCompiler(config) {
   const compiler = webpack({

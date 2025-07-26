@@ -73,7 +73,7 @@ function throttleAll(limit, tasks) {
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function cssnanoMinify(
   input,
@@ -83,7 +83,7 @@ async function cssnanoMinify(
   /**
    * @template T
    * @param {string} module Module to load
-   * @returns {Promise<T>} - Promise with loaded module
+   * @returns {Promise<T>} Promise with loaded module
    */
   const load = async (module) => {
     let exports;
@@ -120,7 +120,10 @@ async function cssnanoMinify(
   /** @type {ProcessOptions} */
   const postcssOptions = {
     from: name,
-    ...(minimizerOptions.processorOptions || {}),
+    ...(minimizerOptions.processorOptions &&
+    typeof minimizerOptions.processorOptions === "object"
+      ? minimizerOptions.processorOptions
+      : {}),
   };
 
   if (typeof postcssOptions.parser === "string") {
@@ -194,7 +197,7 @@ cssnanoMinify.supportsWorkerThreads = () => true;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function cssoMinify(input, sourceMap, minimizerOptions) {
   const csso = require("csso");
@@ -223,7 +226,7 @@ cssoMinify.supportsWorkerThreads = () => true;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function cleanCssMinify(input, sourceMap, minimizerOptions) {
   const CleanCSS = require("clean-css");
@@ -249,7 +252,7 @@ async function cleanCssMinify(input, sourceMap, minimizerOptions) {
     generatedSourceMap.sources = generatedSourceMap.sources.map(
       /**
        * @param {string | null} item Path item
-       * @returns {string} - Normalized path
+       * @returns {string} Normalized path
        */
       (item) =>
         isWindowsPathSep ? (item || "").replaceAll("\\", "/") : item || "",
@@ -270,12 +273,12 @@ cleanCssMinify.supportsWorkerThreads = () => true;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function esbuildMinify(input, sourceMap, minimizerOptions) {
   /**
    * @param {import("esbuild").TransformOptions=} esbuildOptions ESBuild options
-   * @returns {import("esbuild").TransformOptions} - Built ESBuild options
+   * @returns {import("esbuild").TransformOptions} Built ESBuild options
    */
   const buildEsbuildOptions = (esbuildOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -358,14 +361,14 @@ esbuildMinify.supportsWorkerThreads = () => false;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function parcelCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
    * @param {Partial<import("@parcel/css").TransformOptions<any>>=} parcelCssOptions Parcel CSS options
-   * @returns {import("@parcel/css").TransformOptions<any>} - Built Parcel CSS options
+   * @returns {import("@parcel/css").TransformOptions<any>} Built Parcel CSS options
    */
   const buildParcelCssOptions = (parcelCssOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -403,14 +406,14 @@ parcelCssMinify.supportsWorkerThreads = () => false;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function lightningCssMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   // eslint-disable-next-line jsdoc/no-restricted-syntax
   /**
    * @param {Partial<import("lightningcss").TransformOptions<any>>=} lightningCssOptions Lightning CSS options
-   * @returns {import("lightningcss").TransformOptions<any>} - Built Lightning CSS options
+   * @returns {import("lightningcss").TransformOptions<any>} Built Lightning CSS options
    */
   const buildLightningCssOptions = (lightningCssOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -448,13 +451,13 @@ lightningCssMinify.supportsWorkerThreads = () => false;
  * @param {Input} input Input
  * @param {RawSourceMap=} sourceMap Source map
  * @param {CustomOptions=} minimizerOptions Minimizer options
- * @returns {Promise<MinimizedResult>} - Promise with minimized result
+ * @returns {Promise<MinimizedResult>} Promise with minimized result
  */
 async function swcMinify(input, sourceMap, minimizerOptions) {
   const [[filename, code]] = Object.entries(input);
   /**
    * @param {Partial<import("@swc/css").MinifyOptions>=} swcOptions SWC options
-   * @returns {import("@swc/css").MinifyOptions} - Built SWC options
+   * @returns {import("@swc/css").MinifyOptions} Built SWC options
    */
   const buildSwcOptions = (swcOptions = {}) =>
     // Need deep copy objects to avoid https://github.com/terser/terser/issues/366
@@ -500,7 +503,7 @@ swcMinify.supportsWorkerThreads = () => false;
 /**
  * @template T
  * @param {(() => unknown) | undefined} fn Function to memoize
- * @returns {() => T} - Memoized function
+ * @returns {() => T} Memoized function
  */
 function memoize(fn) {
   let cache = false;

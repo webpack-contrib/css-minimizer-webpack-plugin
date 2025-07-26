@@ -4,7 +4,7 @@
 /**
  * @template T
  * @param {import("./index.js").InternalOptions<T>} options Options
- * @returns {Promise<InternalResult>} - Promise with internal result
+ * @returns {Promise<InternalResult>} Promise with internal result
  */
 async function minify(options) {
   const minifyFns = Array.isArray(options.minimizer.implementation)
@@ -63,7 +63,7 @@ async function minify(options) {
 
 /**
  * @param {string} options Options string
- * @returns {Promise<InternalResult>} - Promise with internal result
+ * @returns {Promise<InternalResult>} Promise with internal result
  */
 async function transform(options) {
   // 'use strict' => this === undefined (Clean Scope)

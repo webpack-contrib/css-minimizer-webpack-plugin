@@ -1,6 +1,6 @@
 /**
  * @param {string} str String to process
- * @returns {string} - Processed string
+ * @returns {string} Processed string
  */
 function removeCWD(str) {
   const isWin = process.platform === "win32";
@@ -17,7 +17,7 @@ function removeCWD(str) {
 
 /**
  * @param {Array<Error>} errors Array of errors
- * @returns {Array<string>} - Normalized error messages
+ * @returns {Array<string>} Normalized error messages
  */
 export default (errors) =>
   errors.map((error) =>
