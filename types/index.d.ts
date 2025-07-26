@@ -145,59 +145,59 @@ type Warning =
   | string;
 type WarningObject = {
   /**
-   * - Warning message
+   * Warning message
    */
   message: string;
   /**
-   * - Plugin name
+   * Plugin name
    */
   plugin?: string | undefined;
   /**
-   * - Warning text
+   * Warning text
    */
   text?: string | undefined;
   /**
-   * - Line number
+   * Line number
    */
   line?: number | undefined;
   /**
-   * - Column number
+   * Column number
    */
   column?: number | undefined;
 };
 type ErrorObject = {
   /**
-   * - Error message
+   * Error message
    */
   message: string;
   /**
-   * - Line number
+   * Line number
    */
   line?: number | undefined;
   /**
-   * - Column number
+   * Column number
    */
   column?: number | undefined;
   /**
-   * - Error stack trace
+   * Error stack trace
    */
   stack?: string | undefined;
 };
 type MinimizedResult = {
   /**
-   * - Minimized code
+   * Minimized code
    */
   code: string;
   /**
-   * - Source map
+   * Source map
    */
   map?: RawSourceMap | undefined;
   /**
-   * - Errors
+   * Errors
    */
   errors?: Array<Error | ErrorObject | string> | undefined;
   /**
-   * - Warnings
+   * Warnings
    */
   warnings?: Array<Warning | WarningObject | string> | undefined;
 };
@@ -218,7 +218,7 @@ type BasicMinimizerImplementation<T> = (
 ) => Promise<MinimizedResult> | MinimizedResult;
 type MinimizeFunctionHelpers = {
   /**
-   * - Check if worker threads are supported
+   * Check if worker threads are supported
    */
   supportsWorkerThreads?: (() => boolean | undefined) | undefined;
 };
@@ -230,19 +230,19 @@ type MinimizerImplementation<T> = T extends any[]
   : BasicMinimizerImplementation<T> & MinimizeFunctionHelpers;
 type InternalOptions<T> = {
   /**
-   * - Name
+   * Name
    */
   name: string;
   /**
-   * - Input
+   * Input
    */
   input: string;
   /**
-   * - Input source map
+   * Input source map
    */
   inputSourceMap: RawSourceMap | undefined;
   /**
-   * - Minimizer
+   * Minimizer
    */
   minimizer: {
     implementation: MinimizerImplementation<T>;
@@ -276,23 +276,23 @@ type WarningsFilter = (
 ) => boolean;
 type BasePluginOptions = {
   /**
-   * - Test rule
+   * Test rule
    */
   test?: Rule | undefined;
   /**
-   * - Include rule
+   * Include rule
    */
   include?: Rule | undefined;
   /**
-   * - Exclude rule
+   * Exclude rule
    */
   exclude?: Rule | undefined;
   /**
-   * - Warnings filter
+   * Warnings filter
    */
   warningsFilter?: WarningsFilter | undefined;
   /**
-   * - Parallel option
+   * Parallel option
    */
   parallel?: Parallel | undefined;
 };
