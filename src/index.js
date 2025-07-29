@@ -21,7 +21,7 @@ const {
 /** @typedef {import("webpack").Compilation} Compilation */
 /** @typedef {import("webpack").WebpackError} WebpackError */
 /** @typedef {import("jest-worker").Worker} JestWorker */
-/** @typedef {import("@jridgewell/trace-mapping").EncodedSourceMap} RawSourceMap */
+/** @typedef {import("@jridgewell/trace-mapping").EncodedSourceMap & { sources: string[], sourcesContent?: string[], file: string }} RawSourceMap */
 /** @typedef {import("webpack").Asset} Asset */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
 /** @typedef {import("postcss").Syntax} Syntax */

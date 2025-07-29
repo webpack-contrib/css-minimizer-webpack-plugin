@@ -45,7 +45,9 @@ declare class CssMinimizerPlugin<T = CssNanoOptionsExtended> {
    * @param {BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>=} options Plugin options
    */
   constructor(
-    options?: BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>,
+    options?:
+      | (BasePluginOptions & DefinedDefaultMinimizerAndOptions<T>)
+      | undefined,
   );
   /**
    * @private
@@ -126,7 +128,11 @@ type Compiler = import("webpack").Compiler;
 type Compilation = import("webpack").Compilation;
 type WebpackError = import("webpack").WebpackError;
 type JestWorker = import("jest-worker").Worker;
-type RawSourceMap = import("@jridgewell/trace-mapping").EncodedSourceMap;
+type RawSourceMap = import("@jridgewell/trace-mapping").EncodedSourceMap & {
+  sources: string[];
+  sourcesContent?: string[];
+  file: string;
+};
 type Asset = import("webpack").Asset;
 type ProcessOptions = import("postcss").ProcessOptions;
 type Syntax = import("postcss").Syntax;

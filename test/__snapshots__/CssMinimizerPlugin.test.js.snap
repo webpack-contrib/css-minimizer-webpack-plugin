@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`CssMinimizerPlugin buildError method 1`] = `
 [Error: test.css from Css Minimizer plugin
@@ -61,14 +61,14 @@ exports[`CssMinimizerPlugin should build error: error 1`] = `
 
 exports[`CssMinimizerPlugin should build error: warning 1`] = `[]`;
 
-exports[`CssMinimizerPlugin should build warning: error 1`] = `
+exports[`CssMinimizerPlugin should build warning: error 1`] = `[]`;
+
+exports[`CssMinimizerPlugin should build warning: warning 1`] = `
 [
-  "Error: foo.css from Css Minimizer plugin
-DataCloneError: [object Object] could not be cloned.",
+  "Warning: foo.css from Css Minimizer plugin
+[warning-plugin] Warning webpack://./test/foo.css:2:2",
 ]
 `;
-
-exports[`CssMinimizerPlugin should build warning: warning 1`] = `[]`;
 
 exports[`CssMinimizerPlugin should respect the hash options #1: assets 1`] = `
 {

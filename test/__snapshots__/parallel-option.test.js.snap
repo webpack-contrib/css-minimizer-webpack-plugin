@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`parallel option should match snapshot for the "2" value: assets 1`] = `
 {
@@ -30,8 +30,6 @@ exports[`parallel option should match snapshot for the "true" value and the numb
 {
   "entry-0.css": "body{color:red}a{color:blue}",
   "entry-1.css": "body{color:red}a{color:blue}",
-  "entry-2.css": "body{color:red}a{color:blue}",
-  "entry-3.css": "body{color:red}a{color:blue}",
 }
 `;
 
@@ -62,10 +60,6 @@ exports[`parallel option should match snapshot for the "true" value and the numb
   "entry-1.css": "body{color:red}a{color:blue}",
   "entry-2.css": "body{color:red}a{color:blue}",
   "entry-3.css": "body{color:red}a{color:blue}",
-  "entry-4.css": "body{color:red}a{color:blue}",
-  "entry-5.css": "body{color:red}a{color:blue}",
-  "entry-6.css": "body{color:red}a{color:blue}",
-  "entry-7.css": "body{color:red}a{color:blue}",
 }
 `;
 

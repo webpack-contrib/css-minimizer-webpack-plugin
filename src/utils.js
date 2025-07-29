@@ -1,5 +1,5 @@
 /** @typedef {import("./index.js").Input} Input */
-/** @typedef {import("@jridgewell/trace-mapping").EncodedSourceMap} RawSourceMap */
+/** @typedef {import("./index.js").RawSourceMap} RawSourceMap */
 /** @typedef {import("./index.js").MinimizedResult} MinimizedResult */
 /** @typedef {import("./index.js").CustomOptions} CustomOptions */
 /** @typedef {import("postcss").ProcessOptions} ProcessOptions */
@@ -180,7 +180,6 @@ async function cssnanoMinify(
 
   return {
     code: result.css,
-
     map: result.map
       ? /** @type {RawSourceMap} */ (
           /** @type {unknown} */ (result.map.toJSON())

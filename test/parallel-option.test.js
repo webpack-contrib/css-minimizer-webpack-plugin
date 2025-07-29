@@ -13,7 +13,18 @@ import {
   readAssets,
 } from "./helpers";
 
-// Mock removed - using real values
+jest.mock("node:os", () => {
+  const actualOs = jest.requireActual("os");
+  const isAvailableParallelism =
+    typeof actualOs.availableParallelism !== "undefined";
+
+  const mocked = {
+    availableParallelism: isAvailableParallelism ? jest.fn(() => 4) : undefined,
+    cpus: jest.fn(() => ({ length: 4 })),
+  };
+
+  return { ...actualOs, ...mocked };
+});
 
 // Based on https://github.com/facebook/jest/blob/edde20f75665c2b1e3c8937f758902b5cf28a7b4/packages/jest-runner/src/__tests__/test_runner.test.js
 let workerTransform;
@@ -69,7 +80,7 @@ describe("parallel option", () => {
     expect(Worker).toHaveBeenCalledTimes(1);
     expect(Worker).toHaveBeenLastCalledWith(workerPath, {
       enableWorkerThreads: ENABLE_WORKER_THREADS,
-      numWorkers: 4, // Math.min(4 files, 7 cores) = 4
+      numWorkers: getParallelism() - 1,
     });
     expect(workerTransform).toHaveBeenCalledTimes(
       Object.keys(readAssets(compiler, stats, /\.css$/)).length,

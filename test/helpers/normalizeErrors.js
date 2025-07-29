@@ -8,11 +8,11 @@ function removeCWD(str) {
   let normalizedStr = str;
 
   if (isWin) {
-    normalizedStr = normalizedStr.replace(/\\/g, "/");
-    cwd = cwd.replace(/\\/g, "/");
+    normalizedStr = normalizedStr.replaceAll("\\", "/");
+    cwd = cwd.replaceAll("\\", "/");
   }
 
-  return normalizedStr.replace(new RegExp(cwd, "g"), "");
+  return normalizedStr.replaceAll(new RegExp(cwd, "g"), "");
 }
 
 /**
