@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import CssMinimizerPlugin from "../src/index";
 
 import {
@@ -14,9 +16,9 @@ describe("exclude option", () => {
   beforeEach(() => {
     compiler = getCompiler({
       entry: {
-        excluded1: `${__dirname}/fixtures/excluded1.js`,
-        excluded2: `${__dirname}/fixtures/excluded2.js`,
-        entry: `${__dirname}/fixtures/entry.js`,
+        excluded1: path.join(__dirname, "fixtures", "excluded1.js"),
+        excluded2: path.join(__dirname, "fixtures", "excluded2.js"),
+        entry: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
   });

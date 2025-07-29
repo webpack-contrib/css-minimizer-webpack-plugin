@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`validation 1`] = `
+exports[`validation validation 1`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.test should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -17,7 +17,7 @@ exports[`validation 1`] = `
        * options.test should be a non-empty string."
 `;
 
-exports[`validation 2`] = `
+exports[`validation validation 2`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.test should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -32,7 +32,7 @@ exports[`validation 2`] = `
        * options.test[0] should be a non-empty string."
 `;
 
-exports[`validation 3`] = `
+exports[`validation validation 3`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.include should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -49,7 +49,7 @@ exports[`validation 3`] = `
        * options.include should be a non-empty string."
 `;
 
-exports[`validation 4`] = `
+exports[`validation validation 4`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.include should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -64,7 +64,7 @@ exports[`validation 4`] = `
        * options.include[0] should be a non-empty string."
 `;
 
-exports[`validation 5`] = `
+exports[`validation validation 5`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.exclude should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -81,7 +81,7 @@ exports[`validation 5`] = `
        * options.exclude should be a non-empty string."
 `;
 
-exports[`validation 6`] = `
+exports[`validation validation 6`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.exclude should be one of these:
    [RegExp | non-empty string, ...] | RegExp | non-empty string
@@ -96,7 +96,7 @@ exports[`validation 6`] = `
        * options.exclude[0] should be a non-empty string."
 `;
 
-exports[`validation 7`] = `
+exports[`validation validation 7`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.minimizerOptions should be one of these:
    object { … } | [object { … }, ...] (should not have fewer than 1 item)
@@ -109,7 +109,7 @@ exports[`validation 7`] = `
       [object { … }, ...] (should not have fewer than 1 item)"
 `;
 
-exports[`validation 8`] = `
+exports[`validation validation 8`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.parallel should be one of these:
    boolean | integer
@@ -120,7 +120,7 @@ exports[`validation 8`] = `
     * options.parallel should be an integer."
 `;
 
-exports[`validation 9`] = `
+exports[`validation validation 9`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.parallel should be one of these:
    boolean | integer
@@ -131,7 +131,7 @@ exports[`validation 9`] = `
     * options.parallel should be an integer."
 `;
 
-exports[`validation 10`] = `
+exports[`validation validation 10`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options.minify should be one of these:
    function | [function, ...] (should not have fewer than 1 item)
@@ -143,7 +143,7 @@ exports[`validation 10`] = `
       [function, ...] (should not have fewer than 1 item)"
 `;
 
-exports[`validation 11`] = `
+exports[`validation validation 11`] = `
 "Invalid options object. Css Minimizer Plugin has been initialized using an options object that does not match the API schema.
  - options has an unknown property 'unknown'. These properties are valid:
    object { test?, include?, exclude?, minimizerOptions?, parallel?, warningsFilter?, minify? }"

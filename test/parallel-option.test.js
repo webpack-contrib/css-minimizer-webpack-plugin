@@ -1,4 +1,5 @@
-import os from "os";
+import os from "node:os";
+import path from "node:path";
 
 import { Worker } from "jest-worker";
 
@@ -12,17 +13,14 @@ import {
   readAssets,
 } from "./helpers";
 
-jest.mock("os", () => {
+jest.mock("node:os", () => {
   const actualOs = jest.requireActual("os");
   const isAvailableParallelism =
     typeof actualOs.availableParallelism !== "undefined";
 
   const mocked = {
-    // eslint-disable-next-line no-undefined
     availableParallelism: isAvailableParallelism ? jest.fn(() => 4) : undefined,
-    cpus: jest.fn(() => {
-      return { length: 4 };
-    }),
+    cpus: jest.fn(() => ({ length: 4 })),
   };
 
   return { ...actualOs, ...mocked };
@@ -37,27 +35,21 @@ const ENABLE_WORKER_THREADS =
     ? process.env.ENABLE_WORKER_THREADS === "true"
     : true;
 
-jest.mock("jest-worker", () => {
-  return {
-    Worker: jest.fn().mockImplementation((workerPath) => {
-      return {
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        transform: (workerTransform = jest.fn((data) =>
-          // eslint-disable-next-line global-require, import/no-dynamic-require
-          require(workerPath).transform(data),
-        )),
-        end: (workerEnd = jest.fn()),
-        getStderr: jest.fn(),
-        getStdout: jest.fn(),
-      };
-    }),
-  };
-});
+jest.mock("jest-worker", () => ({
+  Worker: jest.fn().mockImplementation((workerPath) => ({
+    transform: (workerTransform = jest.fn((data) =>
+      require(workerPath).transform(data),
+    )),
+    end: (workerEnd = jest.fn()),
+    getStderr: jest.fn(),
+    getStdout: jest.fn(),
+  })),
+}));
 
 const workerPath = require.resolve("../src/minify");
 
 const getParallelism = () => {
-  if (typeof os.availableParallelism !== "undefined") {
+  if (typeof os.availableParallelism === "function") {
     return os.availableParallelism();
   }
 
@@ -72,10 +64,10 @@ describe("parallel option", () => {
 
     compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/entry.js`,
-        two: `${__dirname}/fixtures/entry.js`,
-        three: `${__dirname}/fixtures/entry.js`,
-        four: `${__dirname}/fixtures/entry.js`,
+        one: path.join(__dirname, "fixtures", "entry.js"),
+        two: path.join(__dirname, "fixtures", "entry.js"),
+        three: path.join(__dirname, "fixtures", "entry.js"),
+        four: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
   });
@@ -133,7 +125,6 @@ describe("parallel option", () => {
   });
 
   it('should match snapshot for the "undefined" value', async () => {
-    // eslint-disable-next-line no-undefined
     new CssMinimizerPlugin({ parallel: undefined }).apply(compiler);
 
     const stats = await compile(compiler);
@@ -175,7 +166,7 @@ describe("parallel option", () => {
 
   it('should match snapshot for the "true" value when only one file passed', async () => {
     compiler = getCompiler({
-      entry: `${__dirname}/fixtures/entry.js`,
+      entry: path.join(__dirname, "fixtures", "entry.js"),
     });
 
     new CssMinimizerPlugin({ parallel: true }).apply(compiler);
@@ -201,7 +192,7 @@ describe("parallel option", () => {
     const entries = {};
 
     for (let i = 0; i < os.cpus().length / 2; i++) {
-      entries[`entry-${i}`] = `${__dirname}/fixtures/entry.js`;
+      entries[`entry-${i}`] = path.join(__dirname, "fixtures", "entry.js");
     }
 
     compiler = getCompiler({ entry: entries });
@@ -229,7 +220,7 @@ describe("parallel option", () => {
     const entries = {};
 
     for (let i = 0; i < os.cpus().length; i++) {
-      entries[`entry-${i}`] = `${__dirname}/fixtures/entry.js`;
+      entries[`entry-${i}`] = path.join(__dirname, "fixtures", "entry.js");
     }
 
     compiler = getCompiler({ entry: entries });
@@ -257,19 +248,19 @@ describe("parallel option", () => {
     const entries = {};
 
     for (let i = 0; i < os.cpus().length * 2; i++) {
-      entries[`entry-${i}`] = `${__dirname}/fixtures/entry.js`;
+      entries[`entry-${i}`] = path.join(__dirname, "fixtures", "entry.js");
     }
 
     compiler = getCompiler({
       entry: {
-        one: `${__dirname}/fixtures/entry.js`,
-        two: `${__dirname}/fixtures/entry.js`,
-        three: `${__dirname}/fixtures/entry.js`,
-        four: `${__dirname}/fixtures/entry.js`,
-        five: `${__dirname}/fixtures/entry.js`,
-        six: `${__dirname}/fixtures/entry.js`,
-        seven: `${__dirname}/fixtures/entry.js`,
-        eight: `${__dirname}/fixtures/entry.js`,
+        one: path.join(__dirname, "fixtures", "entry.js"),
+        two: path.join(__dirname, "fixtures", "entry.js"),
+        three: path.join(__dirname, "fixtures", "entry.js"),
+        four: path.join(__dirname, "fixtures", "entry.js"),
+        five: path.join(__dirname, "fixtures", "entry.js"),
+        six: path.join(__dirname, "fixtures", "entry.js"),
+        seven: path.join(__dirname, "fixtures", "entry.js"),
+        eight: path.join(__dirname, "fixtures", "entry.js"),
       },
     });
 

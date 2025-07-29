@@ -1,19 +1,24 @@
+/**
+ * @param {string} str String to process
+ * @returns {string} Processed string
+ */
 function removeCWD(str) {
   const isWin = process.platform === "win32";
   let cwd = process.cwd();
   let normalizedStr = str;
 
   if (isWin) {
-    normalizedStr = normalizedStr.replace(/\\/g, "/");
-    cwd = cwd.replace(/\\/g, "/");
+    normalizedStr = normalizedStr.replaceAll("\\", "/");
+    cwd = cwd.replaceAll("\\", "/");
   }
 
-  // Normalize file URLs to always use 'file:///'
-  normalizedStr = normalizedStr.replace(/file:\/*/g, "file:///");
-
-  return normalizedStr.replace(new RegExp(cwd, "g"), "");
+  return normalizedStr.replaceAll(new RegExp(cwd, "g"), "");
 }
 
+/**
+ * @param {Array<Error>} errors Array of errors
+ * @returns {Array<string>} Normalized error messages
+ */
 export default (errors) =>
   errors.map((error) =>
     removeCWD(error.toString().split("\n").slice(0, 2).join("\n")),

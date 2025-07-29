@@ -1,8 +1,7 @@
 import serialize from "serialize-javascript";
 
-import { transform } from "../src/minify";
-
 import CssMinimizerPlugin from "../src";
+import { transform } from "../src/minify";
 
 import { normalizeErrors } from "./helpers";
 
@@ -56,9 +55,7 @@ describe("worker", () => {
       name: "entry.css",
       input: ".foo{color:red;}\n.bar{color:coral;}",
       minimizer: {
-        implementation: () => {
-          return { code: ".minify {};" };
-        },
+        implementation: () => ({ code: ".minify {};" }),
         options: { discardComments: false },
       },
     };
