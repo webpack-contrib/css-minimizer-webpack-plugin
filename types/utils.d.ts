@@ -31,8 +31,8 @@ export function memoize<T>(fn: (() => any) | undefined): () => T;
  */
 export function cssnanoMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace cssnanoMinify {
   function supportsWorkerThreads(): boolean;
@@ -45,8 +45,8 @@ export namespace cssnanoMinify {
  */
 export function cssoMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace cssoMinify {
   function supportsWorkerThreads(): boolean;
@@ -59,8 +59,8 @@ export namespace cssoMinify {
  */
 export function cleanCssMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace cleanCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -73,8 +73,8 @@ export namespace cleanCssMinify {
  */
 export function esbuildMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace esbuildMinify {
   function supportsWorkerThreads(): boolean;
@@ -87,8 +87,8 @@ export namespace esbuildMinify {
  */
 export function parcelCssMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace parcelCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -101,8 +101,8 @@ export namespace parcelCssMinify {
  */
 export function lightningCssMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace lightningCssMinify {
   function supportsWorkerThreads(): boolean;
@@ -115,8 +115,8 @@ export namespace lightningCssMinify {
  */
 export function swcMinify(
   input: Input,
-  sourceMap?: import("@jridgewell/trace-mapping").EncodedSourceMap | undefined,
-  minimizerOptions?: import("./index.js").CustomOptions | undefined,
+  sourceMap?: RawSourceMap,
+  minimizerOptions?: CustomOptions,
 ): Promise<MinimizedResult>;
 export namespace swcMinify {
   function supportsWorkerThreads(): boolean;

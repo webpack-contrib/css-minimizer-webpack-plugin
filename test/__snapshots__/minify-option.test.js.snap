@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`"minify" option should work and allow to return errors and warnings from custom function: assets 1`] = `
 {
@@ -44,7 +44,7 @@ body a {
 .three{background: white;}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -74,7 +74,7 @@ body a {
 .three{color: red;}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA;EACE;ACCF;;AAAA;EACE;AAGF;AAFE;EACE;AAIJ,C","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -136,7 +136,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cleanCssMinify" mi
 {
   "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,YAAa,ICCf,KACE,MAAO,IACP,OACE,WAAY","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,YAAa,ICCf,KACE,MAAO,IACP,OACE,WAAY","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -170,7 +170,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" min
 {
   "foo/foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KCGE,SAAU,CDFV,eCCF,CAEE,OACE,iBAIJ","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KCGE,SAAU,CDFV,eCCF,CAEE,OACE,iBAIJ","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -182,7 +182,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" min
 {
   "foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KCGE,SAAU,CDFV,eCCF,CAEE,OACE,iBAIJ","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,KCGE,SAAU,CDFV,eCCF,CAEE,OACE,iBAIJ","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -230,7 +230,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 {
   "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -242,7 +242,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 {
   "foo/foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -283,7 +283,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
   "foo/foo.css": "body{font-weight:700}body{color:red}body a{text-align:center}
 
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,YAAa,GCCf,MACE,MAAO,GAGT,CAFE,OACE,WAAY,MAIhB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,KACE,YAAa,GCCf,MACE,MAAO,GAGT,CAFE,OACE,WAAY,MAIhB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -319,7 +319,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 {
   "foo/foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -331,7 +331,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 {
   "foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -363,7 +363,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 {
   "foo/foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -375,7 +375,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 {
   "foo.css": "body{color:red;font-weight:700}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,+BCIE","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -407,7 +407,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 {
   "foo/foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo/foo.css.map": "{"version":3,"file":"foo/foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -419,7 +419,7 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 {
   "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,IAAI,CAAE,WACO,CAAE,GAAI,CCEjB,KAAK,CAAE,GAAG,CAGZ,IAFE,aACY,CAAE,MAAM","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 
@@ -461,7 +461,7 @@ exports[`"minify" option should work with "csso" minifier: assets 1`] = `
 {
   "foo.css": "body{font-weight:700;color:red}body a{text-align:center}
 /*# sourceMappingURL=foo.css.map*/",
-  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"],"names":[],"sourceRoot":""}",
+  "foo.css.map": "{"version":3,"file":"foo.css","mappings":"AAAA,I,CACE,e,CCEA,S,CACA,M,CACE,iB","sources":["webpack:///./sourcemap/bar.scss","webpack:///./sourcemap/foo.scss"],"sourcesContent":["body {\\n  font-weight: bold;\\n}","@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"],"names":[],"sourceRoot":""}",
 }
 `;
 

@@ -1,11 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`when applied with "sourceMap" option should work and emit warning on valid sourcemap and minimizer error: errors 1`] = `
 [
   "Error: broken-source-map.css from Css Minimizer plugin
 error-plugin: /broken-source-map.css:1:7: Postcss error [test:1,5][broken-source-map.css:1,7]",
   "Error: dist/entry2.css from Css Minimizer plugin
-error-plugin: /dist/entry2.css:10:3: Postcss error [webpack://./sourcemap/foo.css:8,2][dist/entry2.css:10,3]",
+error-plugin: /dist/entry2.css:9:3: Postcss error [webpack://./sourcemap/foo.css:8,2][dist/entry2.css:9,3]",
 ]
 `;
 
@@ -19,14 +19,14 @@ exports[`when applied with "sourceMap" option should work and emit warnings on b
   "dist/entry2.css.map": {
     "version": 3,
     "file": "dist/entry2.css",
-    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eACF,CCIA,OACE,iBAAF",
     "sources": [
-        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/bar.css",
         "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -58,7 +58,7 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -66,14 +66,14 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
   "sourcemaps/entry2.css.map": {
     "version": 3,
     "file": "dist/entry2.css",
-    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eACF,CCIA,OACE,iBAAF",
     "sources": [
-        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/bar.css",
         "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -99,7 +99,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -109,14 +109,14 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
   "entry2.css.map": {
     "version": 3,
     "file": "entry2.css",
-    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eACF,CCIA,OACE,iBAAF",
     "sources": [
-        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/bar.css",
         "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -142,7 +142,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -152,14 +152,14 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
   "entry2.css.map": {
     "version": 3,
     "file": "entry2.css",
-    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eACF,CCIA,OACE,iBAAF",
     "sources": [
-        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/bar.css",
         "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -185,7 +185,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -195,14 +195,14 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
   "entry2.css.map": {
     "version": 3,
     "file": "entry2.css",
-    "mappings": "AAAA,KCGE,SAAU,CDFV,eCCF,CAIA,OACE,iBAGF",
+    "mappings": "AAAA,KCGE,SAAU,CDFV,eACF,CCIA,OACE,iBAAF",
     "sources": [
-        "webpack:///./sourcemap/bar.scss",
+        "webpack:///./sourcemap/bar.css",
         "webpack:///./sourcemap/foo.css"
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""

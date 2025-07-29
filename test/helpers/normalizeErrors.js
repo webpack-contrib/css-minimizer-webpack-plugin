@@ -1,15 +1,17 @@
 function removeCWD(str) {
   const isWin = process.platform === "win32";
   let cwd = process.cwd();
+  let normalizedStr = str;
 
   if (isWin) {
-    // eslint-disable-next-line no-param-reassign
-    str = str.replace(/\\/g, "/");
-    // eslint-disable-next-line no-param-reassign
+    normalizedStr = normalizedStr.replace(/\\/g, "/");
     cwd = cwd.replace(/\\/g, "/");
   }
 
-  return str.replace(new RegExp(cwd, "g"), "");
+  // Normalize file URLs to always use 'file:///'
+  normalizedStr = normalizedStr.replace(/file:\/*/g, "file:///");
+
+  return normalizedStr.replace(new RegExp(cwd, "g"), "");
 }
 
 export default (errors) =>
