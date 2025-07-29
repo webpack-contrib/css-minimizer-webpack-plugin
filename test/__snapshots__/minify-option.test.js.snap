@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`"minify" option should work and allow to return errors and warnings from custom function: assets 1`] = `
 {
@@ -14,8 +14,6 @@ exports[`"minify" option should work and allow to return errors and warnings fro
 Error 1",
   "Error: foo.css from Css Minimizer plugin
 Error: Error 2",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
   "Warning: foo.css from Css Minimizer plugin
@@ -57,8 +55,6 @@ exports[`"minify" option should work if minify is array && minimizerOptions is a
 exports[`"minify" option should work if minify is array && minimizerOptions is array: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -94,8 +90,6 @@ exports[`"minify" option should work if minify is array && minimizerOptions is o
 exports[`"minify" option should work if minify is array && minimizerOptions is object: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -125,8 +119,6 @@ Error: minimizer function doesn't return the 'code' property or result is not a 
 
 exports[`"minify" option should work throw an error if minimizer function doesn't return #2: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -158,8 +150,6 @@ Error: minimizer function doesn't return the 'code' property or result is not a 
 exports[`"minify" option should work throw an error if minimizer function doesn't return: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -176,8 +166,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cleanCssMinify" mi
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cleanCssMinify" minifier and generate source maps #2: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -218,8 +206,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" min
 exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -236,8 +222,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" min
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" minifier and generate source maps: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -257,8 +241,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" min
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cssnanoMinify" minifier: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -299,8 +281,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifier and generate source map: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -318,8 +298,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -334,8 +312,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifi
 
 exports[`"minify" option should work with "CssMinimizerPlugin.cssoMinify" minifier: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -373,8 +349,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -404,8 +378,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" min
 exports[`"minify" option should work with "CssMinimizerPlugin.esbuildMinify" minifier: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -423,8 +395,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -441,8 +411,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 
 exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify" minifier and generate source maps: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -469,8 +437,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify
 exports[`"minify" option should work with "CssMinimizerPlugin.lightningCssMinify" minifier: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -488,8 +454,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -506,8 +470,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 
 exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" minifier and generate source maps: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -534,8 +496,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" m
 exports[`"minify" option should work with "CssMinimizerPlugin.parcelCssMinify" minifier: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -553,8 +513,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps #2: warning 1`] = `
 [
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
 `;
@@ -571,8 +529,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier and generate source maps: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -598,8 +554,6 @@ exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifie
 
 exports[`"minify" option should work with "CssMinimizerPlugin.swcMinify" minifier: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]
@@ -627,8 +581,6 @@ exports[`"minify" option should work with "csso" minifier: error 1`] = `[]`;
 
 exports[`"minify" option should work with "csso" minifier: warning 1`] = `
 [
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
   "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
 Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
 ]

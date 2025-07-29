@@ -207,7 +207,7 @@ describe('when applied with "sourceMap" option', () => {
     expect(getErrors(stats)).toMatchSnapshot("errors");
     expect(getWarnings(stats)).toMatchSnapshot("warnings");
     expect(stats.compilation.warnings[0].toString()).toMatch(
-      "Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.",
+      "Error: broken-source-map.css contains invalid source map",
     );
   });
 
