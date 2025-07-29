@@ -26,7 +26,7 @@ exports[`when applied with "sourceMap" option should work and emit warnings on b
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -58,7 +58,7 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -73,7 +73,7 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -83,12 +83,7 @@ exports[`when applied with "sourceMap" option should work with SourceMapDevToolP
 
 exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): warnings 1`] = `
-[
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
-]
-`;
+exports[`when applied with "sourceMap" option should work with SourceMapDevToolPlugin plugin): warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: assets 1`] = `
 {
@@ -104,7 +99,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -121,7 +116,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -131,12 +126,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: warnings 1`] = `
-[
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
-]
-`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "false" value: warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: assets 1`] = `
 {
@@ -152,7 +142,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -169,7 +159,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -179,12 +169,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: warnings 1`] = `
-[
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
-]
-`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option and the "parallel" option with "true" value: warnings 1`] = `[]`;
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option: assets 1`] = `
 {
@@ -200,7 +185,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}"
+        "@use 'bar';\\n\\nbody {\\n  color: red;\\n  a {\\n    text-align: center;\\n  }\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -217,7 +202,7 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
     ],
     "sourcesContent": [
         "body {\\n  font-weight: bold;\\n}",
-        "@import 'bar';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}"
+        "@import 'bar.css';\\n\\nbody {\\n  color: red;\\n}\\n\\nbody a {\\n  text-align: center;\\n}\\n"
     ],
     "names": [],
     "sourceRoot": ""
@@ -227,9 +212,4 @@ exports[`when applied with "sourceMap" option should work with the "devtool" opt
 
 exports[`when applied with "sourceMap" option should work with the "devtool" option: errors 1`] = `[]`;
 
-exports[`when applied with "sourceMap" option should work with the "devtool" option: warnings 1`] = `
-[
-  "ModuleWarning: Module Warning (from ../../node_modules/sass-loader/dist/cjs.js):
-Deprecation Warning on line 0, column 8 of file:///test/fixtures/sourcemap/foo.scss:0:8:",
-]
-`;
+exports[`when applied with "sourceMap" option should work with the "devtool" option: warnings 1`] = `[]`;
